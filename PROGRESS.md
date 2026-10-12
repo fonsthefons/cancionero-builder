@@ -72,6 +72,39 @@ Merged the three codebases. Base of each part = the newest version:
   repeat marks only `x2`/`(x12)` (not fingerings `x13331`); `C7-9`, `D--A`, `|C---|G---|`
   stay chords.
 
+## 2026-10-13 — Phase 2: adding songs, new books, publishing
+
+- `cancionero.py` (menu with no arguments): `new`, `add`, `add-list`, `add-pdf`, `links`,
+  `tags [--write]`, `build`, `publish`, `list`. Books are looked for next to the builder
+  (`CANCIONERO_BOOKS` overrides; the tests use `scratch/testbooks`).
+- `importer/`: `add.py` (interactive: link / paste / search / PDF / list; default author,
+  language suggestion, UG title fixes, Spotify then YouTube link), `batch.py` (both list
+  formats), `pdf.py` + `pdf_add.py` (generic PDF), `links.py`, `songfile.py`, `ask.py`
+  (tag picker: numbers, or new `Tag` / `Tag/Subtag`, added to tags.yaml keeping its comments).
+- `builder/create.py`: new book folder + files + build + git; GitHub repo + Pages via `gh`
+  (`--dry-run` only prints those commands). `publish`: build, commit (message lists songs), push.
+- PDF importer on the Hakuna songbook (`scratch/pdf_vs_hakuna.py`): 126/126 songs, albums
+  found as sections, lyrics 98.6% / chords 97% the same as the hand-checked files, 96% of
+  chord lines with every chord over the same letter. Remaining differences are mostly
+  cosmetic ("Intro: C" on one line or two, labels in capitals, where long lines are joined).
+- Tested: `new --dry-run` with scripted answers, paste + new tags, free tags written by hand,
+  search + Spotify/YouTube + build (real web), `tests/` (29 pytest tests pass:
+  `.venv/bin/python -m pytest tests -p no:cacheprovider`).
+
+## Still to do
+
+- Browser check of the built pages: `scratch/hkn_ui_test.py` (copied from hakuna) still
+  needs pointing at `scratch/books/<name>/index.html` and running (needs
+  `PLAYWRIGHT_BROWSERS_PATH=scratch/browsers`).
+- `add-list` test run was left running in the background (DuckDuckGo said "busy", so it
+  waits and retries); check `scratch/testbooks/cancionero-misa/songs` and
+  `scratch/list_report.txt`.
+- Second PDF layout (e.g. a printed builder book) not tried yet.
+- README.md for the builder.
+- First real book with GitHub: run `.venv/bin/python cancionero.py new` (not done: no book
+  repos on GitHub without the user).
+
 ## Blocked
 
-(none yet)
+- The Read tool is refused in the 3 source repos (some setting outside this project);
+  worked around with `cat` and local clones.

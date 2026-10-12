@@ -58,18 +58,19 @@ def solfege_to_letters(token, lowercase_minor=False):
     return chord if is_letter_chord(chord) else None
 
 
-# "Fm#" / "Cm#7": a common typo for F#m / C#m7 (the sharp after the m).
-MINOR_SHARP_TYPO_RE = re.compile(r"([A-G])m([#b])(\d*)")
+# "Fm#" / "Cm#7": a common typo for F#m / C#m7 (the sharp after the m). Not m#5 / m#9.
+MINOR_SHARP_TYPO_RE = re.compile(r"([A-G])m([#b])(7?)")
 
 
 def fix_letter_chord(token):
     """A letter chord as the book writes it ('C7M' -> 'Cmaj7', 'Fm#' -> 'F#m'), or None."""
-    if is_letter_chord(token):
-        return token
     main, _, bass = token.partition("/")
     typo = MINOR_SHARP_TYPO_RE.fullmatch(main)
     if typo:
         main = f"{typo.group(1)}{typo.group(2)}m{typo.group(3)}"
+        token = main + ("/" + bass if bass else "")
+    if is_letter_chord(token):
+        return token
     match = LETTER_RE.fullmatch(main)
     if not match:
         return None
