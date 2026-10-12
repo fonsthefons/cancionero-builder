@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<!-- No maximum-scale / user-scalable: pinch-zoom must always work. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{ title }}</title>
+<!-- Home-screen app (hosted site only; see sw.js). Opened as a file these are simply unused. -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="{{ short_name }}">
+<meta name="theme-color" content="{{ theme_color }}">
+<style>
+{{ css }}
+</style>
+</head>
+<body data-chords="show" data-columns="1" data-theme="auto" data-notation="letters">
+
+<!-- Top bar: always visible -->
+<header class="topbar">
+  <button class="icon-button" data-action="open-drawer" aria-label="Menu" aria-controls="drawer">☰</button>
+  <a class="topbar-title" href="#index" aria-label="{{ title }}: contenido">
+    {{ logo }}<span>{{ title }}</span>
+  </a>
+  <div class="search">
+    <input type="search" placeholder="Search songs..." aria-label="Search songs" autocomplete="off">
+    <div class="search-results" hidden></div>
+  </div>
+  <div class="autoscroll" role="group" aria-label="Autoscroll">
+    <button data-action="toggle-autoscroll" aria-pressed="false" aria-label="Start autoscroll">▶</button>
+    <button data-action="autoscroll-slower" aria-label="Slower">−</button>
+    <span class="autoscroll-speed" aria-label="Autoscroll speed">3</span>
+    <button data-action="autoscroll-faster" aria-label="Faster">+</button>
+  </div>
+</header>
+
+<!-- Menu drawer: table of contents + settings -->
+<div class="backdrop" data-action="close-drawer"></div>
+<aside id="drawer" class="drawer" aria-label="Menu">
+  <div class="drawer-header">
+    <strong>Menu</strong>
+    <button class="icon-button" data-action="close-drawer" aria-label="Close menu">✕</button>
+  </div>
+
+  <!-- Sing Session: a saved, ordered list of songs to play -->
+  <details class="session" id="session" open>
+    <summary><h2>Sing Session <span class="session-count"></span></h2></summary>
+    <p class="session-empty">Add songs to the session: search below, or tap “+ Session” on any song.</p>
+    <ol class="session-list"></ol>
+    <div class="search session-search" data-search="session-add">
+      <input type="search" placeholder="Add a song..." aria-label="Add a song to the session" autocomplete="off">
+      <div class="search-results" hidden></div>
+    </div>
+    <button class="session-clear" data-action="session-clear">Clear session</button>
+  </details>
+
+  {{ nav }}
+
+  <section class="settings" id="settings">
+    <h2>Settings</h2>
+    <div class="setting">
+      <span>Text size</span>
+      <div class="stepper">
+        <button data-action="text-smaller" aria-label="Smaller text">A−</button>
+        <button class="text-scale-value" data-action="text-reset" aria-label="Reset text size">100%</button>
+        <button data-action="text-bigger" aria-label="Bigger text">A+</button>
+      </div>
+    </div>
+    <div class="setting">
+      <span>Chords</span>
+      <button data-action="toggle-all-chords">Hide all chords</button>
+    </div>
+{{ notation_setting }}
+    <div class="setting">
+      <span>Columns</span>
+      <button data-action="toggle-all-columns">2 columns</button>
+    </div>
+    <div class="setting">
+      <span>Song changes (transpose, chords, columns)</span>
+      <button data-action="reset-songs">Reset all</button>
+    </div>
+    <div class="setting">
+      <span>Theme</span>
+      <button data-action="cycle-theme">Auto</button>
+    </div>
+    <div class="setting" data-requires="wake-lock" hidden>
+      <span>Keep screen on</span>
+      <button data-action="toggle-wake-lock" aria-pressed="false">Off</button>
+    </div>
+    <div class="setting">
+      <span>Print / PDF</span>
+      <button data-action="open-print">Print</button>
+    </div>
+  </section>
+</aside>
+
+<!-- Index of songs by tag; every section can be folded -->
+<section id="index" class="index">
+  {{ cover }}<h1>Contenido</h1>
+  {{ tag_index }}
+  {{ all_songs }}
+</section>
+
+<main class="songs">
+{{ songs }}
+</main>
+
+<dialog id="print-dialog" class="print-dialog">
+  <form method="dialog">
+    <h3>Print settings</h3>
+    <label>Columns:
+      <select name="columns">
+        <option value="1">1 column</option>
+        <option value="2">2 columns</option>
+      </select>
+    </label>
+    <label>Chords:
+      <select name="chords">
+        <option value="show">Show chords</option>
+        <option value="hide">Hide chords</option>
+      </select>
+    </label>
+    <div class="dialog-buttons">
+      <button value="cancel">Cancel</button>
+      <button value="print">Print PDF</button>
+    </div>
+  </form>
+</dialog>
+
+{{ install_tip }}
+
+<!-- This book's settings (book.yaml) for the scripts below -->
+<script>
+const BOOK = {{ book_json }};
+</script>
+<!-- Scripts from web/js/, core.js first -->
+{{ scripts }}
+</body>
+</html>

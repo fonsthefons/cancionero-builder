@@ -1,0 +1,868 @@
+/* ============================= */
+/* THEME                         */
+/* ============================= */
+
+body {
+    --paper: #f4f1ea;
+    --page: #fffdf8;
+    --surface: #ffffff;
+    --ink: #2b2b2b;
+    --muted: #666;
+    --accent: #397380;
+    --accent-light: #2f8ea4;
+    --chord: #1a8f8f;
+    --button-bg: #fffaf1;
+    --button-ink: #5f63a8;
+    --button-active: #ece6d8;
+    --border: #d6d0c4;
+    --shadow: rgba(0, 0, 0, 0.15);
+
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* Must stay monospace: chords are aligned to letters by column. */
+    --mono: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --topbar-height: 56px;
+    --gutter: 12px;
+    --song-padding: 16px;
+    --col-gap: 1.5rem;
+    --max-lyrics-size: 15px;
+    --text-scale: 1; /* set by the A− / A+ setting */
+}
+
+/* Dark palette: chosen in settings, or following the system when "Auto". */
+body[data-theme="dark"] {
+    --paper: #18181a;
+    --page: #222225;
+    --surface: #2a2a2e;
+    --ink: #e8e4dc;
+    --muted: #a3a3a3;
+    --accent: #8cc4cf;
+    --accent-light: #7fb8d0;
+    --chord: #5ed6cc;
+    --button-bg: #2c2c31;
+    --button-ink: #c3c5f0;
+    --button-active: #3a3a40;
+    --border: #45454b;
+    --shadow: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    body[data-theme="auto"] {
+        --paper: #18181a;
+        --page: #222225;
+        --surface: #2a2a2e;
+        --ink: #e8e4dc;
+        --muted: #a3a3a3;
+        --accent: #8cc4cf;
+        --accent-light: #7fb8d0;
+        --chord: #5ed6cc;
+        --button-bg: #2c2c31;
+        --button-ink: #c3c5f0;
+        --button-active: #3a3a40;
+        --border: #45454b;
+        --shadow: rgba(0, 0, 0, 0.5);
+    }
+}
+
+@media (min-width: 700px) {
+    body {
+        --gutter: 20px;
+        --song-padding: 32px 40px;
+    }
+}
+
+/* ============================= */
+/* PAGE                          */
+/* ============================= */
+
+html {
+    /* Stop iOS from enlarging text on rotation (would break the fit). */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0 var(--gutter) var(--gutter);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Jumping to a song or section must not hide it under the top bar. */
+[id] {
+    scroll-margin-top: calc(var(--topbar-height) + 8px);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    min-height: 36px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--button-bg);
+    color: var(--button-ink);
+    cursor: pointer;
+    touch-action: manipulation; /* no double-tap zoom delay; pinch still works */
+}
+
+button:active {
+    background: var(--button-active);
+}
+
+/* Hover effects only where there is a real mouse; on touch they "stick". */
+@media (hover: hover) {
+    a:hover {
+        text-decoration: underline;
+    }
+
+    button:hover {
+        background: var(--button-active);
+    }
+}
+
+/* Comfortable tap targets on touch screens. */
+@media (pointer: coarse) {
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+.icon-button {
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 6px 10px;
+}
+
+/* ============================= */
+/* TOP BAR & SEARCH              */
+/* ============================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: var(--topbar-height);
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 1.15rem;
+    white-space: nowrap;
+}
+
+/* book.yaml logo: any SVG, 22px high, its own width */
+.logo-mark {
+    width: auto;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+/* Narrow screens: room for search + autoscroll; only the logo stays. */
+@media (max-width: 560px) {
+    .topbar-title span {
+        display: none;
+    }
+}
+
+.autoscroll {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.autoscroll button {
+    min-width: 40px;
+    padding: 6px 8px;
+    font-size: 1rem;
+}
+
+.autoscroll [aria-pressed="true"] {
+    background: var(--button-active);
+    border-color: var(--chord);
+}
+
+.autoscroll-speed {
+    min-width: 1.4em;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--muted);
+}
+
+.search {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    max-width: 480px;
+    margin-left: auto;
+}
+
+/* The results list spans the screen width, not just the narrowed box. */
+@media (max-width: 560px) {
+    .topbar .search {
+        position: static;
+    }
+
+    .topbar .search-results {
+        left: var(--gutter);
+        right: var(--gutter);
+        top: calc(var(--topbar-height) - 2px);
+        width: auto;
+    }
+}
+
+.search input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 12px;
+    /* 16px or more: iOS zooms the page when focusing smaller inputs. */
+    font-size: 16px;
+    font-family: var(--sans);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: min(100vw - 2 * var(--gutter), 480px);
+    max-height: 70vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px var(--shadow);
+}
+
+.search-result {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+}
+
+/* The lyric line a song was found by, under its title. */
+.search-snippet {
+    display: block;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.85em;
+    font-style: italic;
+    color: var(--muted);
+}
+
+.search-empty {
+    padding: 12px 14px;
+    color: var(--muted);
+}
+
+/* ============================= */
+/* MENU DRAWER                   */
+/* ============================= */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 201;
+    width: min(320px, 85vw);
+    box-sizing: border-box;
+    padding: 0 16px 24px;
+    overflow-y: auto;
+    overscroll-behavior: contain; /* scrolling the menu never scrolls the page */
+    background: var(--surface);
+    box-shadow: 2px 0 16px var(--shadow);
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
+}
+
+body.drawer-open .backdrop {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.drawer-open .drawer {
+    transform: none;
+    visibility: visible;
+}
+
+body.drawer-open {
+    overflow: hidden;
+}
+
+.drawer-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--topbar-height);
+    background: var(--surface);
+    font-family: var(--sans);
+}
+
+/* ---- Sing Session (first in the menu) ---- */
+
+.session {
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+}
+
+.session summary {
+    cursor: pointer;
+    list-style-position: inside;
+    padding: 6px 0;
+}
+
+.session summary h2 {
+    display: inline;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.session-count {
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.session-empty {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    margin: 6px 0 10px;
+}
+
+.session-list {
+    margin: 4px 0 10px;
+    padding: 0;
+    list-style: none;
+    counter-reset: session;
+}
+
+.session-list li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    counter-increment: session;
+}
+
+.session-list li::before {
+    content: counter(session) ".";
+    min-width: 1.6em;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+}
+
+.session-list a {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 0;
+    overflow-wrap: anywhere; /* long titles wrap instead of being cut */
+}
+
+.session-list button {
+    flex-shrink: 0;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 4px;
+}
+
+.session-list li {
+    position: relative;
+    background: var(--surface);
+    border-radius: 8px;
+}
+
+/* Drag handle: a drag that starts here reorders instead of scrolling the menu. */
+.session-handle {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    cursor: grab;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--muted);
+}
+
+/* While sorting: neighbours glide aside; the dragged row lifts and follows. */
+.session-list.sorting li {
+    transition: transform 0.15s ease;
+}
+
+/* Positions are only correct again after the drop, so hide them meanwhile. */
+.session-list.sorting li::before {
+    visibility: hidden;
+}
+
+.session-list.sorting li.dragging {
+    transition: none;
+    z-index: 1;
+    box-shadow: 0 6px 18px var(--shadow);
+    outline: 1px solid var(--border);
+}
+
+.session-list.sorting,
+.session-list.sorting .session-handle {
+    cursor: grabbing;
+}
+
+/* Results show inline in the menu instead of floating. */
+.session-search .search-results {
+    position: static;
+    width: auto;
+    max-height: 45vh;
+    margin-top: 6px;
+    box-shadow: none;
+}
+
+.session-clear {
+    margin-top: 10px;
+}
+
+.session-clear[hidden],
+.session-empty[hidden] {
+    display: none;
+}
+
+.nav,
+.nav-subtags,
+.song-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav > li {
+    border-bottom: 1px solid var(--border);
+}
+
+.nav a {
+    display: block;
+    padding: 9px 0;
+}
+
+.nav-subtags {
+    padding-left: 1em;
+}
+
+.nav-tag {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.nav-subtag {
+    color: var(--accent-light);
+}
+
+.settings h2 {
+    font-size: 1.2rem;
+    margin: 24px 0 8px;
+}
+
+.setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--sans);
+}
+
+.setting[hidden] {
+    display: none;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.text-scale-value {
+    min-width: 64px;
+}
+
+/* ============================= */
+/* INDEX                         */
+/* ============================= */
+
+.index h1 {
+    margin: 20px 0 8px;
+}
+
+/* Logo and name from the songbook cover, above the contents */
+.cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 0 8px;
+}
+
+.cover .logo {
+    width: 88px;
+    height: auto;
+}
+
+.cover-title {
+    margin: 14px 0 0;
+    font-family: var(--sans);
+    font-weight: bold;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.tag-index,
+.subtag-index {
+    margin-bottom: 8px;
+}
+
+.index summary {
+    cursor: pointer;
+    list-style-position: inside; /* keep the ▼ marker inside the page margin */
+    padding: 4px 0;
+}
+
+.index summary > h2,
+.index summary > h3 {
+    display: inline;
+    margin: 0;
+}
+
+.subtag-index {
+    padding-left: 1em;
+}
+
+.song-list {
+    padding-left: 1em;
+}
+
+.song-list a {
+    display: block;
+    padding: 5px 0;
+}
+
+/* ============================= */
+/* SONG                          */
+/* ============================= */
+
+.song {
+    /* Lyrics size themselves from this box's width (cqi units below). */
+    container-type: inline-size;
+    --cols: 1;
+    margin: 24px 0;
+    padding: var(--song-padding);
+    background: var(--page);
+    border-radius: 4px;
+}
+
+.song h3 {
+    margin: 0 0 6px;
+    font-size: 1.2rem;
+}
+
+.song-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.song-meta a {
+    color: var(--accent);
+    text-decoration: underline;
+    font-style: normal;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap; /* never run off the edge on narrow screens */
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.transpose-value {
+    min-width: 48px;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+/* ============================= */
+/* LYRICS                        */
+/* ============================= */
+
+/*
+ * Chord alignment: each chord sits over an exact letter because both lines
+ * use the same monospace font, size and spacing, and spaces are kept as
+ * written (white-space: pre). Nothing here may wrap lines, add letter-spacing
+ * or mix fonts inside a line.
+ *
+ * Size: the font is chosen so the song's widest line (--chars, set by the
+ * build) fills the available width, capped at --max-lyrics-size, then
+ * multiplied by the user's text size (--text-scale). A monospace character is
+ * ~0.6em wide. With 2 columns each line gets half the width.
+ */
+.lyrics {
+    --fit: calc((100cqi - (var(--cols) - 1) * var(--col-gap)) / ((var(--chars) + 1) * 0.6));
+    font-family: var(--mono);
+    font-size: calc(min(var(--fit) / var(--cols), var(--max-lyrics-size)) * var(--text-scale));
+    line-height: 1.3;
+    column-count: var(--cols);
+    column-gap: var(--col-gap);
+    /* If the text is made bigger than the screen, scroll the song sideways,
+       never the whole page. */
+    overflow-x: auto;
+}
+
+.chord-line,
+.lyric-line {
+    white-space: pre;
+}
+
+.chord {
+    font-weight: bold;
+    color: var(--chord);
+}
+
+/* Choruses (lines between `**` lines in the song file). Bold monospace keeps
+   the same character width, so chords stay on their letters. */
+.lyric-line.bold {
+    font-weight: bold;
+}
+
+.verse {
+    margin-bottom: 1.1em;
+}
+
+/* Never split a verse or a chord+lyric pair across columns/pages */
+.verse,
+.line-pair {
+    break-inside: avoid;
+}
+
+/* ============================= */
+/* DISPLAY SETTINGS              */
+/* body[data-X] is the book-wide */
+/* value; .song[data-X] overrides */
+/* it for one song.              */
+/* ============================= */
+
+body[data-chords="hide"] .song:not([data-chords="show"]) .chord-line,
+.song[data-chords="hide"] .chord-line {
+    display: none;
+}
+
+body[data-columns="2"] .song:not([data-columns="1"]),
+.song[data-columns="2"] {
+    --cols: 2;
+}
+
+/* ============================= */
+/* PRINT DIALOG                  */
+/* ============================= */
+
+.print-dialog {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--sans);
+}
+
+.print-dialog label {
+    display: block;
+    margin: 0.75rem 0;
+}
+
+.install-tip {
+    max-width: min(26rem, calc(100vw - 32px));
+}
+
+.install-tip h3 {
+    margin-top: 0;
+}
+
+.install-tip p {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+/* ============================= */
+/* INSTALL TIP AS A BANNER       */
+/* (book.yaml install_tip: banner) */
+/* ============================= */
+
+.install-banner {
+    position: fixed;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
+    z-index: 150; /* above the songs and top bar, below the menu */
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 10px 44px 10px 14px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px var(--shadow);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.install-banner[hidden] {
+    display: none;
+}
+
+.install-banner p {
+    margin: 0;
+}
+
+.install-banner .icon-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+/* ============================= */
+/* PRINT                         */
+/* ============================= */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    .topbar,
+    .backdrop,
+    .drawer,
+    .controls,
+    .install-banner,
+    .print-dialog {
+        display: none !important;
+    }
+
+    body {
+        --paper: white;
+        --page: white;
+        --ink: black;
+        --text-scale: 1;
+        --max-lyrics-size: 11pt;
+        padding: 0;
+    }
+
+    /* Every song starts at the top of a new page; a long song simply
+       continues onto the following pages. */
+    .song {
+        margin: 0;
+        padding: 0;
+        break-before: page;
+    }
+
+    /* Never leave a title (or its meta line) alone at the bottom of a page. */
+    .song h3,
+    .song-meta {
+        break-after: avoid;
+    }
+
+    /* The print dialog choices win over on-screen settings */
+    body[data-print-columns="1"] .song {
+        --cols: 1 !important;
+    }
+
+    body[data-print-columns="2"] .song {
+        --cols: 2 !important;
+    }
+
+    /* Index always fully unfolded on paper (print.js also opens the sections;
+       this covers browsers that support ::details-content). No ▼ markers. */
+    .index details::details-content {
+        content-visibility: visible;
+        display: block;
+    }
+
+    .index summary {
+        list-style: none;
+    }
+
+    .index summary::-webkit-details-marker {
+        display: none;
+    }
+
+    body[data-print-chords="hide"] .chord-line {
+        display: none !important;
+    }
+
+    body[data-print-chords="show"] .chord-line {
+        display: block !important;
+    }
+}

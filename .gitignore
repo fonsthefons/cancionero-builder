@@ -4,3 +4,4 @@ __pycache__/
 venv/
 scratch/
 .claude/settings.local.json
+.claude/.settings.json
