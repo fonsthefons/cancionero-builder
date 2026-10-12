@@ -19,6 +19,7 @@ class Draft:
     text: str
     marked: bool  # chords wrapped as [ch]Am[/ch]
     capo: str | None = None
+    url: str | None = None  # the page it was read from (set by read.py)
 
 
 @dataclass

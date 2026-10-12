@@ -1,8 +1,7 @@
 """Web search (DuckDuckGo's plain-HTML page), no account or key needed.
 
-Used to find a song's Spotify track or YouTube video (importer/spotify.py,
-importer/youtube.py). Chord pages come from Ultimate Guitar's own search
-(importer/search.py), not from here.
+Used to find chord pages on any site (importer/search.py) and a song's
+Spotify track or YouTube video (importer/spotify.py, importer/youtube.py).
 """
 
 import html

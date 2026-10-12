@@ -18,6 +18,7 @@ Strict tags (book.yaml `strict_tags: true`): only tags.yaml's tags and subtags
 are allowed, and a tag with subtags needs at least one (the original rules).
 """
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -179,6 +180,46 @@ class Taxonomy:
                 lines.extend(f"    {sid}: {yaml_text(label)}" for sid, label in tag.subtags.items())
             lines.append("")
         return "\n".join(lines)
+
+
+def add_to_tags_file(path, tag_id, tag_label, sub_id=None, sub_label=None):
+    """Add a tag (or a subtag of a tag) to tags.yaml, keeping the rest of the file
+    (comments included) as it is. Does nothing if it's already there."""
+    path = Path(path)
+    text = path.read_text(encoding="utf-8") if path.exists() else (
+        "# Tags and subtags of this book: labels shown in the book, in this order.\n"
+        "# Songs may also use tags that aren't listed here: they are added after these.\n"
+    )
+    lines = text.split("\n")
+    start = next((i for i, line in enumerate(lines) if line.rstrip() == f"{tag_id}:"), None)
+    if start is None:
+        block = [f"{tag_id}:", f"  label: {yaml_text(tag_label)}"]
+        if sub_id:
+            block += ["  subtags:", f"    {sub_id}: {yaml_text(sub_label)}"]
+        while lines and not lines[-1].strip():
+            lines.pop()
+        lines += [""] + block + [""]
+    elif sub_id:
+        end = start + 1
+        while end < len(lines) and (not lines[end].strip() or lines[end].startswith((" ", "\t", "#"))):
+            end += 1
+        while end > start + 1 and not lines[end - 1].strip():
+            end -= 1  # the block's own lines, without the blank lines after it
+        block = lines[start + 1:end]
+        if any(re.match(rf"\s+{re.escape(sub_id)}\s*:", line) for line in block):
+            return
+        subtags_at = next((start + 1 + i for i, line in enumerate(block) if line.strip() == "subtags:"), None)
+        new_line = f"    {sub_id}: {yaml_text(sub_label)}"
+        if subtags_at is None:
+            lines[end:end] = ["  subtags:", new_line]
+        else:
+            last = subtags_at
+            while last + 1 < end and lines[last + 1].startswith("    "):
+                last += 1
+            lines.insert(last + 1, new_line)
+    else:
+        return
+    path.write_text("\n".join(lines).rstrip("\n") + "\n", encoding="utf-8")
 
 
 def yaml_text(text):

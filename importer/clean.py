@@ -52,6 +52,8 @@ WORD_LABEL_RE = re.compile(
     rf"\s*({INTRO_WORDS}|{LABEL_WORDS})\s*\d*\s*(?:\(?[xX]\s?\d+\)?)?\s*(?::|\.|-)?\s*(.*)", re.IGNORECASE
 )
 INTRO_RE = re.compile(rf"(?:{INTRO_WORDS})\b", re.IGNORECASE)
+# Labels the book understands with chords after them (builder/lyrics.py LABEL_RE): kept.
+KEPT_LABEL_RE = re.compile(r"solo|final|punteo|outro|puente|interludio", re.IGNORECASE)
 CAPO_RE = re.compile(
     r"\s*(?:capo|cejilla|capotraste)\b\D{0,25}?(\d{1,2})(?!\d).*|\s*(?:sin cejilla|no capo|capo\s*:?\s*(?:no|none|-))\s*",
     re.IGNORECASE,
@@ -196,6 +198,10 @@ def strip_labels(lines, cleaned):
                 if label.re is WORD_LABEL_RE and rest and not is_chord_text(rest):
                     out.append(line)  # a lyric that starts like a label ("Coro de ángeles...")
                     continue
+                if (label.re is WORD_LABEL_RE and rest and KEPT_LABEL_RE.fullmatch(name)
+                        and re.match(r"\s*\w+\s*:", text)):
+                    out.append(line)  # "Solo: G Am C G": the book shows these chords as chords
+                    continue
                 if INTRO_RE.match(name):
                     out.append(Line("Intro:"))
                 else:
@@ -308,10 +314,12 @@ def unusual_chars(lines):
     return [f"'{ch}' (U+{ord(ch):04X}, line {number})" for ch, number in found.items()]
 
 
-def clean_song(text, marked=False, ask=lambda line: True, from_web=True):
+def clean_song(text, marked=False, ask=lambda line: True, from_web=True, intro=True):
     """Clean a song's text. `ask(line)` decides doubtful chord lines (pasted text).
     `from_web`: drop what sits before the first chords and after the last ones
-    (comments on chord sites); off for text the user pasted."""
+    (comments on chord sites); off for text the user pasted.
+    `intro`: make sure the song starts with "Intro:" (off for printed songbooks,
+    which are kept as printed)."""
     cleaned = Cleaned(body="")
     lines = read_lines(text, marked, ask)
     lines = strip_labels(lines, cleaned)
@@ -324,8 +332,9 @@ def clean_song(text, marked=False, ask=lambda line: True, from_web=True):
         cleaned.notes.append(f"Removed {cleaned.chatter} lines that aren't part of the song "
                              "(comments, greetings, credits, text before the first chords or after the last ones)")
     lines = tidy_blank_lines(lines)
-    lines = add_intro(lines, cleaned.notes)
-    lines = tidy_blank_lines(lines)
+    if intro:
+        lines = add_intro(lines, cleaned.notes)
+        lines = tidy_blank_lines(lines)
     odd = unusual_chars(lines)
     if odd:
         cleaned.notes.append("Unusual characters, check them: " + ", ".join(odd))

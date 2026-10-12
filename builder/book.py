@@ -177,7 +177,11 @@ def settings_yaml(settings):
     ]
     for key in DEFAULTS:
         if key in settings and settings[key] is not None:
-            lines.append(yaml.safe_dump({key: settings[key]}, allow_unicode=True, sort_keys=False,
-                                        default_flow_style=None, width=1000).rstrip())
+            value = settings[key]
+            if isinstance(value, list):  # sites: [ultimate_guitar]
+                text = f"{key}: [{', '.join(value)}]"
+            else:
+                text = yaml.safe_dump({key: value}, allow_unicode=True, default_flow_style=False, width=1000).rstrip()
+            lines.append(text)
     return "\n".join(lines) + "\n"
 

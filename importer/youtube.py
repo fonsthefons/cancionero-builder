@@ -11,11 +11,12 @@ import re
 import urllib.parse
 
 from .fetch import FetchError, download
-from .search import duckduckgo, plain_words
+from .search import plain_words
+from .websearch import duckduckgo
 
 MAX_CHECKED = 6
 VIDEO_RE = re.compile(r"https://(?:www\.|m\.)?youtube\.com/watch\?v=([\w-]{11})|https://youtu\.be/([\w-]{11})")
-NO_ARTIST = {"popular", "anonimo", "anónimo", "tradicional"}
+NO_ARTIST = {"popular", "anonimo", "anónimo", "tradicional", "traditional"}
 
 
 def video_info(video_id):

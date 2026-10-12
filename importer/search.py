@@ -1,9 +1,15 @@
 """Find chord pages for a song title + artist.
 
 Two sources, no account or key needed:
-- DuckDuckGo's plain-HTML search for "<title> <artist> acordes";
-- Ultimate Guitar's own search (by title, filtered by artist, best voted first),
-  so there are results even if DuckDuckGo stops answering.
+- Ultimate Guitar's own search page, which embeds its results as JSON. Only
+  public "Chords" sheets are kept (tabs, Guitar Pro, Power, Official and Pro
+  versions can't be shown as chords over lyrics), whose title has every word of
+  the song's title and whose artist has every word of the artist, when given.
+  Each carries UG's version number ("ver 3" on the site), votes and rating, and
+  whether it is a live performance (UG numbers live versions separately).
+- DuckDuckGo's plain-HTML search for "<title> <artist> acordes", for the other
+  sites (LaCuerda, Cifra Club, any other); only when the book uses them
+  (book.yaml `sites`).
 
 Results that don't mention the title (and the artist, when given) are dropped,
 the same page under different addresses is listed once, and at most
@@ -21,15 +27,24 @@ from dataclasses import dataclass
 
 from .fetch import FetchError, download
 from .sites import SITES, generic, site_for
+from .websearch import duckduckgo
 
 MAX_RESULTS = 8
 MAX_PER_SITE = 3  # versions shown from one site, so other sites still appear
+MAX_PAGES = 3  # Ultimate Guitar search pages read (50 results each)
 
 
 @dataclass
 class Result:
     url: str
-    label: str  # what to show: page title or "Artist - Song"
+    label: str  # what to show: page title or "Artist - Song (ver 2), rated 4.8 by 120"
+    # Ultimate Guitar only:
+    artist: str = ""
+    song: str = ""
+    version: int = 1
+    votes: int = 0
+    rating: float = 0.0
+    live: bool = False
 
     @property
     def site_name(self):
@@ -53,50 +68,115 @@ def mentions(result, words):
     return all(word in haystack for word in words)
 
 
-def duckduckgo(query):
-    page = download("https://html.duckduckgo.com/html/?q=" + urllib.parse.quote(query))
-    results = []
-    for href, label in re.findall(r'class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', page, re.S):
-        href = html.unescape(href)
-        target = urllib.parse.parse_qs(urllib.parse.urlparse(href).query).get("uddg")
-        url = target[0] if target else href
-        if url.startswith("//"):
-            url = "https:" + url
-        if url.startswith("http") and "duckduckgo.com" not in url:
-            results.append(Result(url, html.unescape(re.sub(r"<[^>]+>", "", label)).strip()))
-    if not results and "anomaly" in page.lower():
-        # After many searches in a short time DuckDuckGo asks to prove we're human.
-        raise FetchError("the web search is busy (too many searches); try again in a few minutes")
+# ---------- Ultimate Guitar ----------
+
+def ug_search_page(query, page=1):
+    """(results as Ultimate Guitar gives them, number of pages)."""
+    url = "https://www.ultimate-guitar.com/search.php?search_type=title&value=" + urllib.parse.quote(query)
+    if page > 1:
+        url += f"&page={page}"
+    try:
+        text = download(url)
+    except FetchError as e:
+        if "404" in str(e):  # Ultimate Guitar answers "nothing found" with a 404
+            return [], 0
+        raise
+    store = re.search(r'class="js-store"\s+data-content="([^"]*)"', text)
+    if not store:
+        return [], 0
+    try:
+        data = json.loads(html.unescape(store.group(1)))["store"]["page"]["data"]
+        return data.get("results") or [], (data.get("pagination") or {}).get("total") or 1
+    except (KeyError, TypeError, json.JSONDecodeError):
+        return [], 0
+
+
+def ug_result(raw):
+    performance = (raw.get("recording") or {}).get("performance")
+    result = Result(
+        url=raw["tab_url"],
+        label="",
+        artist=raw.get("artist_name") or "",
+        song=raw.get("song_name") or "",
+        version=raw.get("version") or 1,
+        votes=raw.get("votes") or 0,
+        rating=raw.get("rating") or 0.0,
+        live=bool(performance),
+    )
+    result.label = f"{result.artist} - {result.song} (ver {result.version}{', live' if result.live else ''})" + (
+        f", rated {result.rating:.1f} by {result.votes}" if result.votes else "")
+    return result
+
+
+def ug_chord_results(title, artist="", query=None, stop=None):
+    """Every matching Chords result, reading up to MAX_PAGES pages of the search
+    for `query` (default "artist title"). `stop(results)` ends the reading early."""
+    title_words, artist_words = plain_words(title), plain_words(artist)
+    results, seen = [], set()
+    query = query or f"{artist} {title}".strip()
+    page, pages = 1, 1
+    while page <= min(pages, MAX_PAGES):
+        found, pages = ug_search_page(query, page)
+        for raw in found:
+            if raw.get("type") != "Chords" or not raw.get("tab_url") or raw["tab_url"] in seen:
+                continue
+            if raw.get("tab_access_type") not in (None, "public"):
+                continue
+            result = ug_result(raw)
+            if not all(w in plain_words(result.song) for w in title_words):
+                continue
+            if artist_words and not all(w in plain_words(result.artist) for w in artist_words):
+                continue
+            seen.add(result.url)
+            results.append(result)
+        if stop and stop(results):
+            break
+        page += 1
     return results
 
 
-def ultimate_guitar(title, artist):
-    try:
-        page = download("https://www.ultimate-guitar.com/search.php?search_type=title&value="
-                        + urllib.parse.quote(title))
-    except FetchError as e:
-        if "404" in str(e):  # Ultimate Guitar answers "nothing found" with a 404
-            return []
-        raise
-    store = re.search(r'class="js-store"\s+data-content="([^"]*)"', page)
-    if not store:
-        return []
-    try:
-        found = json.loads(html.unescape(store.group(1)))["store"]["page"]["data"]["results"]
-    except (KeyError, TypeError, json.JSONDecodeError):
-        return []
-    artist_words = plain_words(artist)
-    chords = [
-        r for r in found
-        if r.get("type") == "Chords" and r.get("tab_url")
-        and all(w in plain_words(r.get("artist_name", "")) for w in artist_words)
-    ]
-    chords.sort(key=lambda r: (r.get("votes") or 0), reverse=True)
-    return [
-        Result(r["tab_url"], f"{r.get('artist_name')} - {r.get('song_name')}"
-               + (f" (rated {r['rating']:.1f} by {r['votes']})" if r.get("votes") else ""))
-        for r in chords
-    ]
+def ug_best_first(results, title):
+    """Exact title first, studio before live, then most votes."""
+    title_words = plain_words(title)
+    return sorted(results, key=lambda r: (plain_words(r.song) != title_words, r.live, -r.votes))
+
+
+def ultimate_guitar(title, artist=""):
+    """Best Ultimate Guitar chord pages. When "artist title" finds nothing, the
+    title alone is searched (UG may spell the artist differently)."""
+    enough = lambda found: len(found) >= MAX_RESULTS  # noqa: E731
+    results = ug_chord_results(title, artist, stop=enough)
+    if not results and artist:
+        results = ug_chord_results(title, artist, query=title, stop=enough)
+    return ug_best_first(results, title)
+
+
+def find_versions(title, artist, version=None):
+    """Ultimate Guitar: (the wanted version or None, every matching chord page best first).
+
+    `version` is Ultimate Guitar's version number; when two pages share it,
+    the studio one (not live) with the most votes is taken."""
+
+    def has_version(found):
+        return version is not None and any(r.version == version and not r.live for r in found)
+
+    results = ug_chord_results(title, artist, stop=has_version)
+    if not results and artist:
+        results = ug_chord_results(title, artist, query=title, stop=has_version)
+    ordered = ug_best_first(results, title)
+    title_words = plain_words(title)
+    wanted = None
+    if version is not None:
+        same = [r for r in ordered if r.version == version and plain_words(r.song) == title_words]
+        wanted = same[0] if same else None
+    return wanted, ordered
+
+
+# ---------- every site ----------
+
+def web_results(title, artist):
+    """Chord pages on any site, from a web search."""
+    return [Result(hit.url, hit.label) for hit in duckduckgo(f"{title} {artist} acordes".strip())]
 
 
 def page_key(result):
@@ -112,11 +192,22 @@ def page_key(result):
     return host, parts.path.removesuffix(".shtml").rstrip("/").casefold()
 
 
-def search(title, artist=""):
-    """Best chord pages for the song, supported sites first. Raises FetchError if
-    no search source answered at all."""
+def allowed(result, sites):
+    if sites == "all":
+        return True
+    site = site_for(result.url)
+    return site is not generic and site.__name__.rsplit(".", 1)[-1] in sites
+
+
+def search(title, artist="", sites="all"):
+    """Best chord pages for the song, supported sites first. `sites` is "all"
+    or a list of site module names (book.yaml `sites`). Raises FetchError if no
+    search source answered at all."""
+    if sites != "all" and list(sites) == ["ultimate_guitar"]:
+        return ultimate_guitar(title, artist)[:MAX_RESULTS]
+
     found, errors = [], []
-    for source in (lambda: duckduckgo(f"{title} {artist} acordes".strip()), lambda: ultimate_guitar(title, artist)):
+    for source in (lambda: web_results(title, artist), lambda: ultimate_guitar(title, artist)):
         try:
             found += source()
         except FetchError as e:
@@ -124,6 +215,7 @@ def search(title, artist=""):
     if not found and errors:
         raise FetchError(f"the search didn't answer ({errors[0]})")
 
+    found = [r for r in found if allowed(r, sites)]
     title_words = plain_words(title)
     relevant = [r for r in found if mentions(r, title_words)]
     with_artist = [r for r in relevant if mentions(r, plain_words(artist))]

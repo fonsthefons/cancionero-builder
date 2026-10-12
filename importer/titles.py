@@ -15,7 +15,6 @@ from pathlib import Path
 
 import yaml
 
-FIXES_FILE = Path(__file__).resolve().parent.parent / "title_fixes.yaml"
 NO_AUTHOR = "Traditional"
 
 CONTRACTIONS = {
@@ -29,7 +28,8 @@ CONTRACTIONS = {
 }
 
 
-def load_fixes(path=FIXES_FILE):
+def load_fixes(path):
+    """A book's title_fixes.yaml: {title as Ultimate Guitar writes it: title for the book}."""
     if not Path(path).exists():
         return {}
     return {str(k): str(v) for k, v in (yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}).items()}
@@ -54,11 +54,10 @@ def is_compilation(artist):
     return artist.casefold().startswith("misc ")
 
 
-def book_names(ug_artist, ug_title, fixes=None):
+def book_names(ug_artist, ug_title, fixes):
     """(title, author) for the book from Ultimate Guitar's artist and title
     (without "(ver N)"). The author is still to be passed through
     author_aliases.yaml."""
-    fixes = load_fixes() if fixes is None else fixes
     title, author = ug_title.strip(), ug_artist.strip()
     if is_compilation(author):
         show, sep, song = title.partition(" - ")

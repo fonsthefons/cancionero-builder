@@ -58,11 +58,18 @@ def solfege_to_letters(token, lowercase_minor=False):
     return chord if is_letter_chord(chord) else None
 
 
+# "Fm#" / "Cm#7": a common typo for F#m / C#m7 (the sharp after the m).
+MINOR_SHARP_TYPO_RE = re.compile(r"([A-G])m([#b])(\d*)")
+
+
 def fix_letter_chord(token):
-    """A letter chord as the book writes it ('C7M' -> 'Cmaj7'), or None."""
+    """A letter chord as the book writes it ('C7M' -> 'Cmaj7', 'Fm#' -> 'F#m'), or None."""
     if is_letter_chord(token):
         return token
     main, _, bass = token.partition("/")
+    typo = MINOR_SHARP_TYPO_RE.fullmatch(main)
+    if typo:
+        main = f"{typo.group(1)}{typo.group(2)}m{typo.group(3)}"
     match = LETTER_RE.fullmatch(main)
     if not match:
         return None
@@ -82,14 +89,21 @@ class Notation:
         self.lowercase_minor = any(r.islower() for r in roots) and any(r.isupper() for r in roots)
 
     def convert(self, token):
-        """Letter name of a chord token, or None if it isn't a chord."""
+        """Letter name of a chord token (or of each chord in "D-E-F#m"), or None if it isn't a chord."""
+        parts = token.split("-")
+        if len(parts) > 1 and all(parts) and all(fix_letter_chord(p) for p in parts):
+            return "-".join(fix_letter_chord(p) for p in parts)
         spanish = solfege_to_letters(token, self.lowercase_minor)
         letter = fix_letter_chord(token)
         return (spanish or letter) if self.solfege else (letter or spanish)
 
 
 def could_be_chord(token):
-    return solfege_to_letters(token) is not None or fix_letter_chord(token) is not None
+    """A chord, or a run of letter chords joined by dashes ("D-E-F#m"; not "la-la-la")."""
+    if solfege_to_letters(token) is not None or fix_letter_chord(token) is not None:
+        return True
+    parts = token.split("-")
+    return len(parts) > 1 and all(p and fix_letter_chord(p) for p in parts)
 
 
 def is_filler(token):

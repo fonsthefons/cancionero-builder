@@ -13,12 +13,13 @@ import re
 from dataclasses import dataclass
 
 from .fetch import FetchError, download
-from .search import duckduckgo, plain_words
+from .search import plain_words
+from .websearch import duckduckgo
 
 MAX_TRACKS = 3  # offered to the user
 MAX_CHECKED = 8  # track pages looked at (about 0.3 s each)
 TRACK_RE = re.compile(r"https://open\.spotify\.com/(?:intl-[a-z]+/)?track/([A-Za-z0-9]{22})")
-NO_ARTIST = {"popular", "anonimo", "anónimo", "tradicional"}
+NO_ARTIST = {"popular", "anonimo", "anónimo", "tradicional", "traditional"}
 
 
 @dataclass
