@@ -130,10 +130,23 @@ Merged the three codebases. Base of each part = the newest version:
 - `README.md` (setup, commands, book folder, song files, free tags, PDF import, tests) and
   `requirements.txt` (PyYAML, pdfplumber, playwright, pytest; pypdf was installed but unused).
 
+## 2026-10-13 — Phase 6: the 3 real repos become builder books (user's go-ahead, steps 1-6)
+
+- `scratch/convert_repos.py`: saved each old `index.html` in `scratch/live-old/<name>/`, wrote
+  `book.yaml` (same settings as the test books; hakuna also `logo.svg`, `cover.svg`), deleted
+  `builder/ importer/ web/ venv/ .venv/ __pycache__/ build.py add_song.py add_songs.py
+  song_template.md requirements.txt PROGRESS.md`, wrote the book README. Kept songs, yamls,
+  icons, `Want.txt`, `Checked.txt`, `CLAUDE.md`, `.claude/`, `.mcp.json`, `scratch/`.
+- Built with `cancionero.py build <repo>`. `compare_books.py --live --ignore-numbers`:
+  cancionero 152/161 identical (the 9 known), hakuna 126/126, pagano 285/387 (the same
+  known sort + tablature differences as the test build). Browser checks: 174/174, 174/174,
+  172/172.
+- Nothing committed or pushed in the 3 repos: changes are local, undo with `git restore`.
+
 ## Still to do
 
-- First real book with GitHub: run `.venv/bin/python cancionero.py new` (not done: no book
-  repos on GitHub without the user).
+- Look at the 3 rebuilt pages, then `cancionero.py publish <repo>` for each.
+- First new book with GitHub: `.venv/bin/python cancionero.py new`.
 
 ## Blocked
 
