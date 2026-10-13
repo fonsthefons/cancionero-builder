@@ -15,7 +15,7 @@ from importer.batch import read_list  # noqa: E402
 from importer.chords import Notation, could_be_chord  # noqa: E402
 from importer.clean import clean_song  # noqa: E402
 from importer.links import set_link  # noqa: E402
-from importer.pdf import nice_case, split_title  # noqa: E402
+from importer.pdf import META_RE, column_split, nice_case, split_title  # noqa: E402
 from importer.pdf_add import parse_selection  # noqa: E402
 from importer.songfile import existing_song, write_song  # noqa: E402
 
@@ -89,3 +89,20 @@ def test_pdf_helpers():
     assert parse_selection("all", 5) == [0, 1, 2, 3, 4]
     assert parse_selection("1-2 4-", 5) == [0, 1, 3, 4]
     assert parse_selection("9", 5) is None
+
+
+def test_pdf_printed_book():
+    # the byline of a printed builder book
+    meta = META_RE.fullmatch("Autor: Matt Redman Capo: 0, original 0 Link")
+    assert meta.groups() == ("Matt Redman", "0, original 0")
+    assert META_RE.fullmatch("Autor: popular Link").groups() == ("popular", None)
+    assert META_RE.fullmatch("Autoridad y poder") is None
+
+    # two columns under a title that runs into the right column
+    def row(x0, x1, bottom, text="x"):
+        return [{"x0": x, "x1": x + 5, "bottom": bottom, "text": text} for x in range(x0, x1, 6)]
+    rows = [row(43, 310, 50)] + [row(43, 230, y) + row(307, 480, y) for y in range(80, 200, 14)]
+    split, header = column_split(rows, 596)
+    assert header == 1 and 230 < split < 307
+    one_column = [row(43, 480, y) for y in range(80, 200, 14)]
+    assert column_split(one_column, 596) is None

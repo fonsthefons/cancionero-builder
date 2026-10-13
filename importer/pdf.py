@@ -38,6 +38,8 @@ NUMBERED_RE = re.compile(r"\s*(\d{1,4})\s*[.)\-–]\s*(\S.*)")
 # II-XVIII before a title; a lone "I", "V" or "X" only with a dash or dot ("I Will Follow" stays)
 ROMAN_RE = re.compile(r"^\s*(?:[IVXL]{2,6}\b\s*[-–.:]?|[IVX]\s*[-–.:])\s*(?=\S)")
 CAPO_RE = re.compile(r"\s*(?:cejilla|capo|capotraste)\s*(?:en|:)?\s*(\d{1,2})\b\s*(.*)", re.I)
+# A printed builder book: "Autor: Matt Redman Capo: 2 Link" under the title
+META_RE = re.compile(r"\s*(?:autor|author)\s*:\s*(.*?)\s*(?:\bcapo\s*:\s*(.*?))?\s*(?:\blink)?\s*", re.I)
 DANGLING = {
     # Spanish
     "el", "la", "los", "las", "de", "del", "en", "a", "y", "e", "que", "por", "con", "tu", "tus", "mi",
@@ -98,8 +100,18 @@ def is_bold(fontname):
     return bool(re.search(r"bold|black|heavy|semibold|demi", fontname, re.I))
 
 
-def column_split(chars, width):
-    """x where the page splits into two columns, or None."""
+def column_split(rows, width):
+    """(x where the page splits into two columns, number of header rows), or None.
+    The first rows (a title, its byline) may run across both columns."""
+    for header in range(4):
+        split = column_gap([ch for row in rows[header:] for ch in row], width)
+        if split is not None:
+            return split, header
+    return None
+
+
+def column_gap(chars, width):
+    """x of an empty strip between two columns, or None."""
     covered = [0] * (int(width) + 2)
     for ch in chars:
         for x in range(max(0, int(ch["x0"])), min(len(covered), int(ch["x1"]) + 1)):
@@ -160,9 +172,15 @@ def page_lines(page, page_no):
     chars = [c for c in page.chars if c["text"].strip()]
     if not chars:
         return []
-    split = column_split(chars, page.width)
-    columns = [chars] if split is None else [[c for c in chars if c["x1"] <= split],
-                                             [c for c in chars if c["x1"] > split]]
+    rows = rows_of(chars)
+    found = column_split(rows, page.width)
+    if found is None:
+        columns = [chars]
+    else:
+        split, header = found
+        rest = [c for row in rows[header:] for c in row]
+        columns = [[c for row in rows[:header] for c in row] + [c for c in rest if c["x1"] <= split],
+                   [c for c in rest if c["x1"] > split]]
     lines = []
     for column, column_chars in enumerate(columns):
         if not column_chars:
@@ -201,8 +219,21 @@ def read_lines(path):
             lines.extend(page_lines(page, page_no))
             heights[page_no] = page.height
     lines = drop_page_furniture(lines, heights)
+    lines = drop_contents_pages(lines)
     set_right_edges(lines)
     return lines
+
+
+def drop_contents_pages(lines):
+    """Pages that are mostly numbered titles with no chords: a table of contents. Its
+    entries would outnumber the real titles and pass for the title size."""
+    by_page = {}
+    for line in lines:
+        by_page.setdefault(line.page, []).append(line)
+    contents = {page for page, on in by_page.items()
+                if sum(1 for line in on if NUMBERED_RE.fullmatch(line.text)) >= 0.6 * len(on) >= 3
+                and not any(is_chord_row(line) for line in on)}
+    return [line for line in lines if line.page not in contents]
 
 
 def drop_page_furniture(lines, heights):
@@ -307,6 +338,12 @@ def split_songs(lines):
         previous = None
         if current is None:
             continue  # cover, contents... before the first song
+        meta = META_RE.fullmatch(line.text) if not current.lines else None
+        if meta:
+            current.author = meta.group(1) or None
+            if meta.group(2):
+                current.capo = meta.group(2)
+            continue
         capo = CAPO_RE.fullmatch(line.text) if not current.lines else None
         if capo and current.capo is None:
             current.capo = capo.group(1) + (f" {capo.group(2).strip()}" if capo.group(2).strip() else "")
@@ -314,7 +351,8 @@ def split_songs(lines):
         current.lines.append(line)
 
     for song in songs:
-        song.number, title, song.author = split_title(song.title)
+        song.number, title, author = split_title(song.title)
+        song.author = author or song.author
         song.title = nice_case(title)
         if song.section:
             song.section = nice_case(song.section).rstrip(" :")

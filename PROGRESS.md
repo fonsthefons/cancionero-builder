@@ -91,16 +91,47 @@ Merged the three codebases. Base of each part = the newest version:
   search + Spotify/YouTube + build (real web), `tests/` (29 pytest tests pass:
   `.venv/bin/python -m pytest tests -p no:cacheprovider`).
 
+## 2026-10-13 — Phase 3: browser checks
+
+- Hakuna's UI test made generic and moved into the repo: `tests/browser/ui_check.py <book>`
+  (+ `checks.js`). It picks its songs/sections from the page (3 songs with chords and unique
+  titles, the first folded section, storage prefix from `BOOK`), accepts sections that start
+  open (pagano's languages do, as on the live page), skips the 40-song drag check for small
+  books, prints only failures + a count.
+- Chromium + WebKit, phone/iPad/laptop, after rebuilding (`scratch/build_test_books.py`,
+  `cancionero.py build scratch/testbooks/cancionero-misa`): hakuna 174/174, cancionero
+  176/176, pagano 172/172, cancionero-misa (new book, defaults, free tags) 172/172.
+- `add-list` run finished: both wanted songs added from Ultimate Guitar, the "NOT YET" one
+  skipped (`scratch/list_report.txt`).
+
+## 2026-10-13 — Phase 4: second PDF layout (printed builder books)
+
+- Tried the printed web pages in `cancionero/scratch/` (`book.pdf` one column with chords,
+  `book-2cols.pdf` two columns, lyrics only). Before: the whole book came out as 1 song.
+- `importer/pdf.py` changes:
+  - `drop_contents_pages`: pages that are mostly numbered entries and have no chords are
+    dropped before font sizes are measured (the 620 contents entries at 12pt outnumbered the
+    161 titles at 14.4pt and became the "title size").
+  - `META_RE`: the "Autor: X Capo: N Link" line under a title gives author and capo.
+  - `column_split(rows, width)`: the first 0-3 rows (title, byline) may run across the gap
+    between the columns; they are kept whole at the top of column 0.
+- Results (`scratch/pdf_vs_songs.py <pdf> <songs folder>`, now NFC-normalises: some
+  cancionero files have decomposed accents and scored 0.7 on identical text):
+  - `book.pdf`: 161/161 songs, lyrics 99.5%, chords 99.6%, 2514/2681 chord lines with every
+    chord over the same letter. Low chord scores are fixes in the print (`Gm#` -> `G#m`).
+  - `book-2cols.pdf`: 161/161, lyrics 99.4% (that PDF has no chords).
+  - Hakuna PDF unchanged: 126/126, lyrics 98.6%, chords 97%, 1714/1785.
+- `cancionero-pagano/scratch/book.pdf` is an old print of a different 150-song book, not
+  pagano's songs; not usable as a check.
+- New test `test_pdf_printed_book`; 30 tests pass.
+
+## 2026-10-13 — Phase 5: README
+
+- `README.md` (setup, commands, book folder, song files, free tags, PDF import, tests) and
+  `requirements.txt` (PyYAML, pdfplumber, playwright, pytest; pypdf was installed but unused).
+
 ## Still to do
 
-- Browser check of the built pages: `scratch/hkn_ui_test.py` (copied from hakuna) still
-  needs pointing at `scratch/books/<name>/index.html` and running (needs
-  `PLAYWRIGHT_BROWSERS_PATH=scratch/browsers`).
-- `add-list` test run was left running in the background (DuckDuckGo said "busy", so it
-  waits and retries); check `scratch/testbooks/cancionero-misa/songs` and
-  `scratch/list_report.txt`.
-- Second PDF layout (e.g. a printed builder book) not tried yet.
-- README.md for the builder.
 - First real book with GitHub: run `.venv/bin/python cancionero.py new` (not done: no book
   repos on GitHub without the user).
 
