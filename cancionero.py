@@ -1,6 +1,7 @@
 """Create song books and add songs to them.
 
     .venv/bin/python cancionero.py                 a menu: create a book, add songs, publish...
+    .venv/bin/python cancionero.py help [new|edit] how to create a book, or add songs to one
     .venv/bin/python cancionero.py new [name]      create a new song book (asks the rest)
     .venv/bin/python cancionero.py add <book>      add songs: link, search, paste, PDF, list
     .venv/bin/python cancionero.py add-list <book> <list.txt> [--section Want] [--report Checked.txt]
@@ -42,6 +43,10 @@ def open_book(name):
     path = Path(name).expanduser()
     if not (path.is_absolute() or "/" in name or name.startswith(".")):
         path = BOOKS_DIR / name
+    if not path.exists():
+        books = ", ".join(p.name for p in find_books()) or "none yet"
+        raise BookError(f"There is no book {path}. Create it with: cancionero.py new {path.name}"
+                        f"\n(books found: {books}; more in: cancionero.py help)")
     return load_book(path)
 
 
@@ -261,6 +266,69 @@ def cmd_list(args):
     return 0
 
 
+RUN = ".venv/bin/python cancionero.py"
+
+HELP = {
+    "new": f"""\
+CREATE A NEW BOOK
+
+  1. {RUN} new my-book
+     Asks for the title, the usual artist and the first tags, then makes the
+     folder ~/Documents/my-book (its own git repo), builds it, and creates the
+     GitHub repo and its website. Try it first with --dry-run: the folder is
+     made, the GitHub steps are only shown.
+
+  2. Add songs (see "help edit"), for example:
+     {RUN} add my-book
+     {RUN} add-pdf my-book ~/Downloads/songbook.pdf
+
+  3. Look at it on this computer:  open ~/Documents/my-book/index.html
+
+  4. Put it online:  {RUN} publish my-book
+     The website (https://<you>.github.io/my-book/) updates in a minute or two.
+""",
+    "edit": f"""\
+WORK ON AN EXISTING BOOK
+
+  See your books:          {RUN} list
+
+  Add songs, asking as it goes (a link, a search, pasted text, a PDF or a list):
+                           {RUN} add my-book
+  Add a PDF songbook:      {RUN} add-pdf my-book songbook.pdf
+                           (songs to check go to my-book/import-report.txt)
+  Add a list of songs:     {RUN} add-list my-book list.txt
+                           (one song per line: Title - Artist)
+  Find Spotify/YouTube links for songs without one:
+                           {RUN} links my-book
+
+  Edit a song by hand:     change ~/Documents/my-book/songs/<song>.md, then
+                           {RUN} build my-book
+  Remove a song:           delete its file in songs/, then build
+  See the tags:            {RUN} tags my-book
+  Labels/order of tags:    edit my-book/tags.yaml, then build
+  Book settings (title, colours, folded contents...):
+                           edit my-book/book.yaml, then build
+
+  Put the changes online:  {RUN} publish my-book
+""",
+}
+
+
+def cmd_help(args):
+    topic = getattr(args, "topic", None)
+    if topic in HELP:
+        print(HELP[topic])
+    else:
+        print(f"Song books: what do you want to do?\n\n"
+              f"  Create a new book:              {RUN} help new\n"
+              f"  Add songs to / change a book:   {RUN} help edit\n"
+              f"  Every command and option:       {RUN} --help\n"
+              f"  A menu that asks you:           {RUN}\n")
+        print(HELP["new"])
+        print(HELP["edit"])
+    return 0
+
+
 def interactive():
     from importer.ask import ask
 
@@ -271,11 +339,14 @@ def interactive():
     print("  4) Rebuild a book (after editing songs by hand)")
     print("  5) Publish a book (commit and push)")
     print("  6) List the books")
+    print("  7) Help: how to create a book or add songs")
     choice = ask("Choose", "2" if find_books() else "1")
     if choice == "1":
         return cmd_new(argparse.Namespace(name=None, dry_run=False))
     if choice == "6":
         return cmd_list(None)
+    if choice == "7":
+        return cmd_help(None)
     book = pick_book()
     if book is None:
         return 1
@@ -297,6 +368,10 @@ def parser():
     p = argparse.ArgumentParser(description="Create song books and add songs to them.",
                                 formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
     sub = p.add_subparsers(dest="command")
+
+    c = sub.add_parser("help", help="how to create a book, or add songs to one")
+    c.add_argument("topic", nargs="?", choices=sorted(HELP), help="new: create a book; edit: change one")
+    c.set_defaults(run=cmd_help)
 
     c = sub.add_parser("new", help="create a new song book")
     c.add_argument("name", nargs="?", help="folder and repo name, e.g. songs-to-learn")

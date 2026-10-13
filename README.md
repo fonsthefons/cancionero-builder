@@ -18,6 +18,7 @@ Run `.venv/bin/python cancionero.py` with no arguments for a menu, or:
 
 | Command | What it does |
 |---|---|
+| `help [new\|edit]` | step by step: create a book, or add songs to / change one |
 | `new [name]` | create a book: folder, `book.yaml`, `tags.yaml`, first build, git, GitHub repo + Pages (`--dry-run` only prints the GitHub steps) |
 | `add <book>` | add songs, asking as it goes: a link, a search, pasted text, a PDF or a list |
 | `add-list <book> <list.txt>` | add a list of songs without questions (`--section Want`, `--report file`) |

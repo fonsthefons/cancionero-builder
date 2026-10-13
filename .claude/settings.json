@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lms ps)",
+      "Bash(lms ps *)",
+      "Bash(gh run watch *)",
+      "Bash(/opt/homebrew/bin/epubcheck *)"
+    ]
+  }
+}
