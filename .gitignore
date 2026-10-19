@@ -5,3 +5,5 @@ venv/
 scratch/
 .claude/settings.local.json
 .claude/.settings.json
+# Added by code-review-graph
+.code-review-graph/
