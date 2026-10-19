@@ -101,8 +101,9 @@ def song_meta_html(song):
     if song.capo:
         items.append(f'<span class="meta-item">Capo: {escape(song.capo)}</span>')
     if song.link:
+        label = "Spotify link" if "spotify.com" in song.link else "YouTube link" if "youtu" in song.link else "Link"
         items.append(
-            f'<a class="meta-item" href="{escape(song.link)}" target="_blank" rel="noopener">Link</a>'
+            f'<a class="meta-item" href="{escape(song.link)}" target="_blank" rel="noopener">{label}</a>'
         )
     return f'<p class="song-meta">{"".join(items)}</p>' if items else ""
 

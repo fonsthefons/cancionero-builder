@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT))
 
 from builder.book import BookError, load_book, settings_yaml  # noqa: E402
 from builder.build import build_book  # noqa: E402
-from builder.lyrics import is_chord_line  # noqa: E402
+from builder.lyrics import chord_line_html, is_chord_line, verse_html  # noqa: E402
 from builder.songs import SongError  # noqa: E402
 from builder.tags import Taxonomy, add_to_tags_file  # noqa: E402
 from builder.text import slug, spanish_sort_key  # noqa: E402
@@ -35,6 +35,19 @@ def test_chord_lines(line):
 ])
 def test_not_chord_lines(line):
     assert not is_chord_line(line)
+
+
+def test_lyrics_html_is_slim():
+    # Chords are the plain words of a chord line (no span each); separators are spans.
+    assert chord_line_html("  C#m-Bm  G (x2) |") == (
+        '<div class="chord-line">  C#m<span class="sep">-</span>Bm  G '
+        '<span class="sep">(x2)</span> <span class="sep">|</span></div>')
+    # A plain lyric is the pair's own text; "Intro:" chords keep their line and spans.
+    verse = [("G      D", False), ("A ti te alabo", True), ("C", False), ("Intro: G D", False)]
+    assert verse_html(verse) == (
+        '<div class="verse"><div class="line-pair bold"><div class="chord-line">G      D</div>A ti te alabo</div>'
+        '<div class="line-pair"><div class="chord-line">C</div><div class="lyric-line chord-inline">'
+        'Intro: <span class="chord">G</span> <span class="chord">D</span></div></div></div>')
 
 
 def test_slug_and_sort():
@@ -69,6 +82,18 @@ def test_free_tags(tmp_path):
     assert html.index('id="tag-misa-entrada"') < html.index('id="tag-misa-comunion"')
     assert "Pasión (pasion)" in result.new_tags[0] or any("Pasión" in t for t in result.new_tags)
     assert (tmp_path / "sw.js").exists() and (tmp_path / "icon-512.png").exists()
+
+
+def test_sw_cache_follows_icons(tmp_path):
+    book = write_book(tmp_path, songs={"a": SONG.format(title="Uno", extra="")})
+    build_book(book)
+    first = (tmp_path / "sw.js").read_text(encoding="utf-8")
+    assert "{{" not in first
+    build_book(book)
+    assert (tmp_path / "sw.js").read_text(encoding="utf-8") == first
+    (tmp_path / "icon-512.png").write_bytes(b"new icon")
+    build_book(book)
+    assert (tmp_path / "sw.js").read_text(encoding="utf-8") != first
 
 
 def test_strict_tags(tmp_path):

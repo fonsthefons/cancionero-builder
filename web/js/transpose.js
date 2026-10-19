@@ -52,7 +52,69 @@ function adjustGap(text, drift, isLastNode) {
     return [parts.join(""), drift];
 }
 
+// Chord line as first built: [gap, chord, gap, chord, ..., gap]. The words
+// outside .sep spans are the chords (lyrics.py chord_line_html); gaps are the
+// spaces and separators between them.
+const originalChordLines = new WeakMap();
+
+function chordLineParts(line) {
+    if (!originalChordLines.has(line)) {
+        const parts = [""];
+        line.childNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                parts[parts.length - 1] += node.textContent; // separator
+                return;
+            }
+            node.data.split(/( +)/).forEach((piece, i) => {
+                if (i % 2 || !piece) parts[parts.length - 1] += piece;
+                else parts.push(piece, "");
+            });
+        });
+        originalChordLines.set(line, parts);
+    }
+    return originalChordLines.get(line);
+}
+
+// Write a chord line back: text, with each separator in its .sep span.
+function setChordLine(line, parts) {
+    const nodes = [];
+    let text = "";
+    parts.forEach((part, i) => {
+        if (i % 2) {
+            text += part;
+            return;
+        }
+        part.split(/(\S+)/).forEach((piece, j) => {
+            if (!(j % 2)) {
+                text += piece;
+                return;
+            }
+            if (text) nodes.push(text);
+            text = "";
+            nodes.push(Object.assign(document.createElement("span"), { className: "sep", textContent: piece }));
+        });
+    });
+    if (text) nodes.push(text);
+    line.replaceChildren(...nodes);
+}
+
 function transposeChordLine(line, shift) {
+    const parts = chordLineParts(line);
+    let drift = 0; // columns the next chord would move right (or left if < 0)
+    setChordLine(line, parts.map((part, i) => {
+        if (i % 2) {
+            const chord = transposeChord(part, shift);
+            drift += chord.length - part.length;
+            return chord;
+        }
+        let gap;
+        [gap, drift] = adjustGap(part, drift, i === parts.length - 1);
+        return gap;
+    }));
+}
+
+// "Intro: G Em ..." lines mix chords and words, so their chords keep a span each.
+function transposeInlineChords(line, shift) {
     const nodes = [...line.childNodes];
     let drift = 0; // columns the next chord would move right (or left if < 0)
 
@@ -80,7 +142,8 @@ function renderChords(song) {
     if (!builtChars.has(song)) builtChars.set(song, Number(song.style.getPropertyValue("--chars")));
     let widest = builtChars.get(song);
     song.querySelectorAll(".chord-line, .chord-inline").forEach((line) => {
-        transposeChordLine(line, shift);
+        if (line.classList.contains("chord-line")) transposeChordLine(line, shift);
+        else transposeInlineChords(line, shift);
         widest = Math.max(widest, line.textContent.length);
     });
     song.style.setProperty("--chars", widest);

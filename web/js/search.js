@@ -20,8 +20,14 @@ function searchText(text) {
 }
 
 const searchIndex = [...document.querySelectorAll(".song")].map((song) => {
-    // Lyric lines only: chord lines would add noise ("am", "do"...).
-    const lines = [...song.querySelectorAll(".lyric-line")].map((line) => line.textContent.trim());
+    // Lyric lines only: chord lines would add noise ("am", "do"...). A lyric
+    // under a chord line is its .line-pair's own text.
+    const lines = [...song.querySelectorAll(".lyric-line, .line-pair")]
+        .map((line) => (line.matches(".lyric-line")
+            ? line.textContent
+            : [...line.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.data).join("")
+        ).trim())
+        .filter(Boolean);
     const lineText = lines.map(searchText);
     return {
         id: song.id,

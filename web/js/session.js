@@ -45,7 +45,7 @@ function renderSession() {
 
     document.querySelector(".session-count").textContent = session.length ? `(${session.length})` : "";
     document.querySelector(".session-empty").hidden = session.length > 0;
-    document.querySelector(".session-clear").hidden = session.length === 0;
+    document.querySelectorAll(".session-clear").forEach((button) => { button.hidden = session.length === 0; });
 
     document.querySelectorAll('.song [data-action="session-toggle"]').forEach((button) => {
         const inSession = session.includes(button.closest(".song").id);
@@ -86,5 +86,33 @@ onAction("session-toggle", (button, song) => {
 onAction("session-clear", () => {
     if (confirm("Clear the whole session?")) setSession([]);
 });
+
+// Share: a link with ?session=id1,id2 that replaces the opener's session
+// (only the session; their settings and song changes stay).
+onAction("session-share", () => {
+    const url = new URL(location.pathname, location.href);
+    url.searchParams.set("session", session.join(","));
+    const text = `Someone shared a song session with you (${document.title})`;
+    const copy = () => (navigator.clipboard?.writeText(`${text}\n${url.href}`) ?? Promise.reject())
+        .then(() => alert("Link copied"), () => prompt("Copy this link:", url.href));
+    // Share sheet only on phones/tablets: desktop ones crash (Arc) or refuse file:// links (Safari).
+    if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+        navigator.share({ title: document.title, text, url: url.href })
+            .catch((error) => { if (error.name !== "AbortError") copy(); });
+    } else copy();
+});
+
+const shared = new URLSearchParams(location.search).get("session");
+if (shared !== null) {
+    session = [...new Set(shared.split(","))].filter((id) => document.getElementById(id)?.classList.contains("song"));
+    prefs.set(SESSION_KEY, JSON.stringify(session));
+    try {
+        history.replaceState(null, "", location.pathname + (session.length ? "#" + session[0] : ""));
+    } catch {
+        // Some browsers refuse this on file:// pages; the session is still applied.
+    }
+    if (session.length) document.getElementById(session[0]).scrollIntoView();
+    setDrawerOpen(true);
+}
 
 renderSession();

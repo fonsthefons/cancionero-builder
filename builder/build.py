@@ -1,6 +1,7 @@
 """Build a song book: its songs/*.md -> index.html (one self-contained page),
 plus the files the home-screen app needs next to it (sw.js, manifest, icons)."""
 
+import hashlib
 import json
 import shutil
 from dataclasses import dataclass, field
@@ -71,13 +72,19 @@ def build_book(book, web_dir=WEB_DIR):
     html = render_book(book, songs, taxonomy.group(songs), web_dir)
     write_if_changed(book.root / "index.html", html)  # must stay at the root for GitHub Pages
 
-    storage_key = book.storage_prefix.rstrip(".")
-    sw = fill_template((SITE_DIR / "sw.js").read_text(encoding="utf-8"), {"storage_key": storage_key})
-    write_if_changed(book.root / "sw.js", sw)  # must be its own file at the root
     write_if_changed(book.root / "manifest.webmanifest", manifest(book))
     for icon in ICONS:
         if not (book.root / icon).exists():
             shutil.copyfile(SITE_DIR / icon, book.root / icon)
+
+    # sw.js serves these from its cache, so they only update when its cache name does
+    digest = hashlib.sha256()
+    for name in ("manifest.webmanifest", *ICONS):
+        digest.update((book.root / name).read_bytes())
+    storage_key = book.storage_prefix.rstrip(".")
+    sw = fill_template((SITE_DIR / "sw.js").read_text(encoding="utf-8"),
+                       {"storage_key": storage_key, "version": digest.hexdigest()[:10]})
+    write_if_changed(book.root / "sw.js", sw)  # must be its own file at the root
 
     return BuildResult(
         songs=songs,

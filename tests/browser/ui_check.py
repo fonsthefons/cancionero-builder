@@ -53,11 +53,44 @@ def open_book(context):
     KEY = page.evaluate("BOOK.storagePrefix")
     # Three songs with chords, in page order: A, B, H (H is added to the session first)
     (A_ID, A_T), (B_ID, B_T), (H_ID, H_T) = page.evaluate(
-        "[...document.querySelectorAll('.song')].filter(s => s.querySelector('.chord')"
+        "[...document.querySelectorAll('.song')].filter(s => s.querySelector('.chord-line')"
         " && document.querySelectorAll(`.song[data-title=\"${s.dataset.title}\"]`).length == 1)"
         ".slice(0, 3).map(s => [s.id, s.dataset.title])")
     H_SEARCH = page.evaluate("t => t.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase()", H_T)
     return page, errors
+
+
+def skipped_song_checks(context):
+    """Off-screen songs are skipped (content-visibility) so big books don't crash
+    phones. Fresh page, no checks.js: jumps must still land below the top bar."""
+    page = context.new_page()
+    page.goto(BOOK)
+    page.wait_for_timeout(300)
+    n = page.evaluate("document.querySelectorAll('.song').length")
+    song = lambda i: f"document.querySelectorAll('.song')[{i}]"  # noqa: E731
+    lyric_shown = lambda i: page.evaluate(  # noqa: E731
+        f"{song(i)}.querySelector('.lyrics').checkVisibility({{contentVisibilityAuto: true}})")
+    far = max(n - 10, 0)  # not the last songs: the page ends before they reach the top
+    check("songs far off screen are skipped", not lyric_shown(far))
+    for i in sorted({2, n // 2, far}):
+        page.evaluate("scrollTo(0, 0)")
+        page.evaluate(f"location.hash = {song(i)}.id")
+        page.wait_for_timeout(500)
+        top = page.evaluate(f"{song(i)}.getBoundingClientRect().top")
+        check(f"jump to song {i + 1}/{n} lands below the top bar", 50 <= top <= 120, f"top={top}")
+    page.evaluate("setTextScale(1.5)")
+    page.wait_for_timeout(500)
+    top = page.evaluate(f"{song(far)}.getBoundingClientRect().top")
+    # Safari stays exactly (scroll-anchor.js); Chromium's own anchoring can drift
+    # up to a screen. (Before skipping, A+ lost the place by thousands of px.)
+    check("A+ keeps the song on screen", 0 <= top < page.viewport_size["height"], f"top={top}")
+    page.evaluate("setTextScale(1)")
+    page.evaluate("scrollTo(0, 0)")
+    page.emulate_media(media="print")
+    check("printing renders every song", lyric_shown(far))
+    page.emulate_media(media="screen")
+    page.evaluate("localStorage.clear()")
+    page.close()
 
 
 def layout_checks(page, label):
@@ -112,6 +145,7 @@ def run(engine_name, engine):
             page.screenshot(path=str(SHOTS / f"{name}-topbar.png"), clip={"x": 0, "y": 0, "width": opts["viewport"]["width"], "height": 70})
 
         if device == "phone":
+            skipped_song_checks(context)
             session_checks(page, name)
             persistence_checks(page)
             autoscroll_checks(page)
@@ -309,7 +343,7 @@ def session_checks(page, name):
     check("Sing Session is the first item in the menu", first_in_menu == "session")
     check("empty session shows the 'add songs' message",
           page.locator(".session-empty").is_visible() and titles() == []
-          and page.locator(".session-clear").is_hidden())
+          and page.locator('[data-action="session-clear"]').is_hidden())
 
     # Add from the session's own search: stays in the menu, box ready for the next song
     page.fill(".session-search input", H_SEARCH)
@@ -459,8 +493,19 @@ def session_checks(page, name):
     reload(page)
     check("cleared session stays empty after reload",
           page.evaluate(f"localStorage.getItem('{KEY}session')") == "[]")
+
+    # Shared link replaces the session only, opens the menu, jumps to the first song.
+    ids = page.evaluate("[...document.querySelectorAll('.song')].slice(1, 3).map(s => s.id)")
+    page.evaluate(f"localStorage.setItem('{KEY}songs', '{{\"{ids[0]}\": {{\"transpose\": 2}}}}')")
+    page.goto(page.url.split("#")[0].split("?")[0] + "?session=" + ",".join(ids) + ",missing")
+    check("shared link replaces the session (unknown ids dropped)",
+          page.evaluate(f"localStorage.getItem('{KEY}session')") == json.dumps(ids, separators=(",", ":")))
+    check("shared link keeps song changes", "transpose" in page.evaluate(f"localStorage.getItem('{KEY}songs')"))
+    check("shared link opens the menu and jumps to the first song",
+          page.locator("#drawer").is_visible() and page.url.endswith("#" + ids[0]) and "?" not in page.url)
     page.evaluate("localStorage.clear()")
-    reload(page)
+    page.goto(page.url.split("#")[0])
+    page.add_script_tag(path=CHECKS)
 
 
 def reload(page):
@@ -469,10 +514,10 @@ def reload(page):
 
 
 def persistence_checks(page):
-    abba = "#" + page.evaluate("document.querySelector('.song .chord').closest('.song').id")
+    abba = "#" + page.evaluate("document.querySelector('.song .chord-line').closest('.song').id")
     second = page.locator(".song").nth(1)  # A ti te alabo
     third = page.locator(".song").nth(2)
-    first_chord = lambda: page.inner_text(f"{abba} .chord")  # noqa: E731
+    first_chord = lambda: page.inner_text(f"{abba} .chord-line")  # noqa: E731
     original_chord = first_chord()
 
     for _ in range(3):

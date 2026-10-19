@@ -604,6 +604,11 @@ body.drawer-open {
 .song {
     /* Lyrics size themselves from this box's width (cqi units below). */
     container-type: inline-size;
+    /* Big books (hundreds of songs) crashed phones: every A+ tap laid out
+       every song. Off-screen songs are now skipped until scrolled near;
+       "auto" remembers each song's real height once it has been shown. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
     --cols: 1;
     margin: 24px 0;
     padding: var(--song-padding);
@@ -673,19 +678,30 @@ body.drawer-open {
     overflow-x: auto;
 }
 
+/* A plain lyric under a chord line is the .line-pair's own text. */
 .chord-line,
-.lyric-line {
+.lyric-line,
+.line-pair {
     white-space: pre;
 }
 
-.chord {
+/* A chord line holds only chords and separators (|, (x2), -): the line is
+   styled as chords and the separators are set back to plain text. */
+.chord,
+.chord-line {
     font-weight: bold;
     color: var(--chord);
 }
 
+.sep {
+    font-weight: normal;
+    color: var(--ink);
+}
+
 /* Choruses (lines between `**` lines in the song file). Bold monospace keeps
    the same character width, so chords stay on their letters. */
-.lyric-line.bold {
+.lyric-line.bold,
+.line-pair.bold {
     font-weight: bold;
 }
 
@@ -826,6 +842,7 @@ body[data-columns="2"] .song:not([data-columns="1"]),
         margin: 0;
         padding: 0;
         break-before: page;
+        content-visibility: visible;
     }
 
     /* Never leave a title (or its meta line) alone at the bottom of a page. */

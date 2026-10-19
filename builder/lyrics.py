@@ -76,8 +76,13 @@ def is_chord_line(line):
 
 
 def chord_line_html(line):
-    chords = CHORD_RE.sub(r'<span class="chord">\1</span>', escape(line, quote=False))
-    return f'<div class="chord-line">{chords}</div>'
+    """The whole line is styled as chords (one element instead of one per chord,
+    a big saving on large books); separators get a span to stay plain. So the
+    words outside spans are exactly the chords (transpose.js relies on it)."""
+    parts = CHORD_RE.split(escape(line, quote=False))  # odd indexes are chords
+    for i in range(0, len(parts), 2):
+        parts[i] = re.sub(r"\S+", r'<span class="sep">\g<0></span>', parts[i])
+    return f'<div class="chord-line">{"".join(parts)}</div>'
 
 
 # "Intro: G Em C D", "Solo: F G Am (x2)": chords written after a label, on a
@@ -108,8 +113,13 @@ def lyric_line_html(line, bold=False):
     return f'<div class="{css_class}">{escape(line, quote=False)}</div>'
 
 
-def pair_html(*lines):
-    return f'<div class="line-pair">{"".join(lines)}</div>'
+def pair_html(chords, line, bold):
+    """Chord line + the lyric line below it. A plain lyric is the pair's own
+    text (one element fewer per line); inline chords keep their own line."""
+    lyric = lyric_line_html(line, bold)
+    if "chord-inline" not in lyric:
+        lyric = escape(line, quote=False)
+    return f'<div class="line-pair{" bold" if bold else ""}">{chords}{lyric}</div>'
 
 
 def verse_html(verse):
@@ -123,16 +133,16 @@ def verse_html(verse):
             continue
         if is_chord_line(line):
             if pending_chords:
-                parts.append(pair_html(pending_chords))
+                parts.append(pending_chords)
             pending_chords = chord_line_html(line)
         elif pending_chords:
-            parts.append(pair_html(pending_chords, lyric_line_html(line, bold)))
+            parts.append(pair_html(pending_chords, line, bold))
             pending_chords = None
         else:
             parts.append(lyric_line_html(line, bold))
 
     if pending_chords:
-        parts.append(pair_html(pending_chords))
+        parts.append(pending_chords)
     return f'<div class="verse">{"".join(parts)}</div>' if parts else ""
 
 

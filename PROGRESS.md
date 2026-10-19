@@ -143,6 +143,76 @@ Merged the three codebases. Base of each part = the newest version:
   172/172.
 - Nothing committed or pushed in the 3 repos: changes are local, undo with `git restore`.
 
+## Share session (2026-10-17)
+
+- "Share session" button (`web/js/session.js`, `web/template.html`): link `?session=id1,id2`.
+  Opening it replaces only the session (no warning), drops unknown ids, removes the
+  param from the URL, opens the menu and jumps to the first song. Native share sheet,
+  else copies the link.
+- Browser check added in `tests/browser/ui_check.py`: 180/180 on scratch cancionero book.
+- Books need a rebuild to get it.
+
+## Song link label (2026-10-17)
+
+- `builder/render.py`: the song's link now reads "Spotify link" or "YouTube link"
+  (from the address), else "Link". Tests pass. Books need a rebuild.
+
+## Service worker cache name from a hash (2026-10-17)
+
+- `web/site/sw.js`: cache name is now `<storage_key>-v<hash>` instead of a fixed `-v1`.
+- `builder/build.py`: the hash is the first 10 hex digits of a SHA-256 of the book's
+  `manifest.webmanifest` and icons. If either changes, sw.js changes too, so phones
+  download them again. Test `test_sw_cache_follows_icons`. Tests pass (31).
+  Books need a rebuild.
+
+## Phone crashes on big books (2026-10-18)
+
+- Cause: every A+ tap (and scrolling) laid out all songs; pagano has 387 songs,
+  ~96k elements. Each A+ step took ~750 ms in desktop WebKit, far worse on a phone.
+- `web/styles.css`: `.song` gets `content-visibility: auto` +
+  `contain-intrinsic-size: auto 900px` (off-screen songs skipped); print forces
+  `content-visibility: visible`.
+- Measured with `scratch/perf_textscale.py` on `scratch/books/pagano`: A+ step
+  WebKit 750 -> 240 ms, Chromium 300 -> 5 ms. What's left in WebKit is style
+  recalc of every element (`scratch/perf_probe.py`), not layout.
+- Safari's scroll anchoring jumps a screen away when a skipped song renders
+  (jumps to songs, scrolling up). New `web/js/scroll-anchor.js`: WebKit only,
+  turns native anchoring off and scrolls by the height change of songs above.
+  Chromium's native anchoring is fine (adding JS there double-scrolled jumps).
+- Tests: `tests/browser/checks.js` renders all songs (existing checks keep
+  measuring/clicking every song); new `skipped_song_checks` in `ui_check.py`
+  (skipped, jumps land below the top bar, A+ keeps the song on screen, print
+  renders all). All pass on the 3 scratch copies (190/192/192); pytest 31 pass.
+- Known: A+ in Chromium can still move the song up to a screen (before this
+  change it lost the place by thousands of px). Not tested on a real phone.
+- Books need a rebuild.
+- Other menu actions and autoscroll (`scratch/menu_probe.py`, `scratch/place_probe.py`,
+  pagano, phone size): book-wide chords/columns/notation were 3-5x faster in WebKit
+  (e.g. columns 700-1190 -> ~210 ms), 50-100x faster in Chromium; theme unchanged
+  (~250 ms WebKit, style only); autoscroll steady 60 fps before and after.
+  Place after the action: WebKit now stays on the song for all; Chromium drifts
+  one screen on the 2-columns toggle (before: ~90,000 px).
+
+## Slimmer song HTML (2026-10-18)
+
+- `builder/lyrics.py`: no span per chord: a chord line is plain text styled as
+  chords, separators (`|`, `(x2)`, `-`...) get `<span class="sep">`; a plain lyric
+  under a chord line is the `.line-pair`'s own text; lone chord lines lose the pair.
+  "Intro:" lines keep their `.chord` spans.
+- `web/styles.css` (.chord-line styled as chords, .sep plain, .line-pair.bold),
+  `web/js/transpose.js` (chord lines: words outside .sep are the chords, same
+  column rules; Intro lines: old code), `web/js/search.js` (pair text = lyric).
+- Tests: `tests/browser/checks.js` reads the new structure (wraps chords in spans
+  while measuring: WebKit rounds Range rects inside text to whole px); unit test
+  `test_lyrics_html_is_slim`.
+- Checked: every song's text in all 12 keys + solfège and the search index are
+  identical to before on the 3 books (`scratch/dump_render.py`,
+  `scratch/compare_dumps.py`); screenshots same size, only sub-pixel anti-aliasing
+  differs (Chromium); WebKit built vs chords-in-spans: identical pixels.
+- pagano: 95,600 -> 43,500 elements, 3.95 -> 2.50 MB (hakuna 0.81 -> 0.59,
+  cancionero 1.21 -> 0.80). WebKit menu actions ~35% faster again (A+ 240 -> 180
+  ms, chords 140 -> 80); transpose biggest song 5 -> 2 ms, all songs 123 -> 89 ms.
+
 ## Still to do
 
 - Look at the 3 rebuilt pages, then `cancionero.py publish <repo>` for each.
