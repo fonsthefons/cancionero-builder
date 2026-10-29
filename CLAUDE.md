@@ -5,12 +5,12 @@ These rules exist so that every command runs without needing my approval. I ofte
 ## Stay inside the repo
 
 - Work only inside this repository. Never read, write, or run anything in folders outside it, except the source repos below.
-- Source repos: `/Users/fons/Documents/cancionero`, `/Users/fons/Documents/cancionero-hakuna` and `/Users/fons/Documents/cancionero-pagano`.
+- Source repos: `/Users/fons/Documents/programs/cancionero`, `/Users/fons/Documents/programs/cancionero-hakuna` and `/Users/fons/Documents/programs/cancionero-pagano`.
   - You may read them freely (Read, Grep, Glob, `ls`, `git log`/`git status`/`git diff` with `-C <absolute path>`).
   - Only write to them, or run code that changes them, when the task explicitly says to. Otherwise treat them as read-only.
   - Their scratch files still go in this repo's `scratch/`.
   - If the Read tool is refused for a file in a source repo, `cat <absolute path>` (one file, no pipes) is allowed instead.
-- Book repos: folders `/Users/fons/Documents/<book-name>` created by this builder. Only create or write to them when the task explicitly says to. Tests use folders under this repo's `scratch/`, never `~/Documents`.
+- Book repos: folders `/Users/fons/Documents/programs/<book-name>` created by this builder. Only create or write to them when the task explicitly says to. Tests use folders under this repo's `scratch/`, never `~/Documents`.
 - GitHub: never create, delete or change a book repo on GitHub unless the task explicitly says to. Pushing this builder repo to its own GitHub repo is allowed.
 - At the start of a session, run `pwd` once to get the repo's absolute path. Use that absolute path in every command.
 - Never use `cd`. Always pass absolute paths to commands instead.

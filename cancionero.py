@@ -274,7 +274,7 @@ CREATE A NEW BOOK
 
   1. {RUN} new my-book
      Asks for the title, the usual artist and the first tags, then makes the
-     folder ~/Documents/my-book (its own git repo), builds it, and creates the
+     folder ~/Documents/programs/my-book (its own git repo), builds it, and creates the
      GitHub repo and its website. Try it first with --dry-run: the folder is
      made, the GitHub steps are only shown.
 
@@ -282,7 +282,7 @@ CREATE A NEW BOOK
      {RUN} add my-book
      {RUN} add-pdf my-book ~/Downloads/songbook.pdf
 
-  3. Look at it on this computer:  open ~/Documents/my-book/index.html
+  3. Look at it on this computer:  open ~/Documents/programs/my-book/index.html
 
   4. Put it online:  {RUN} publish my-book
      The website (https://<you>.github.io/my-book/) updates in a minute or two.
@@ -301,7 +301,7 @@ WORK ON AN EXISTING BOOK
   Find Spotify/YouTube links for songs without one:
                            {RUN} links my-book
 
-  Edit a song by hand:     change ~/Documents/my-book/songs/<song>.md, then
+  Edit a song by hand:     change ~/Documents/programs/my-book/songs/<song>.md, then
                            {RUN} build my-book
   Remove a song:           delete its file in songs/, then build
   See the tags:            {RUN} tags my-book

@@ -6,7 +6,7 @@
         "code-review-graph",
         "serve"
       ],
-      "cwd": "/Users/fons/Documents/cancionero-builder",
+      "cwd": "/Users/fons/Documents/programs/cancionero-builder",
       "type": "stdio"
     }
   }
