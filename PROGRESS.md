@@ -6,7 +6,7 @@
   (+ optional `tags.yaml`, `author_aliases.yaml`, `title_fixes.yaml`), the built
   `index.html`, `sw.js`, `manifest.webmanifest`, icons, a README. Commands run
   from the builder and point at a book.
-- **New books** go in `~/Documents/<name>`, each its own GitHub repo with Pages.
+- **New books** go in `~/Documents/programs/hymn_books/<name>` (changed 2026-10-29; override with `CANCIONERO_BOOKS`; `cancionero-organo` and the 3 original repos moved there), each its own GitHub repo with Pages.
 - **Tags** are free in song files; an optional `tags.yaml` gives labels and order.
   The build reports tags not in `tags.yaml` instead of failing.
 - **Features**: the union of cancionero, cancionero-hakuna and cancionero-pagano,
@@ -217,6 +217,13 @@ Merged the three codebases. Base of each part = the newest version:
 
 - Look at the 3 rebuilt pages, then `cancionero.py publish <repo>` for each.
 - First new book with GitHub: `.venv/bin/python cancionero.py new`.
+
+## 2026-10-19 — New book: cancionero-organo (local only)
+
+- `scratch/new_organo.py` calls `create_book` (no GitHub): `~/Documents/programs/cancionero-organo`,
+  0 songs, `strict_tags: true`, `install_tip: banner` (as cancionero).
+- Tags: Misa (cancionero's 8 subtags), Laudes and Visperas (Salmo, Tono Recto, Canto
+  Evangelico), Adoracion, Español, Latin. Checked with `cancionero.py tags`.
 
 ## Blocked
 
