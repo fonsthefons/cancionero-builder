@@ -5,6 +5,7 @@ A book is a folder (its own git repo, published with GitHub Pages) holding:
     book.yaml             settings (below); the only required file besides songs/
     songs/*.md            one file per song
     tags.yaml             optional: labels and order of tags and subtags
+    horas.yaml            optional: Liturgia de las Horas tree (builder/horas.py)
     author_aliases.yaml   optional: author names as sites write them -> as the book does
     title_fixes.yaml      optional: song titles as Ultimate Guitar writes them -> as the book does
     logo.svg ...          optional files named in book.yaml
@@ -85,6 +86,10 @@ class Book:
     @property
     def tags_file(self):
         return self.root / "tags.yaml"
+
+    @property
+    def horas_file(self):
+        return self.root / "horas.yaml"
 
     @property
     def aliases_file(self):

@@ -108,12 +108,16 @@ def cmd_new(args):
     if author:
         settings["default_author"] = author
 
-    print("\nTags (the book's contents, e.g. Misa > Entrada, Comunión):")
-    print("  1) None for now: write any tag in the songs as you add them (it appears in the book)")
-    print("  2) Type them now")
-    print("  3) Copy the tags of another book")
-    choice = ask("Choose", "1")
+    template = getattr(args, "template", None)
     tags, copy_from = None, None
+    if template:
+        print(f"\nTags, songs and contents come from the template {template}.")
+    else:
+        print("\nTags (the book's contents, e.g. Misa > Entrada, Comunión):")
+        print("  1) None for now: write any tag in the songs as you add them (it appears in the book)")
+        print("  2) Type them now")
+        print("  3) Copy the tags of another book")
+    choice = "1" if template else ask("Choose", "1")
     if choice == "2":
         tags = ask_tags_setup()
     elif choice == "3":
@@ -137,7 +141,7 @@ def cmd_new(args):
 
     github = ask_yes("\nCreate its GitHub repo and website now (public, GitHub Pages)?", default=not args.dry_run)
     try:
-        book = create_book(name, settings, BOOKS_DIR, tags=tags, copy_tags_from=copy_from,
+        book = create_book(name, settings, BOOKS_DIR, tags=tags, copy_tags_from=copy_from, template=template,
                            github=github or args.dry_run, dry_run=args.dry_run)
     except (CreateError, BookError) as e:
         print(f"Couldn't create the book: {e}")
@@ -376,6 +380,7 @@ def parser():
     c = sub.add_parser("new", help="create a new song book")
     c.add_argument("name", nargs="?", help="folder and repo name, e.g. songs-to-learn")
     c.add_argument("--dry-run", action="store_true", help="create the folder but only show the GitHub commands")
+    c.add_argument("--template", help="start from templates/<name>/ (tags, horas.yaml, songs), e.g. liturgia")
     c.set_defaults(run=cmd_new)
 
     c = sub.add_parser("add", help="add songs, asking as it goes")

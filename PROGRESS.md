@@ -225,6 +225,38 @@ Merged the three codebases. Base of each part = the newest version:
 - Tags: Misa (cancionero's 8 subtags), Laudes and Visperas (Salmo, Tono Recto, Canto
   Evangelico), Adoracion, Español, Latin. Checked with `cancionero.py tags`.
 
+## 2026-11-02 — Liturgia book, phase 1 (branch liturgia-phase-1)
+
+Plan: `scratch/liturgia/PLAN.md` (agreed with the user beforehand). Source: the user's PDF
+"Cancionero - Liturgia de las Horas 2.pdf" (copied to `scratch/liturgia/tonos.pdf`, pp. 54-66
+read as images; the text layer is OCR noise).
+
+- **Liturgia de las Horas**: new optional book file `horas.yaml` (`builder/horas.py`): a tree
+  (Semana I-IV > día > hora > partes; Completas once, not per week) with YAML anchors for
+  reuse. Songs go in with `horas: [semana_i/lunes/laudes/himno, "*visperas/magnificat"]`
+  (fnmatch; a pattern matching nothing is an error). Shown first in the contents and the
+  menu; only nodes with songs appear. Parts in real liturgical order (Canto evangélico
+  before Padre Nuestro; Laudes salmo-cántico-salmo, Vísperas salmo-salmo-cántico; Completas
+  with 2 psalms on Domingo primeras and Miércoles).
+- **Misa** and **Fórmulas Salmódicas** (Semitonos de 2/3/4, Tonos Rectos): plain tags in the
+  template's `tags.yaml`. 50 fórmulas as songs (chords in letters; Semitonos de 2 with a
+  `Flexa:` line, which now renders/transposes chords like `Intro:`).
+- `templates/liturgia/` (horas.yaml, tags.yaml, songs/) + `new <name> --template liturgia`.
+- Natural song order ("2 x" before "10 x"). Changes cancionero-pagano's 6 songs whose
+  titles start with digits (5 Years Time … 1973); every other book byte-identical outside
+  the inlined CSS.
+- Build report no longer lists songs placed only in Horas as "without tags".
+- Checked: pytest 38 passed; `scratch/liturgia/make_book.py` builds `scratch/liturgia-book`
+  (template + test songs in Horas/Misa); screenshots `scratch/liturgia/*.png` (index, a
+  fórmula, transposed +1 incl. the Flexa line); ui_check: Chromium all pass; WebKit phone
+  "jump to song lands below the top bar" fails (top=44, wants >= 50) on this book. Not from
+  this branch: the fórmulas-only book built with main's code fails the same way
+  (`make_plain.py`, `make_plain_head.py`); pagano passes. Cause: very short songs. Left as is.
+- Doubtful fórmula readings for the user: `scratch/liturgia/formulas-review.md`.
+- Work split: code and template data were written by subagents from the plan, reviewed here.
+- Not done (later phases): sheet music, tabs, choosing a fórmula inside a psalm. The real
+  book folder in hymn_books was not created (CLAUDE.md: only when the task says so).
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

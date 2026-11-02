@@ -1,0 +1,20 @@
+misa:
+  label: Misa
+  subtags:
+    entrada: Entrada
+    gloria: Gloria
+    aleluya: Aleluya
+    ofertorio: Ofertorio
+    santo: Santo
+    doxologia: Doxología
+    anamnesis: Anámnesis
+    cordero: Cordero
+    comunion: Comunión
+    salida: Salida
+formulas:
+  label: Fórmulas Salmódicas
+  subtags:
+    semitonos_2: Semitonos de 2
+    semitonos_3: Semitonos de 3
+    semitonos_4: Semitonos de 4
+    tonos_rectos: Tonos Rectos

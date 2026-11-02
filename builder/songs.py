@@ -1,7 +1,7 @@
 """Loading and validating song files (YAML frontmatter + lyrics)."""
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
@@ -11,7 +11,7 @@ from .text import spanish_sort_key
 # Frontmatter fields a song may use. Anything else is reported as an error,
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
-OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags"}
+OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas"}
 
 
 class SongError(Exception):
@@ -28,6 +28,7 @@ class Song:
     capo: str | None = None
     link: str | None = None
     added: str | None = None  # day the song was added; not shown
+    horas: list = field(default_factory=list)  # slot patterns in horas.yaml, as written
     number: int = 0  # assigned after sorting
 
     @property
@@ -75,6 +76,23 @@ def parse_tags(raw):
     return tags
 
 
+def parse_horas(raw):
+    """horas as written: a list of slot patterns; a single one is accepted too."""
+    if raw is None:
+        return []
+    if isinstance(raw, str):
+        raw = [raw]
+    if not isinstance(raw, list) or not all(isinstance(p, str) for p in raw):
+        raise SongError('horas must be a list like `[semana_i/domingo/laudes/himno, "*/magnificat"]`')
+    return raw
+
+
+def song_sort_key(song):
+    # natural order: "2 ..." before "10 ..." (runs of digits compared as numbers)
+    words = re.split(r"(\d+)", spanish_sort_key(song.title))
+    return [int(w) if i % 2 else w for i, w in enumerate(words)], song.id
+
+
 def optional_text(value):
     if value is None:
         return None
@@ -108,11 +126,13 @@ def load_song(path):
         capo=optional_text(meta.get("capo")),
         link=link,
         added=optional_text(meta.get("added")),
+        horas=parse_horas(meta.get("horas")),
     )
 
 
-def load_songs(songs_dir, taxonomy):
-    """Load every song, resolve its tags, and number them alphabetically by title.
+def load_songs(songs_dir, taxonomy, horas=None):
+    """Load every song, resolve its tags, check its `horas:` against the horas.yaml
+    tree (horas.Node, None: the book has none), and number them alphabetically by title.
 
     Raises SongError listing every problem found, so they can all be fixed at once.
     """
@@ -126,13 +146,17 @@ def load_songs(songs_dir, taxonomy):
             continue
         song.tags, problems = taxonomy.resolve(song.tags)
         errors.extend(f"  {path}: {e}" for e in problems)
+        if song.horas and horas is None:
+            errors.append(f"  {path}: horas: the book has no horas.yaml")
+        elif song.horas:
+            errors.extend(f'  {path}: horas: "{p}" matches no part of horas.yaml' for p in horas.unmatched(song.horas))
         songs.append(song)
 
     if errors:
         raise SongError("Invalid songs:\n" + "\n".join(errors))
 
     taxonomy.finish()
-    songs.sort(key=lambda song: (spanish_sort_key(song.title), song.id))
+    songs.sort(key=song_sort_key)
     for number, song in enumerate(songs, start=1):
         song.number = number
     return songs

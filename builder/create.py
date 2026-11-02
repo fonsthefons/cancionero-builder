@@ -18,6 +18,7 @@ from .tags import add_to_tags_file
 from .text import humanize, slug
 
 BUILDER_ROOT = Path(__file__).resolve().parent.parent
+TEMPLATES_DIR = BUILDER_ROOT / "templates"  # book templates: files copied into a new book
 NAME_RE = re.compile(r"[a-z0-9][a-z0-9-]{0,99}")
 GITIGNORE = """.DS_Store
 # written when importing a PDF: songs to check by hand
@@ -109,11 +110,15 @@ def write_tags(path, tags):
             add_to_tags_file(path, slug(label), label, slug(sub), sub)
 
 
-def create_book(name, settings, books_dir, tags=None, copy_tags_from=None, github=False, public=True,
-                dry_run=False, log=print):
+def create_book(name, settings, books_dir, tags=None, copy_tags_from=None, template=None, github=False,
+                public=True, dry_run=False, log=print):
     """Create the book folder, build it, commit it; with `github`, create the repo
-    and turn on GitHub Pages. Returns the Book."""
+    and turn on GitHub Pages. `template`: a folder name in templates/ whose files
+    (tags.yaml, horas.yaml, songs/...) are copied in. Returns the Book."""
     check_name(name, books_dir)
+    if template and not (TEMPLATES_DIR / template).is_dir():
+        found = ", ".join(sorted(p.name for p in TEMPLATES_DIR.glob("*") if p.is_dir())) or "none"
+        raise CreateError(f'there is no template "{template}" in {TEMPLATES_DIR} (found: {found})')
     root = Path(books_dir) / name
     settings = dict(settings)
     settings.setdefault("title", default_title(name))
@@ -135,7 +140,7 @@ def create_book(name, settings, books_dir, tags=None, copy_tags_from=None, githu
 
     root.mkdir(parents=True)
     try:
-        book = make_files(root, name, settings, tags, copy_tags_from, log)
+        book = make_files(root, name, settings, tags, copy_tags_from, template, log)
     except Exception:
         shutil.rmtree(root)  # only the folder made just now: try again from scratch
         raise
@@ -157,7 +162,7 @@ def create_book(name, settings, books_dir, tags=None, copy_tags_from=None, githu
     return book
 
 
-def make_files(root, name, settings, tags, copy_tags_from, log):
+def make_files(root, name, settings, tags, copy_tags_from, template, log):
     (root / "songs").mkdir()
     (root / "songs" / ".gitkeep").write_text("", encoding="utf-8")
     (root / CONFIG_NAME).write_text(settings_yaml(settings), encoding="utf-8")
@@ -165,6 +170,8 @@ def make_files(root, name, settings, tags, copy_tags_from, log):
         (root / "tags.yaml").write_text(Path(copy_tags_from).read_text(encoding="utf-8"), encoding="utf-8")
     if tags:
         write_tags(root / "tags.yaml", tags)
+    if template:  # last, so the template's tags.yaml wins
+        shutil.copytree(TEMPLATES_DIR / template, root, dirs_exist_ok=True)
     (root / ".gitignore").write_text(GITIGNORE, encoding="utf-8")
     (root / "README.md").write_text(readme(dict(settings, _name=name), settings.get("url")), encoding="utf-8")
 

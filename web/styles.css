@@ -579,9 +579,19 @@ body.drawer-open {
 }
 
 .index summary > h2,
-.index summary > h3 {
+.index summary > h3,
+.index summary > h4,
+.index summary > h5,
+.index summary > h6 {
     display: inline;
     margin: 0;
+}
+
+/* Liturgia de las Horas goes deeper than tags: keep its headings readable */
+.index summary > h4,
+.index summary > h5,
+.index summary > h6 {
+    font-size: 1rem;
 }
 
 .subtag-index {
