@@ -5,5 +5,5 @@ song_tags:
     - semitonos_2
 ---
 
-E A B | E
+E A | B E
 Flexa: E B

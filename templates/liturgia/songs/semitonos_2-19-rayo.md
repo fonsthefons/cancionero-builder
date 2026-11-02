@@ -5,5 +5,5 @@ song_tags:
     - semitonos_2
 ---
 
-G7 Em C7 | Am
+G7 Em | C7 Am
 Flexa: G7 Em

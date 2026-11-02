@@ -7,4 +7,3 @@ song_tags:
 
 D A | G Em
 Flexa: D F#m
-(alternativa: Bm sobre G)

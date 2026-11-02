@@ -5,5 +5,4 @@ song_tags:
     - semitonos_4
 ---
 
-Bm | G A | Em G | Em (Bm) F#
-(F# mayor al final)
+Bm | G A | Em G | Em Bm (B7)
