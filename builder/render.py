@@ -51,12 +51,39 @@ def collapsible(anchor, heading_tag, title, body, css_class, is_open=True):
     )
 
 
-def nav_html(groups):
+def horas_anchor(node):
+    return "horas" + (f"-{node.path.replace('/', '-')}" if node.path else "")
+
+
+def horas_html(node, fold_tags=True, fold_subtags=True, level=2):
+    """The Liturgia de las Horas tree (only nodes with songs, see horas.fill): a
+    folding section per branch; an hour lists "Part: N. Title" in part order."""
+    if node.is_hour:
+        body = '<ul class="song-list">\n' + "\n".join(
+            f'<li><a href="#{song.anchor}">{escape(part.label)}: {escape(song_label(song))}</a></li>'
+            for part in node.children for song in part.songs
+        ) + "\n</ul>"
+    else:
+        body = "\n".join(horas_html(child, fold_tags, fold_subtags, level + 1) for child in node.children)
+    return collapsible(
+        horas_anchor(node), f"h{min(level, 6)}", node.label, body,
+        "tag-index" if level == 2 else "subtag-index", is_open=not (fold_tags if level == 2 else fold_subtags),
+    )
+
+
+def nav_html(groups, horas=None):
     """Compact table of contents (tags and subtags) for the menu drawer."""
     items = [
         '<li><a class="nav-tag" href="#index">Contenido</a></li>',
         '<li><a class="nav-tag" href="#all-songs">All Songs</a></li>',
     ]
+    if horas:
+        branches = "".join(
+            f'<li><a class="nav-subtag" href="#{horas_anchor(child)}">{escape(child.label)}</a></li>'
+            for child in horas.children
+        )
+        items.append(f'<li><a class="nav-tag" href="#{horas_anchor(horas)}">{escape(horas.label)}</a>'
+                     f'<ul class="nav-subtags">{branches}</ul></li>')
     for group in groups:
         subtags = "".join(
             f'<li><a class="nav-subtag" href="#{tag_anchor(group.tag.id, sub_id)}">'
@@ -155,7 +182,8 @@ def book_json(book):
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
 
-def render_book(book, songs, groups, web_dir):
+def render_book(book, songs, groups, web_dir, horas=None):
+    """horas: the filled horas.yaml tree (horas.fill), shown before the tags."""
     web = Path(web_dir)
 
     def read(name):
@@ -185,8 +213,9 @@ def render_book(book, songs, groups, web_dir):
             "scripts": "\n".join(
                 f"<script>\n{p.read_text(encoding='utf-8')}</script>" for p in scripts
             ),
-            "nav": nav_html(groups),
-            "tag_index": tag_index_html(groups, book.fold_tags, book.fold_subtags),
+            "nav": nav_html(groups, horas),
+            "tag_index": (horas_html(horas, book.fold_tags, book.fold_subtags) + "\n" if horas else "")
+            + tag_index_html(groups, book.fold_tags, book.fold_subtags),
             "all_songs": collapsible("all-songs", "h2", "All Songs", song_list(songs), "tag-index"),
             "songs": "\n".join(song_html(song, controls) for song in songs),
         },

@@ -87,7 +87,7 @@ def chord_line_html(line):
 
 # "Intro: G Em C D", "Solo: F G Am (x2)": chords written after a label, on a
 # line of their own or followed by the first lyrics ("Intro: E Hoy quiero...").
-LABEL_RE = re.compile(r"(\s*(?:intro|solo|final|punteo|outro|out|puente|interludio)\s*:)(.*)", re.I)
+LABEL_RE = re.compile(r"(\s*(?:intro|solo|final|punteo|outro|out|puente|interludio|flexa)\s*:)(.*)", re.I)
 
 
 def label_chords_html(rest):

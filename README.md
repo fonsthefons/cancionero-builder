@@ -19,7 +19,7 @@ Run `.venv/bin/python cancionero.py` with no arguments for a menu, or:
 | Command | What it does |
 |---|---|
 | `help [new\|edit]` | step by step: create a book, or add songs to / change one |
-| `new [name]` | create a book: folder, `book.yaml`, `tags.yaml`, first build, git, GitHub repo + Pages (`--dry-run` only prints the GitHub steps) |
+| `new [name]` | create a book: folder, `book.yaml`, `tags.yaml`, first build, git, GitHub repo + Pages (`--dry-run` only prints the GitHub steps; `--template liturgia` copies `templates/liturgia/`: its `tags.yaml`, `horas.yaml` and songs) |
 | `add <book>` | add songs, asking as it goes: a link, a search, pasted text, a PDF or a list |
 | `add-list <book> <list.txt>` | add a list of songs without questions (`--section Want`, `--report file`) |
 | `add-pdf <book> <songbook.pdf>` | import a PDF songbook (`--all`, `--author A`, `--section-tags`, `--links`) |
@@ -36,6 +36,7 @@ Run `.venv/bin/python cancionero.py` with no arguments for a menu, or:
     book.yaml             settings; only `title` is required
     songs/*.md            one file per song
     tags.yaml             optional: labels and order of tags
+    horas.yaml            optional: Liturgia de las Horas tree, shown first in the contents
     author_aliases.yaml   optional: author names as sites write them -> as the book does
     title_fixes.yaml      optional: titles as Ultimate Guitar writes them -> as the book does
     index.html, sw.js, manifest.webmanifest, icon-*.png   written by the build
@@ -64,11 +65,36 @@ title, storage key, colours, default author, folded contents, Do Re Mi setting, 
     Sopla, Señor...
 
 Chords go on their own line above the lyrics, lined up with the letters. Lines between
-`**` lines are shown bold (choruses).
+`**` lines are shown bold (choruses). Chords after a label (`Intro:`, `Solo:`, `Final:`,
+`Puente:`, `Flexa:`...) are chords too, and transpose.
+
+Songs are numbered in title order; numbers in titles count as numbers ("2 ..." before "10 ...").
 
 **Tags are free**: any tag written in a song appears in the book, as an id (`pasion`) or a
 label (`Pasión`). `tags.yaml` only sets labels and order; the build lists tags it doesn't
 know. With `strict_tags: true` every tag must be in `tags.yaml`.
+
+## Liturgia de las Horas (`horas.yaml`)
+
+A book with a `horas.yaml` shows that tree first in its contents, before the tags. A
+mapping is a branch, a list is an hour and its items are the hour's parts; YAML anchors
+reuse lists (`parts:` only holds them). Nodes and parts with no song are hidden.
+
+    label: Liturgia de las Horas
+    parts:
+      laudes: &laudes [Apertura, Himno, Salmo 1, Cántico, Salmo 2, Responsorio, Benedictus, Padre Nuestro]
+    tree:
+      Semana I:
+        Domingo:
+          Laudes: *laudes
+
+A song is placed with `horas:`, a list of slot paths (ids of the labels joined with `/`):
+
+    horas: [semana_i/domingo/laudes/himno, "*visperas/magnificat"]
+
+`*` matches anything, `/` too (quote patterns that start with `*`). Labels work as well
+(`Semana I/Domingo/Laudes/Himno`). A pattern that matches no part stops the build, and so
+does `horas:` in a book without `horas.yaml`. `new --template liturgia` starts such a book.
 
 ## PDF songbooks
 

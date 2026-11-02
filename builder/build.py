@@ -7,6 +7,7 @@ import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .horas import fill, load_horas
 from .render import fill_template, render_book
 from .songs import SongError, load_songs
 from .tags import Taxonomy
@@ -36,7 +37,7 @@ class BuildResult:
 def load_book_songs(book):
     """(songs, taxonomy) of a book. Raises SongError listing every invalid song."""
     taxonomy = Taxonomy.load(book.tags_file, strict=book.strict_tags)
-    songs = load_songs(book.songs_dir, taxonomy)
+    songs = load_songs(book.songs_dir, taxonomy, load_horas(book.horas_file))
     for song in songs:
         if book.is_default_author(song.autor):
             song.autor = None  # the book's own artist isn't shown
@@ -69,7 +70,8 @@ def write_if_changed(path, text):
 def build_book(book, web_dir=WEB_DIR):
     """Write the book's index.html, sw.js and manifest. Raises SongError."""
     songs, taxonomy = load_book_songs(book)
-    html = render_book(book, songs, taxonomy.group(songs), web_dir)
+    horas = load_horas(book.horas_file)
+    html = render_book(book, songs, taxonomy.group(songs), web_dir, horas and fill(horas, songs))
     write_if_changed(book.root / "index.html", html)  # must stay at the root for GitHub Pages
 
     write_if_changed(book.root / "manifest.webmanifest", manifest(book))
@@ -89,7 +91,7 @@ def build_book(book, web_dir=WEB_DIR):
     return BuildResult(
         songs=songs,
         size=len(html.encode("utf-8")),
-        untagged=[song.id for song in songs if not song.tags],
+        untagged=[song.id for song in songs if not song.tags and not song.horas],
         new_tags=[] if book.strict_tags else taxonomy.new_names(),
     )
 
