@@ -6,4 +6,4 @@ song_tags:
 ---
 
 Bm F#m G | A Em D
-Flexa: Em D
+Flexa: Bm D

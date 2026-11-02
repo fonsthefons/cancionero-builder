@@ -257,6 +257,17 @@ read as images; the text layer is OCR noise).
 - Not done (later phases): sheet music, tabs, choosing a fórmula inside a psalm. The real
   book folder in hymn_books was not created (CLAUDE.md: only when the task says so).
 
+## 2026-11-02 — Fórmula corrections from the user
+
+- Reviewed with `scratch/liturgia/review/index.html` (`review_page.py`: PDF crops next to
+  each doubtful fórmula). User's corrections applied to S2 nº 12, 13, 19, 24, 26 and S4
+  nº 1, 2; the rest confirmed.
+- Tonos Rectos: each line is one fórmula: 1 en Mi, 2 en Fa, 3 en Sol, 4 subtypes each
+  -> 12 songs ("1 Tono recto en Mi 1" …), `split_tonos_rectos.py`. 59 fórmulas in all.
+- For the notes phase: Gorgoritos (S4 nº 24) has 3 flats in the PDF's key signature; the
+  user isn't sure it's right.
+- Notes and tabs: not written yet (next phase, asked by the user).
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

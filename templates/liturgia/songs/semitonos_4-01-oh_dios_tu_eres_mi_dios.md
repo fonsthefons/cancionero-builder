@@ -5,4 +5,4 @@ song_tags:
     - semitonos_4
 ---
 
-G | Em | C (D) | Am G
+G | Em | C D | Am G
