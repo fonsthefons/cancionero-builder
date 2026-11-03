@@ -46,7 +46,10 @@ def check(label, cond, detail=""):
 def open_book(context):
     page = context.new_page()
     errors = []
-    page.on("pageerror", lambda e: errors.append(str(e)))
+    # Not a script error: the browser's notice that some resizes (songs laid out
+    # after scroll-anchor.js scrolled) are reported next frame instead.
+    benign = "ResizeObserver loop completed with undelivered notifications."
+    page.on("pageerror", lambda e: str(e) != benign and errors.append(str(e)))
     page.goto(BOOK)
     page.add_script_tag(path=CHECKS)
     global KEY, A_ID, A_T, B_ID, B_T, H_ID, H_T, H_SEARCH
@@ -146,6 +149,7 @@ def run(engine_name, engine):
 
         if device == "phone":
             skipped_song_checks(context)
+            melody_checks(page)
             session_checks(page, name)
             persistence_checks(page)
             autoscroll_checks(page)
@@ -321,7 +325,11 @@ def autoscroll_checks(page):
     page.add_script_tag(path=CHECKS)
     check("speed remembered after reload", speed() == "4")
 
-    page.evaluate("scrollTo(0, document.documentElement.scrollHeight - innerHeight - 30)")
+    # Twice: the first jump lays out the last songs (skipped till then), which
+    # changes the page height and can leave the view a few hundred px from the end.
+    for _ in range(2):
+        page.evaluate("scrollTo(0, document.documentElement.scrollHeight - innerHeight - 30)")
+        page.wait_for_timeout(300)
     page.click(toggle)
     page.wait_for_timeout(2500)
     check("stops by itself at the end of the page", page.inner_text(toggle) == "▶")
@@ -559,6 +567,33 @@ def persistence_checks(page):
           page.inner_text(f"{abba} .transpose-value") == "0" and saved == "{}")
     page.evaluate("localStorage.clear()")
     reload(page)
+
+
+def melody_checks(page):
+    """Books with `melody:` songs: staff, tab under each note, transposition."""
+    song = page.locator(".song:has(.melody)").first
+    if not song.count():
+        return
+    song.scroll_into_view_if_needed()
+    page.wait_for_timeout(300)
+    report = """s => ({
+        notes: [...s.querySelectorAll('.abcjs-note')].map(n => { const b = n.getBoundingClientRect(); return b.x + b.width / 2; }),
+        frets: [...s.querySelectorAll('.melody-tab text:not(.melody-tab-label)')].map(t => [t.textContent, t.getBoundingClientRect().x + t.getBoundingClientRect().width / 2]),
+        chords: [...s.querySelectorAll('.abcjs-chord')].map(c => c.textContent).join(' '),
+        width: s.querySelector('.melody').getBoundingClientRect().width, songWidth: s.clientWidth })"""
+    read = lambda: song.evaluate(report)  # noqa: E731
+    before = read()
+    check(f"melody: staff with {len(before['notes'])} notes and a fret under each",
+          before["notes"] and len(before["frets"]) == len(before["notes"])
+          and all(abs(x - n) < 3 for (_, x), n in zip(before["frets"], before["notes"])), before)
+    check("melody fits the song width", before["width"] <= before["songWidth"], before)
+    song.locator('[data-action="transpose-up"]').click()
+    song.locator('[data-action="transpose-up"]').click()
+    after = read()
+    check(f"melody +2: frets and chords change ({before['chords']} -> {after['chords']})",
+          after["chords"] != before["chords"] and [f for f, _ in after["frets"]] != [f for f, _ in before["frets"]], after)
+    song.locator('[data-action="transpose-reset"]').click()
+    check("melody back to 0", read()["chords"] == before["chords"])
 
 
 def parseFloat(value):

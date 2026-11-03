@@ -119,6 +119,28 @@ def test_book_settings(tmp_path):
     assert '"storagePrefix": "y."' in html
 
 
+MELODY = 'melody: |\n  K:D\n  "D"F8 "A"G A | "Em"F2 z E D\ntab: {tab}\n'
+
+
+def test_melody(tmp_path):
+    for tab, error in [("4/4 0/3 2/3 | 4/4 2/4", "tab has 5 notes but melody has 6"),
+                       ("4/4 0/3 2/3 | 4/4 2/4 0/7", '"0/7" is not fret/string')]:
+        book = write_book(tmp_path / str(len(error)), songs={"a": SONG.format(title="Uno", extra=MELODY.format(tab=tab))})
+        with pytest.raises(SongError, match=error):
+            build_book(book)
+    book = write_book(tmp_path / "ok", songs={
+        "a": SONG.format(title="Uno", extra=MELODY.format(tab="4/4 0/3 2/3 | 4/4 2/4 0/4")),
+        "b": SONG.format(title="Dos", extra="")})
+    build_book(book)
+    html = (tmp_path / "ok" / "index.html").read_text(encoding="utf-8")
+    assert html.count('<div class="melody"') == 1
+    assert 'data-abc="X:1\nM:none\nL:1/4\nK:D\n&quot;D&quot;F8' in html and "ABCJS" in html
+    plain = write_book(tmp_path / "plain", songs={"b": SONG.format(title="Dos", extra="")})
+    build_book(plain)
+    html = (tmp_path / "plain" / "index.html").read_text(encoding="utf-8")
+    assert "ABCJS" not in html and "renderMelody" not in html  # no 480 kB library
+
+
 def test_settings_yaml_round_trip(tmp_path):
     settings = {"title": "Cancionero: Misa", "sites": ["ultimate_guitar"], "language_tags": True}
     (tmp_path / "book.yaml").write_text(settings_yaml(settings), encoding="utf-8")

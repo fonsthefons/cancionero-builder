@@ -719,6 +719,55 @@ body.drawer-open {
     margin-bottom: 1.1em;
 }
 
+/* Staff and guitar tab (melody.js): both SVGs scale to the song's width with
+   the same viewBox width, so each fret stays under its note. */
+.melody {
+    /* Drawing replaces its content: never the browser's scroll anchor, else a
+       jump to a song lands off when songs above are drawn. */
+    overflow-anchor: none;
+    max-width: 32rem;
+    margin-bottom: 1.1em;
+    color: var(--ink);
+    break-inside: avoid;
+}
+
+/* Until drawn (near the screen), hold the usual staff + tab size (viewBox about
+   380 x 90 + 72), so drawing doesn't move what's on screen. */
+.melody:empty {
+    aspect-ratio: 380 / 162;
+}
+
+.melody svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.melody .abcjs-chord {
+    fill: var(--chord);
+    font-weight: bold;
+}
+
+.melody-tab line {
+    stroke: currentColor;
+    stroke-width: 0.6;
+}
+
+/* Each fret blanks the tab line behind it. */
+.melody-tab text {
+    font: bold 12px var(--sans);
+    fill: currentColor;
+    text-anchor: middle;
+    dominant-baseline: central;
+    paint-order: stroke;
+    stroke: var(--page);
+    stroke-width: 4px;
+}
+
+.melody-tab .melody-tab-label {
+    font-size: 9px;
+}
+
 /* Never split a verse or a chord+lyric pair across columns/pages */
 .verse,
 .line-pair {

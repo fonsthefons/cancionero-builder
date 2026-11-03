@@ -18,3 +18,17 @@ formulas:
     semitonos_3: Semitonos de 3
     semitonos_4: Semitonos de 4
     tonos_rectos: Tonos Rectos
+    responsorios_breves: Responsorios breves
+    semitonos_benedictus: Semitonos para Benedictus
+    semitonos_magnificat: Semitonos para Magnificat
+tiempos:
+  label: Tiempos litúrgicos
+  subtags:
+    adviento: Adviento
+    navidad: Navidad
+    cuaresma: Cuaresma
+    semana_santa: Semana Santa
+    pascua: Pascua
+    pentecostes: Pentecostés
+oficio_de_lectura:
+  label: Oficio de lectura
