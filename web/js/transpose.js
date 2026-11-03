@@ -147,6 +147,8 @@ function renderChords(song) {
         widest = Math.max(widest, line.textContent.length);
     });
     song.style.setProperty("--chars", widest);
+    // melody.js is only in books with melodies, so name refreshMelody only when there is one.
+    song.querySelectorAll(".melody").forEach((melody) => refreshMelody(melody));
 }
 
 function setTranspose(song, shift) {

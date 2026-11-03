@@ -268,6 +268,77 @@ read as images; the text layer is OCR noise).
   user isn't sure it's right.
 - Notes and tabs: not written yet (next phase, asked by the user).
 
+## 2026-11-02 — Liturgia phase 2, part A: staff + tab code (branch liturgia-phase-2)
+
+- `web/vendor/abcjs-basic-min.js` 6.4.4 (+ `abcjs-LICENSE.md`, MIT), inlined with
+  `web/js/melody.js` only in books with a `melody:` song (render.py).
+- Song fields `melody` (ABC body) / `tab` (fret/string per note; count checked, songs.py);
+  `<div class="melody" data-abc data-tab>` before the lyrics.
+- melody.js: `renderMelody(element, shift)` (abcjs + a 6-line SVG tab, breves redrawn as
+  square reciting notes, chord names via transpose.js's transposeChord when present).
+  Drawn when the song nears the screen (IntersectionObserver), on beforeprint, and on
+  transpose / notation change (renderChords -> refreshMelody).
+- Tests: `test_melody`; ui_check.py `melody_checks` (fret under each note, +2 changes
+  frets and chords). Scratch books `scratch/melody-book`, `scratch/melody-misa` (+ `-base`
+  without melodies); screenshots `scratch/shots/melody-*.png` (`scratch/melody_shots.py`).
+- ui_check on the 7-song melody-misa: 193 passed, 5 failed; the same 5 skipped-song checks
+  fail on the melody-free base copy too (book too small for them).
+- Jump regression on scratch/liturgia-book (47 melodies): Chromium lost ~40px of scroll
+  anchoring when melodies were drawn (layout read) inside the IntersectionObserver callback
+  while songs got their real height -> draw 150 ms later; `.melody` gets
+  `overflow-anchor: none` and an aspect-ratio placeholder until drawn. WebKit landed 600px
+  off: scroll-anchor.js judged songs by their position after the batch's resizes; now by
+  their position before (`moved`). ui_check: benign "ResizeObserver loop completed"
+  notice ignored; end-of-page autoscroll check jumps to the end twice (first jump lays
+  out the last songs). Tab: 12-unit gap under the staff and a "TAB" label.
+- ui_check scratch/liturgia-book: 200 passed, 0 failed (Chromium + WebKit). Probes:
+  scratch/jump_melody_probe.py, end_scroll_probe.py, liturgia_nomel_book.py.
+
+## 2026-11-02/03 — Liturgia phase 2, part B: notes + tabs of the 47 semitonos
+
+- Plan `scratch/liturgia/PLAN2.md`. Three agents transcribed the handwritten staffs
+  (tonos.pdf pp. 54–65) into `melody:` / `tab:`; tab frets copied from the PDF tab pages,
+  chosen where there is none (and for every flexa). Doubts:
+  `scratch/liturgia/transcription-notes-b{1,2,3}.md`.
+- Tab convention = the PDF's: written pitch is played as is, open strings E4 B3 G3 D3 A2 E2
+  (PLAN2's first table was an octave off; corrected mid-run).
+- `scratch/liturgia/check_all.py`: every fret on its string gives the written note
+  (key signature + accidentals): 0 problems.
+
+## 2026-11-03 — Liturgia phase 3: himnos.pdf (user asleep; ran unattended)
+
+- User's PDF "himnos_canticos_responsorios_padrenuestros_antifonasmarianas.pdf" ->
+  `scratch/liturgia/himnos.pdf` (46 pages). Plan `scratch/liturgia/PLAN3.md`; 5 agents
+  (H1–H5), notes + page lists in `scratch/liturgia/h1..h5/notes.md`.
+- 56 new songs in templates/liturgia/songs: 14 Laudes hymns, 13 Vísperas hymns, 2
+  cánticos, 3 Magnificat, 2 Benedictus, 3 Padrenuestros, Te Deum, 2 Completas hymns,
+  2 Completas responsorios, Nunc dimittis, 7 antífonas marianas, 3 responsorios breves
+  (2 generic as fórmulas, Adviento), 3 semitonos para Benedictus/Magnificat. Lyrics with
+  chords (letters), melody + tab from the staff printed with each piece.
+- Decisions taken without the user (to confirm):
+  - Completas got a new last part "Antífona Mariana" (horas.yaml).
+  - tags.yaml: Fórmulas + Responsorios breves, Semitonos para Benedictus / Magnificat;
+    new tags "Tiempos litúrgicos" (Adviento … Pentecostés) for seasonal pieces, and
+    "Oficio de lectura" (Te Deum).
+  - Placement: hymns by their PDF header (week/day/hour); Benedictus in every Laudes,
+    Magnificat in every Vísperas, Padrenuestros in every hour, Completas hymns /
+    responsorio / Nunc dimittis / antífonas in every Completas day; Ap 19 cántico in every
+    Sunday's segundas Vísperas; Dn 3 cántico in Domingo II and IV Laudes.
+  - Where the PDF's tab disagrees with the staff (often the key signature ignored, e.g.
+    F# written as F), the tab follows the staff. Where the PDF has no tab, one was worked
+    out (first position). Only the first staff line is kept when a piece has two.
+  - Hymns without a printed title use their first line ("Himno I" -> first line).
+- scratch/liturgia-book (template + one Misa test song): 116 songs; check_all 0 problems;
+  ui_check 200 passed, 0 failed.
+
+## 2026-11-03 — Review page extended to the himnos.pdf pieces
+- scratch/liturgia/review2_page.py + review2_template.html: second section "Himnos, cánticos y
+  otros" (56 cards): whole himnos.pdf pages (110 dpi gray JPEG, one data URI per page shared via
+  `PAGES`), horas/tags line, doubts parsed from h1..h5/notes.md, auto-sized Chords textarea,
+  filter "Fórmulas only"/"Himnos only". .melody CSS now copied from web/styles.css at build time.
+- review2_check.py extended (hymn edit, re-render, filter, export); passes at 430 and 1100 px.
+- apply_corrections.py unchanged; tested on copies in scratch/liturgia/review2/check/songs.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

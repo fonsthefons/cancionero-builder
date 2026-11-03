@@ -11,7 +11,7 @@ from .text import spanish_sort_key
 # Frontmatter fields a song may use. Anything else is reported as an error,
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
-OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas"}
+OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab"}
 
 
 class SongError(Exception):
@@ -29,6 +29,8 @@ class Song:
     link: str | None = None
     added: str | None = None  # day the song was added; not shown
     horas: list = field(default_factory=list)  # slot patterns in horas.yaml, as written
+    melody: str | None = None  # ABC notation body ("K:D\n...") shown as a staff
+    tab: str | None = None  # guitar tab, one "fret/string" per melody note
     number: int = 0  # assigned after sorting
 
     @property
@@ -87,6 +89,20 @@ def parse_horas(raw):
     return raw
 
 
+def check_tab(melody, tab):
+    """Each note of the melody needs one "fret/string" tab token (bars are ignored)."""
+    # shortcut: counts pitch letters outside "chords" and header lines; ABC chords
+    # ([CEG]), grace notes and !decorations! would miscount; fine for the fórmulas.
+    body = re.sub(r'"[^"]*"|![^!]*!', "", re.sub(r"(?m)^[A-Za-z]:.*$", "", melody or ""))
+    notes = len(re.findall(r"[A-Ga-g]", body))
+    tokens = [t for t in (tab or "").split() if t.strip("|")]
+    bad = [t for t in tokens if not re.fullmatch(r"\d{1,2}/[1-6]", t)]
+    if bad:
+        raise SongError(f'tab: "{bad[0]}" is not fret/string (like 2/1, string 1 = high e … 6 = low E)')
+    if len(tokens) != notes:
+        raise SongError(f"tab has {len(tokens)} notes but melody has {notes}")
+
+
 def song_sort_key(song):
     # natural order: "2 ..." before "10 ..." (runs of digits compared as numbers)
     words = re.split(r"(\d+)", spanish_sort_key(song.title))
@@ -116,6 +132,9 @@ def load_song(path):
     link = optional_text(meta.get("link"))
     if link and not re.match(r"https?://", link):
         raise SongError(f'link must be a web address starting with http:// or https:// (got "{link}")')
+    melody, tab = optional_text(meta.get("melody")), optional_text(meta.get("tab"))
+    if melody or tab:
+        check_tab(melody, tab)
 
     return Song(
         id=Path(path).stem,
@@ -127,6 +146,8 @@ def load_song(path):
         link=link,
         added=optional_text(meta.get("added")),
         horas=parse_horas(meta.get("horas")),
+        melody=melody,
+        tab=tab,
     )
 
 

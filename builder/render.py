@@ -135,6 +135,14 @@ def song_meta_html(song):
     return f'<p class="song-meta">{"".join(items)}</p>' if items else ""
 
 
+def melody_html(song):
+    """Staff and guitar tab, drawn by web/js/melody.js (abcjs)."""
+    if not song.melody:
+        return ""
+    abc = "X:1\nM:none\nL:1/4\n" + song.melody
+    return f'<div class="melody" data-abc="{escape(abc)}" data-tab="{escape(song.tab or "")}"></div>\n'
+
+
 def song_html(song, controls):
     # --chars (widest line) lets CSS size the lyrics so every line fits the screen.
     # data-title / data-autor: plain values for the session list and search.
@@ -145,6 +153,7 @@ def song_html(song, controls):
         f"<h3>{escape(song_label(song))}</h3>\n"
         f"{song_meta_html(song)}\n"
         f"{controls}\n"
+        f"{melody_html(song)}"
         f"{lyrics_html(song.body)}\n"
         "</article>"
     )
@@ -190,9 +199,13 @@ def render_book(book, songs, groups, web_dir, horas=None):
         return (web / name).read_text(encoding="utf-8")
 
     # core.js first (it defines helpers the feature scripts use), then the rest.
+    # abcjs (480 kB) and melody.js only in books with a song `melody:`.
+    melodies = any(song.melody for song in songs)
     scripts = [web / "js" / "core.js"] + sorted(
-        p for p in (web / "js").glob("*.js") if p.name != "core.js"
+        p for p in (web / "js").glob("*.js") if p.name != "core.js" and (melodies or p.name != "melody.js")
     )
+    if melodies:
+        scripts.insert(0, web / "vendor" / "abcjs-basic-min.js")
     controls = read("song-controls.html").strip()
     install_tip = {"popup": read("parts/install-tip-popup.html"),
                    "banner": read("parts/install-tip-banner.html")}.get(book.install_tip, "")

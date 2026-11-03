@@ -13,14 +13,16 @@ if (navigator.vendor.startsWith("Apple")) {
 
     const songResizes = new ResizeObserver((entries) => {
         let shift = 0;
+        let moved = 0; // how far earlier songs of this batch moved this one (entries are in page order)
         for (const entry of entries) {
             const height = entry.borderBoxSize[0].blockSize;
             const old = songHeights.get(entry.target);
             songHeights.set(entry.target, height);
             if (old === undefined) continue;
-            // Songs that ended above the middle of the screen push the rest down.
-            const top = entry.target.getBoundingClientRect().top;
+            // Songs that ended above the middle of the screen (before resizing) push the rest down.
+            const top = entry.target.getBoundingClientRect().top - moved;
             if (top < 0 && top + old < window.innerHeight / 2) shift += height - old;
+            moved += height - old;
         }
         if (shift) window.scrollBy(0, shift);
     });

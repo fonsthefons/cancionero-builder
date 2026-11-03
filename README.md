@@ -68,6 +68,22 @@ Chords go on their own line above the lyrics, lined up with the letters. Lines b
 `**` lines are shown bold (choruses). Chords after a label (`Intro:`, `Solo:`, `Final:`,
 `Puente:`, `Flexa:`...) are chords too, and transpose.
 
+A song can show a staff and a guitar tab above its lyrics (drawn with abcjs, which is only
+added to books that use it); both follow the song's transposition:
+
+    melody: |
+      K:D
+      "D"F8 "A"G A | "Em"F2 "D"E D || "D"F8 "Em"E
+    tab: 2/1 3/1 5/1 | 2/1 0/1 3/2 || 2/1 0/1
+
+`melody` is [ABC notation](https://abcnotation.com/wiki/abc:standard:v2.1) after the header
+(`X:1`, `M:none`, `L:1/4` are added): `K:` key, notes `C`…`B` from middle C, `c`…`b` an
+octave up, `B,` an octave down, lengths `C2` half, `C/` eighth, `C8` a breve (drawn as a
+square reciting note), `^F` `_B` `=F` accidentals, `"Em"` the chord over the next note,
+`|` and `||` bars. `tab` is one `fret/string` per note (string 1 = high e … 6 = low E;
+`|` tokens are ignored); the build stops when the counts differ. Frets move with the
+transposition on the same string (12 frets up when they would go below 0).
+
 Songs are numbered in title order; numbers in titles count as numbers ("2 ..." before "10 ...").
 
 **Tags are free**: any tag written in a song appears in the book, as an id (`pasion`) or a
