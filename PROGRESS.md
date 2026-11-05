@@ -339,6 +339,17 @@ read as images; the text layer is OCR noise).
 - review2_check.py extended (hymn edit, re-render, filter, export); passes at 430 and 1100 px.
 - apply_corrections.py unchanged; tested on copies in scratch/liturgia/review2/check/songs.
 
+## 2026-11-05 — Revisions 2 corrections, tab shift, GitHub page (branch liturgia-corrections-2)
+- `apply_corrections.py "~/Downloads/Revisions 2 Corrections.json"`: new bodies for 4 antífonas
+  marianas, Nunc dimittis, 2 responsorios. Notes done by hand: Glorioso chords placed as in the
+  PDF tab (La n1, Re n5 | Sim n1, Mi n3, La n5 | La, Sim); Laudate Dominum F G F as triplets
+  `(3`; Semitono de 3 unchanged (user: correct).
+- `web/js/melody.js`: `shiftFret`: a fret below the nut moves to the next lower string
+  (e0 −1 -> 4 on B), octave up only on the low E; renderMelody widens the staff (+40, up to
+  600) while frets on one string touch (Cantad al Señor bar 2). ui_check checks shiftFret.
+- Checked: pytest 39 passed; check_all 0 problems; ui_check scratch/liturgia-book 202 passed.
+- Item 2 (chords placed right in the hymns) is the user's manual check, not done here.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

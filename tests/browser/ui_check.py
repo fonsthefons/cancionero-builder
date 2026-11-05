@@ -594,6 +594,10 @@ def melody_checks(page):
           after["chords"] != before["chords"] and [f for f, _ in after["frets"]] != [f for f, _ in before["frets"]], after)
     song.locator('[data-action="transpose-reset"]').click()
     check("melody back to 0", read()["chords"] == before["chords"])
+    # below the nut: next lower string (e0 -1 -> B4, B0 -1 -> G3, G1 -3 -> D3), octave up only on low E
+    moves = page.evaluate("[[0,1,-1],[0,2,-1],[1,3,-3],[0,6,-1],[2,1,-12]].map(a => shiftFret(...a))")
+    check(f"tab frets below the nut move string: {moves}",
+          moves == [[4, 2], [3, 3], [3, 4], [11, 6], [4, 4]], moves)
 
 
 def parseFloat(value):

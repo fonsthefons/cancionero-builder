@@ -9,7 +9,7 @@ tab: 1/2 0/1 3/1 5/1 3/1 | 5/1 8/1 7/1 5/1 3/1 5/1 3/1 3/1 ||
 ---
 
 C              F                G
-Salve, Regina, Mater misericordiæ,
+Salve, Regina, Mater misericordiae,
             Dm    Em     G       C
 vita, dulcedo, et spes nostra, salve.
 

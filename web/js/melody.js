@@ -10,13 +10,13 @@
 const TAB_LINE = 10; // space between tab lines, in staff units
 const TAB_GAP = 12; // between the staff (and notes under it) and the tab: 1.5 staff spaces
 
-function renderMelody(element, shift = 0) {
+function renderMelody(element, shift = 0, width = 380) {
     const abc = element.dataset.abc;
     const staff = document.createElement("div");
     element.replaceChildren(staff);
     // staffwidth: the size a phone shows at about 1:1 (the SVG scales to the width).
     ABCJS.renderAbc(staff, abc, {
-        responsive: "resize", staffwidth: 380, visualTranspose: shift, add_classes: true,
+        responsive: "resize", staffwidth: width, visualTranspose: shift, add_classes: true,
         paddingtop: 0, paddingbottom: 0, paddingleft: 0, paddingright: 0,
     });
     const svg = staff.querySelector("svg");
@@ -36,7 +36,13 @@ function renderMelody(element, shift = 0) {
         if (/^[_^=]*[A-Ga-g]/.test(path.dataset.name)) squareNotehead(path, space);
     });
 
-    element.append(tabSvg(svg, element.dataset.tab, shift));
+    const tab = tabSvg(svg, element.dataset.tab, shift);
+    element.append(tab);
+    // Two-digit frets on short notes can touch: draw a wider staff (it scales to fit,
+    // so notes get more room) until frets on the same string clear each other.
+    const boxes = [...tab.querySelectorAll("text:not(.melody-tab-label)")].map((t) => t.getBBox());
+    const touch = boxes.some((b, i) => i && b.y === boxes[i - 1].y && b.x < boxes[i - 1].x + boxes[i - 1].width + 5);
+    if (touch && width < 600) renderMelody(element, shift, width + 40);
 }
 
 // The breve glyph (an oval between bars) redrawn as |□|: a hollow square with
@@ -51,8 +57,14 @@ function squareNotehead(path, space) {
 }
 
 // Six tab lines (string 1 = high e on top) the width of the staff, with each
-// "fret/string" at the x of its note. Frets move with the transposition on the
-// same string (an octave down when they would go below the nut).
+// "fret/string" at the x of its note. Frets move with the transposition; a fret
+// below the nut moves to the next lower string (an octave up only on string 6).
+const STRING_STEP = [0, 5, 4, 5, 5, 5]; // semitones from string n down to n+1
+function shiftFret(fret, string, shift) {
+    fret += shift;
+    while (fret < 0 && string < 6) fret += STRING_STEP[string++];
+    return [fret < 0 ? fret + 12 : fret, string];
+}
 function tabSvg(staffSvg, tab, shift) {
     const width = staffSvg.viewBox.baseVal.width;
     const lines = staffSvg.querySelector(".abcjs-staff").getBBox();
@@ -71,11 +83,9 @@ function tabSvg(staffSvg, tab, shift) {
         content += `<text class="melody-tab-label" x="${lines.x + 8}" y="${y(2.5 + i)}">${letter}</text>`;
     });
     tab.split(/\s+/).filter((token) => token.replace(/\|/g, "")).forEach((token, i) => {
-        const [fret, string] = token.split("/").map(Number);
-        let shifted = fret + shift;
-        if (shifted < 0) shifted += 12;
+        const [fret, string] = shiftFret(...token.split("/").map(Number), shift);
         if (notes[i] === undefined) return;
-        content += `<text x="${notes[i]}" y="${y(string)}">${shifted}</text>`;
+        content += `<text x="${notes[i]}" y="${y(string)}">${fret}</text>`;
     });
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("class", "melody-tab");

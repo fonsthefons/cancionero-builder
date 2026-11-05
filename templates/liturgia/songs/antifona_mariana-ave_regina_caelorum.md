@@ -11,18 +11,18 @@ melody: |
 tab: 1/1 0/1 3/2 1/2 3/2 1/1 3/1 1/1 ||
 ---
 
-F               Dm
+F                 Dm
 Ave, Regina Caelorum,
-Am        Dm        Gm
+Am      Dm         Gm
 Ave, Domina Angelorum:
-Bb         C         F
+Bb            C          F
 Salve, radix, salve, porta
-Am        Dm     Gm  F
+Am        Dm       Gm    F
 Ex qua mundo lux est orta.
 
-F                      Dm
+F                 Dm
 Gaude, Virgo gloriosa,
-C                Dm F
+C               Dm F
 Super omnes speciosa,
 Gm               F Am
 Vale, o valde decora,
