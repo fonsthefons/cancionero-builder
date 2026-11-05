@@ -373,6 +373,26 @@ read as images; the text layer is OCR noise).
   screenshots scratch/shots/formula-*.png.
 - The book's changes (psalm, tags, book.yaml, index.html) are local, not committed/published.
 
+## 2026-11-05 — Salterio import (branch salterio-import)
+- The downloaded "Liturgia de las Horas CEE 1.12.1.apk" was Uptodown's store app, not the CEE
+  app. The user chose the site's GitHub repo as the source; shallow clone in `scratch/lh-repo`.
+- `importer/horas_site.py`: generic readers for any day/hour of the site (`read_day`,
+  `read_hour`: parts with heading, kind, section, antiphon, text, notes) so propios/comunes
+  (Adviento, Común de pastores…) can reuse them. `salterio()` takes Tiempo Ordinario days
+  marked "De la Feria. Salterio N": Laudes from that day; Vísperas/Completas only when the next
+  day is plain too (a feria before a solemnity has its I Vísperas). Saturday evening goes to
+  next week's Domingo primeras Vísperas / primeras Completas. 5 samples per slot, majority kept
+  (the site has typos: missing verse ranges, a lost stanza break, "señor").
+- `.venv/bin/python -m importer.horas_site scratch/lh-repo scratch/salterio` -> 63 slots,
+  135 psalm/cántico files (`scratch/salterio/songs/`, same format as the book's salmo-086.md,
+  Gloria line split like it; a psalm used in several slots is one file with several `horas:`)
+  + `salterio.json` (antiphons, sources, rubric notes).
+- Checked: every slot matches the psalter; all 135 files load; every psalm part of the
+  template's horas.yaml gets one; generated salmo-086 equals the hand-made one. pytest 45.
+- Not done: copying into the real book (task didn't say so); antiphons not written to the
+  song files (earlier decision: no antífona). Salmo 138 I is named "Salmo 138, 1-18. 23-24"
+  (the site puts the "I" in its title).
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
