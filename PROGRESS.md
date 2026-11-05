@@ -392,6 +392,10 @@ read as images; the text layer is OCR noise).
 - Not done: copying into the real book (task didn't say so); antiphons not written to the
   song files (earlier decision: no antífona). Salmo 138 I is named "Salmo 138, 1-18. 23-24"
   (the site puts the "I" in its title).
+- Then (user asked): `scratch/copy_salterio.py` copied 133 files into
+  `hymn_books/cancionero-liturgia/songs/`, keeping the 2 already there (salmo-086 identical;
+  the user's untracked salmo-137 differs only in a 4-line Gloria). `cancionero.py publish`:
+  250 songs, pushed; https://fonsthefons.github.io/cancionero-liturgia/.
 
 ## Blocked
 
