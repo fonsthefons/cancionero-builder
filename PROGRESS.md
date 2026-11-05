@@ -496,6 +496,19 @@ read as images; the text layer is OCR noise).
 - Checked: ui_check liturgia-real 228 passed; play_check all passed; pytest 46.
   Real book rebuilt, not committed/published.
 
+## 2026-11-05 — Himnos section; All Songs folded (branch himnos-list)
+- User asked (cancionero-liturgia): All Songs closed by default; a "Himnos" section with
+  Laudes / Vísperas / Completas listing "Lunes I: 5. Alfarero del hombre".
+- book.py `fold_all_songs` (default false; true in liturgia's book.yaml).
+- horas.yaml `lists: {Himnos: {part: Himno, groups: [Laudes, Vísperas, Completas]}}` (book +
+  templates/liturgia). horas.py `part_list` (tree order, group = first group word in the
+  branch labels), `place` ("Lunes I", "Domingo I (primeras)", "Domingo (segundas)").
+  render.py `horas_lists_html` after the Liturgia de las Horas section + menu entry; folds
+  like tags/subtags.
+- Fixed 2 himno titles by hand: "¿Dónde está muerte, tu victoria?", "¡Detente, aurora de
+  este nuevo día!".
+- Checked: pytest 48; ui_check liturgia-real 228. Real book rebuilt, not committed/published.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

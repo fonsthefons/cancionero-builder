@@ -11,8 +11,14 @@ in the contents. Songs are placed in its parts with `horas:` in their files.
 
 Every node's id is slug(label); a part's slot path joins the ids with "/", e.g.
 semana_i/domingo/laudes/himno.
+
+    lists:                 # optional: a section listing one part of every hour
+      Himnos: {part: Himno, groups: [Laudes, Vísperas, Completas]}
+
+shows "Himnos" > "Laudes" > "Lunes I: 5. Alfarero del hombre" (see part_list).
 """
 
+import re
 from dataclasses import dataclass, field, replace
 from fnmatch import fnmatchcase
 from pathlib import Path
@@ -32,6 +38,7 @@ class Node:
     children: list = field(default_factory=list)  # an hour's children are its parts
     is_part: bool = False
     songs: list = field(default_factory=list)  # parts only, filled by fill()
+    lists: dict = field(default_factory=dict)  # root only: horas.yaml `lists:`
 
     @property
     def is_hour(self):
@@ -75,7 +82,46 @@ def load_horas(path):
         raise SongError(f"{path}: {e}") from e
     if not isinstance(raw, dict) or not isinstance(raw.get("tree"), dict):
         raise SongError(f"{path}: needs a `tree:` mapping (see builder/horas.py)")
-    return Node(str(raw.get("label") or DEFAULT_LABEL), "", [node(k, v, "") for k, v in raw["tree"].items()])
+    lists = raw.get("lists") or {}
+    if not isinstance(lists, dict) or not all(
+            isinstance(v, dict) and v.get("part") and isinstance(v.get("groups"), list) for v in lists.values()):
+        raise SongError(f"{path}: `lists:` must be like `Himnos: {{part: Himno, groups: [Laudes, Vísperas]}}`")
+    return Node(str(raw.get("label") or DEFAULT_LABEL), "", [node(k, v, "") for k, v in raw["tree"].items()],
+                lists={str(k): {"part": str(v["part"]), "groups": [str(g) for g in v["groups"]]}
+                       for k, v in lists.items()})
+
+
+WEEK = re.compile(r"semana\s+(\S+)", re.I)
+
+
+def place(labels, group):
+    """Where a part is, from its branch labels without the group's word:
+    [Semana I, Lunes, Laudes] -> "Lunes I"; [Semana I, Domingo, Primeras Vísperas] ->
+    "Domingo I (primeras)"; [Completas, Domingo (primeras Completas)] -> "Domingo (primeras)"."""
+    rest = [" ".join(re.sub(re.escape(group), "", label, flags=re.I).split()).replace("( ", "(").replace(" )", ")")
+            for label in labels]
+    weeks = [m.group(1) for m in map(WEEK.fullmatch, rest) if m]
+    others = [r for r in rest if r and not WEEK.fullmatch(r)]
+    head = " ".join(others[:1] + weeks)
+    return head + "".join(f" ({r.casefold()})" for r in others[1:])
+
+
+def part_list(tree, part, groups):
+    """[(group, [(place, song)])]: every `part` of the filled tree, in tree order, under
+    the first group whose word is in one of its branch labels (empty groups left out)."""
+    found = {g: [] for g in groups}
+
+    def walk(node, labels):
+        for child in node.children:
+            if child.is_part and slug(child.label) == slug(part):
+                group = next((g for g in groups if any(g.casefold() in l.casefold() for l in labels)), None)
+                if group:
+                    found[group].extend((place(labels, group), song) for song in child.songs)
+            elif not child.is_part:
+                walk(child, labels + [child.label])
+
+    walk(tree, [])
+    return [(g, items) for g, items in found.items() if items]
 
 
 def fill(tree, songs):

@@ -9,7 +9,9 @@ import re
 from html import escape
 from pathlib import Path
 
+from .horas import part_list
 from .lyrics import lyrics_columns, lyrics_html
+from .text import slug
 
 PLACEHOLDER_RE = re.compile(r"{{\s*(\w+)\s*}}")
 
@@ -71,6 +73,26 @@ def horas_html(node, fold_tags=True, fold_subtags=True, level=2):
     )
 
 
+def horas_lists(horas):
+    """[(anchor, name, [(group anchor, group, [(place, song)])])] for horas.yaml `lists:`."""
+    out = []
+    for name, spec in (horas.lists if horas else {}).items():
+        anchor = f"list-{slug(name)}"
+        groups = [(f"{anchor}-{slug(g)}", g, items) for g, items in part_list(horas, spec["part"], spec["groups"])]
+        if groups:
+            out.append((anchor, name, groups))
+    return out
+
+
+def horas_lists_html(horas, fold_tags=True, fold_subtags=True):
+    return "\n".join(collapsible(anchor, "h2", name, "\n".join(
+        collapsible(g_anchor, "h3", group, '<ul class="song-list">\n' + "\n".join(
+            f'<li><a href="#{song.anchor}">{escape(where)}: {escape(song_label(song))}</a></li>'
+            for where, song in items) + "\n</ul>", "subtag-index", is_open=not fold_subtags)
+        for g_anchor, group, items in groups), "tag-index", is_open=not fold_tags)
+        for anchor, name, groups in horas_lists(horas))
+
+
 def nav_html(groups, horas=None):
     """Compact table of contents (tags and subtags) for the menu drawer."""
     items = [
@@ -84,6 +106,10 @@ def nav_html(groups, horas=None):
         )
         items.append(f'<li><a class="nav-tag" href="#{horas_anchor(horas)}">{escape(horas.label)}</a>'
                      f'<ul class="nav-subtags">{branches}</ul></li>')
+    for anchor, name, lists in horas_lists(horas):
+        sub = "".join(f'<li><a class="nav-subtag" href="#{a}">{escape(g)}</a></li>' for a, g, _ in lists)
+        items.append(f'<li><a class="nav-tag" href="#{anchor}">{escape(name)}</a>'
+                     f'<ul class="nav-subtags">{sub}</ul></li>')
     for group in groups:
         subtags = "".join(
             f'<li><a class="nav-subtag" href="#{tag_anchor(group.tag.id, sub_id)}">'
@@ -264,8 +290,10 @@ def render_book(book, songs, groups, web_dir, horas=None):
             ),
             "nav": nav_html(groups, horas),
             "tag_index": (horas_html(horas, book.fold_tags, book.fold_subtags) + "\n" if horas else "")
+            + (horas_lists_html(horas, book.fold_tags, book.fold_subtags) + "\n" if horas_lists(horas) else "")
             + tag_index_html(groups, book.fold_tags, book.fold_subtags),
-            "all_songs": collapsible("all-songs", "h2", "All Songs", song_list(songs), "tag-index"),
+            "all_songs": collapsible("all-songs", "h2", "All Songs", song_list(songs), "tag-index",
+                                     is_open=not book.fold_all_songs),
             "songs": "\n".join(song_html(song, controls, id(song) in psalms) for song in songs),
         },
     )
