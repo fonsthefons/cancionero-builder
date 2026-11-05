@@ -5,7 +5,7 @@ song_tags:
     - semitonos_benedictus
 melody: |
   K:C
-  "C"G8 "F"A "C"G2 | "Dm"F8 "G"G "C"E || "C"G8 "Em"E
+  "C"G4 "F"A "C"G2 | "Dm"F4 "G"G "C"E || "C"G4 "Em"E
 tab: 3/1 5/1 3/1 | 1/1 3/1 0/1 || 3/1 0/1
 ---
 

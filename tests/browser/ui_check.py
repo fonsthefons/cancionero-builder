@@ -553,6 +553,7 @@ def session_checks(page, name):
     ids = page.evaluate("[...document.querySelectorAll('.song')].slice(1, 3).map(s => s.id)")
     page.evaluate(f"localStorage.setItem('{KEY}songs', '{{\"{ids[0]}\": {{\"transpose\": 2}}}}')")
     page.goto(page.url.split("#")[0].split("?")[0] + "?session=" + ",".join(ids) + ",missing")
+    page.wait_for_timeout(500)  # the jump (and the #id it writes) comes after the songs are laid out
     check("shared link replaces the session (unknown ids dropped)",
           page.evaluate(f"localStorage.getItem('{KEY}session')") == json.dumps(ids, separators=(",", ":")))
     check("shared link keeps song changes", "transpose" in page.evaluate(f"localStorage.getItem('{KEY}songs')"))
@@ -677,12 +678,17 @@ def formula_checks(page, context):
             "la mayor parte son fatiga inútil.", "porque pasan aprisa y vuelan", "Ten compasión de tus siervos"], true),
         semitono2Plan(["Tú reduces el hombre a polvo,", "diciendo: «Retornad, hijos de Adán.»",
             "Mil años en tu presencia", "son un ayer, que pasó;", "una vigilia nocturna."], true),
+        ...[["!", ";", ";", "."], [":", "!", ";", ";", "."], [",", ":", ";", ";", "."],
+            [",", "!", ":", ";", "."], [",", "!", ";", ":", "."], [",", "!", ";", ".", ":"]].map((ends) =>
+            semitono2Plan((ends.length === 4 ? [","].concat(ends) : ends).map((e, i) =>
+                ["¡Señor, he oído tu fama", "me ha impresionado tu obra", "En medio de los años, realízala",
+                 "en medio de los años, manifiéstala", "en el terremoto acuérdate de la misericordia"][i] + e), true)),
         semitono2Plan(["a", "b", "c", "d"], true), semitono2Plan(["a"], true),
         chordLineText("Señor, tú has sido nuestro refugio", ["A", "D", "Em"]),
         chordLineText("y él es excelso.", ["Em", "Bm", "(B7)"]),
         versePlan(["a", "b", "c"], {size: 4})]""")
     check(f"semitono rules: {rules}", rules == [
-        ["flexa", 0, 1, 0, 1], [0, 1, "flexa", 0, 1], [0, 1, 0, 1], None,
+        ["flexa", 0, 1, 0, 1], [0, 1, "flexa", 0, 1], *[[0, 1, "flexa", 0, 1]] * 6, [0, 1, 0, 1], None,
         "A".ljust(19) + "D".ljust(8) + "Em", "Em      Bm (B7)", None])
     psalm.locator('[data-action="transpose-up"]').click()
     page.wait_for_timeout(200)

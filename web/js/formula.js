@@ -27,23 +27,32 @@ const formulaBars = new Map(BOOK.formulas.flatMap(([, items, tag]) => (SEMITONO_
 
 // How strongly a line ends: 2 = . ; : ? ! (also before » or a quote), 1 = comma, 0 = none.
 function linePause(text) {
-    const end = text.replace(/[\s»”"’')\]]+$/u, "").slice(-1);
+    const end = lineEnd(text);
     return end && ".;:?!".includes(end) ? 2 : end === "," ? 1 : 0;
+}
+
+// The line's last punctuation mark (after » or a quote), or "".
+function lineEnd(text) {
+    return text.replace(/[\s»”"’')\]]+$/u, "").slice(-1);
 }
 
 // Semitono de 2: bars 1, 2 alternate line by line. An odd verse has one flexa
 // (flexa, 1, 2) on line 1, 3, 5…, never in the last two lines: placed where the
-// lines ending each group (every bar-2 line) end most strongly; ties -> earliest.
+// lines ending each group (every bar-2 line) end most strongly. Ties -> more group
+// ends on . ! ? (the sentence ends), then more on :, then the earliest.
 function semitono2Plan(texts, hasFlexa) {
     const alternate = (count) => Array.from({ length: count }, (_, i) => i % 2);
     if (texts.length % 2 === 0) return alternate(texts.length);
     if (texts.length < 3 || !hasFlexa) return null;
     let best = null;
-    let bestScore = -1;
+    let bestScore = null;
     for (let k = 0; k <= texts.length - 3; k += 2) {
         const plan = [...alternate(k), "flexa", ...alternate(texts.length - k - 1)];
-        const score = plan.reduce((sum, bar, i) => sum + (bar === 1 ? linePause(texts[i]) : 0), 0);
-        if (score > bestScore) [best, bestScore] = [plan, score];
+        const ends = texts.filter((_, i) => plan[i] === 1);
+        const count = (marks) => ends.filter((t) => marks.includes(lineEnd(t) || "-")).length;
+        const score = [ends.reduce((sum, t) => sum + linePause(t), 0), count(".!?"), count(":")];
+        const i = bestScore && score.findIndex((v, j) => v !== bestScore[j]);
+        if (!bestScore || (i >= 0 && score[i] > bestScore[i])) [best, bestScore] = [plan, score];
     }
     return best;
 }
