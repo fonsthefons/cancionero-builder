@@ -9,8 +9,10 @@ melody: |
 tab: 2/1 0/1 | 2/1 0/1 3/2 0/1 | 2/1 3/1 2/1 | 3/1 2/1 0/1 2/1 | 3/1 ||
 ---
 
-      D                    Em                A           D       G     Em     A(D)
-Sobre ti, Jerusalén, sobre ti, Jerusalén, amanecerá el Señor, amanecerá el Señor.
+      D                    Em
+Sobre ti, Jerusalén, sobre ti, Jerusalén,
+A           D       G     Em     A(D)
+amanecerá el Señor, amanecerá el Señor.
 G         A      D   B7     Em      A
 Su gloria aparecerá, aparecerá sobre ti.
 G                A      D    B7      Em      A

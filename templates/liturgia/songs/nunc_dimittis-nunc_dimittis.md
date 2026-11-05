@@ -8,10 +8,14 @@ melody: |
 tab: 3/2 3/2 3/2 0/2 2/3 | 0/2 3/2 3/2 0/1 2/1 0/1 3/2 ||
 ---
 
-D           A      D                          A
-Sálvanos, Señor, despiertos, protégenos mientras dormimos,
-G        A        D    G    A          D                     A  D
-para que velemos con Cristo y descansemos en paz. (T. P.: Aleluya)
+D           A      D
+Sálvanos, Señor, despiertos,
+                  A
+protégenos mientras dormimos,
+G        A        D    G
+para que velemos con Cristo
+A          D                     A  D
+y descansemos en paz. (T. P.: Aleluya)
 
 D                      Bm
 Ahora, Señor, según tu promesa,
