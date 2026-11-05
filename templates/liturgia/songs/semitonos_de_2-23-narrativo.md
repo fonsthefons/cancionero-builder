@@ -5,7 +5,7 @@ song_tags:
     - semitonos_2
 melody: |
   K:C
-  "C"G8 E "G"G "Am"A2 | "Dm"F8 "G"G D "C"E2 || "C"G8 "Em"E
+  "C"G4 E "G"G "Am"A2 | "Dm"F4 "G"G D "C"E2 || "C"G4 "Em"E
 tab: 3/1 0/1 3/1 5/1 | 1/1 3/1 3/2 0/1 || 3/1 0/1
 ---
 

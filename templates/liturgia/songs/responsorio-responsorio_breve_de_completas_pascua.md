@@ -7,7 +7,7 @@ song_tags:
     - pascua
 melody: |
   K:D
-  "D"F8 E D "A"E | "G"B,8 A, B, "D"D ||
+  "D"F4 E D "A"E | "G"B,4 A, B, "D"D ||
 tab: 2/1 0/1 3/2 0/1 | 0/2 2/3 0/2 3/2 ||
 ---
 

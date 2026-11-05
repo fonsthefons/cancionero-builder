@@ -482,6 +482,20 @@ read as images; the text layer is OCR noise).
 - Checked: check_salterio 0 missing; `cancionero.py build cancionero-liturgia` 273 songs;
   pytest 46. Book not committed/published.
 
+## 2026-11-05 — Breves 8 -> 4; flexa ties by punctuation (branch breves-and-flexa)
+- User asked: the breve (reciting note, `E8`) lasts 4 in every semitono (de 2/3/4, para
+  Benedictus/Magnificat) and responsorio breve (also the 2 de Completas: same melody); every 8
+  -> 4 (Nistalmata's second long notes too). `scratch/halve_breves.py <songs dirs> [--write]`
+  (skips quoted chord names): 54 files / 180 notes each in hymn_books/cancionero-liturgia/songs
+  and templates/liturgia/songs.
+- formula.js `semitono2Plan`: score unchanged; ties -> more group ends on . ! ?, then on :,
+  then earliest (the user's 6 examples: ":" beats ";", "!" beats ":"). ui_check has them +
+  the 2 old Salmo 89 examples.
+- ui_check "shared link … jumps to the first song" failed on liturgia-real (273 songs: the
+  jump comes later than the check read the URL); waits 500 ms now.
+- Checked: ui_check liturgia-real 228 passed; play_check all passed; pytest 46.
+  Real book rebuilt, not committed/published.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
