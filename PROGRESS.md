@@ -415,6 +415,23 @@ read as images; the text layer is OCR noise).
   216 passed; pytest 45 (play-button counts added to test_melody / test_psalm_formulas).
 - The real book is not rebuilt/published with it yet.
 
+## 2026-11-05 — Fórmula titles and file names (branch formula-titles)
+- User asked: fórmula titles "<Group>: (n) <name>" (n = old number, to find it in the PDF)
+  for every fórmula group, and file names to match. `scratch/rename_formulas.py <songs>
+  <tags.yaml> [--apply]` (labels from tags.yaml; "Tonos Rectos" written "Tonos rectos"):
+  64 files in hymn_books/cancionero-liturgia/songs and templates/liturgia/songs, e.g.
+  semitonos_2-01-suplicante_1.md -> semitonos_de_2-01-suplicante_1.md. Natural order keeps
+  (1)…(26) in order; they now sort under R/S/T instead of first. Psalms' saved fórmula
+  choices and old share links point at old ids, so they fall back to "Choose fórmula…".
+- formula.js: the dialog shows "(1) Suplicante 1" under its group heading (prefix hidden
+  there only).
+- ui_check then failed "A+ keeps the song on screen" (Chromium phone, top=854 > 844): the
+  check's far song is now a short fórmula with a staff, and Chromium's own anchoring drifts a
+  screen there. scroll-anchor.js (until now Safari only) now runs in every browser.
+- Checked: ui_check liturgia-real 216, liturgia-book 202, cancionero 192, hakuna 192,
+  pagano 190 (all 0 failed); play_check 26; pytest 45.
+- The book's renamed files are local in hymn_books/cancionero-liturgia, not published yet.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

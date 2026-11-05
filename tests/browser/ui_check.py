@@ -84,8 +84,8 @@ def skipped_song_checks(context):
     page.evaluate("setTextScale(1.5)")
     page.wait_for_timeout(500)
     top = page.evaluate(f"{song(far)}.getBoundingClientRect().top")
-    # Safari stays exactly (scroll-anchor.js); Chromium's own anchoring can drift
-    # up to a screen. (Before skipping, A+ lost the place by thousands of px.)
+    # scroll-anchor.js keeps it in every browser (Chromium's own anchoring drifted a
+    # screen among the liturgia fórmulas). Before skipping, A+ lost the place by thousands of px.
     check("A+ keeps the song on screen", 0 <= top < page.viewport_size["height"], f"top={top}")
     page.evaluate("setTextScale(1)")
     page.evaluate("scrollTo(0, 0)")

@@ -41,7 +41,8 @@ BOOK.formulas.forEach(([label, items]) => {
     const group = document.createElement("section");
     group.append(Object.assign(document.createElement("h4"), { textContent: label }));
     items.forEach(([id, title]) => {
-        const option = Object.assign(document.createElement("button"), { textContent: title });
+        // "Semitonos de 2: (1) Suplicante 1" shows as "(1) Suplicante 1" under its group heading
+        const option = Object.assign(document.createElement("button"), { textContent: title.replace(/^[^:]*: (?=\(\d+\))/, "") });
         Object.assign(option.dataset, { formula: id, search: normalizeText(`${label} ${title}`) });
         group.append(option);
     });

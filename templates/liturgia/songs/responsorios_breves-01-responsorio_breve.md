@@ -1,5 +1,5 @@
 ---
-title: 1 Responsorio breve
+title: "Responsorios breves: (1) Responsorio breve"
 song_tags:
   formulas:
     - responsorios_breves
