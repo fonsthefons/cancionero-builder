@@ -430,7 +430,8 @@ read as images; the text layer is OCR noise).
   screen there. scroll-anchor.js (until now Safari only) now runs in every browser.
 - Checked: ui_check liturgia-real 216, liturgia-book 202, cancionero 192, hakuna 192,
   pagano 190 (all 0 failed); play_check 26; pytest 45.
-- The book's renamed files are local in hymn_books/cancionero-liturgia, not published yet.
+- Then (user asked) `cancionero.py publish` cancionero-liturgia: 250 songs, with the renamed
+  fórmulas and the "▶ Melody" button; Pages built.
 
 ## Blocked
 
