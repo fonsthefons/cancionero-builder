@@ -141,6 +141,24 @@ def test_melody(tmp_path):
     assert "ABCJS" not in html and "renderMelody" not in html  # no 480 kB library
 
 
+def test_psalm_formulas(tmp_path):
+    songs = {
+        "salmo": SONG.format(title="Salmo 1", extra="song_tags:\n  salmos: []\n"),
+        "f1": SONG.format(title="Glorioso", extra="song_tags:\n  formulas: [semitonos_2]\n"
+                          + MELODY.format(tab="4/4 0/3 2/3 | 4/4 2/4 0/4")),
+        "otra": SONG.format(title="Otra", extra=""),
+    }
+    on = write_book(tmp_path / "on", "title: T\npsalm_tags: [salmos]\nformula_tag: formulas\n", songs)
+    build_book(on)
+    html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
+    assert html.count('data-action="formula-pick"') == 1 and "function setFormula" in html
+    assert '"formulas": [["Semitonos 2", [["song-f1", "Glorioso"]]]]' in html
+    off = write_book(tmp_path / "off", "title: T\n", songs)
+    build_book(off)
+    html = (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
+    assert 'data-action="formula-pick"' not in html and "function setFormula" not in html
+
+
 def test_settings_yaml_round_trip(tmp_path):
     settings = {"title": "Cancionero: Misa", "sites": ["ultimate_guitar"], "language_tags": True}
     (tmp_path / "book.yaml").write_text(settings_yaml(settings), encoding="utf-8")

@@ -63,6 +63,11 @@ DEFAULTS = {
     "strict_tags": False,
     # The book's web address, shown in its README (filled in when it is created).
     "url": None,
+    # Psalm fórmulas: songs with one of `psalm_tags` (e.g. [salmos]) get a picker of the
+    # songs tagged `formula_tag` (e.g. formulas); the chosen one's staff, tab and chords
+    # show above the psalm. Off unless both are set.
+    "psalm_tags": [],
+    "formula_tag": None,
 }
 INSTALL_TIPS = ("popup", "banner", "off")
 KEY_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
@@ -149,6 +154,11 @@ def validate(settings):
     sites = settings.get("sites", "all")
     if sites != "all" and not (isinstance(sites, list) and all(isinstance(s, str) for s in sites)):
         errors.append('sites must be "all" or a list such as [ultimate_guitar]')
+    psalm_tags = settings.get("psalm_tags", [])
+    if not (isinstance(psalm_tags, list) and all(isinstance(t, str) for t in psalm_tags)):
+        errors.append("psalm_tags must be a list of tag ids such as [salmos]")
+    if not isinstance(settings.get("formula_tag", ""), (str, type(None))):
+        errors.append("formula_tag must be a tag id such as formulas")
     for name in ("fold_tags", "fold_subtags", "notation_setting", "language_tags", "record_added", "strict_tags"):
         if name in settings and not isinstance(settings[name], bool):
             errors.append(f"{name} must be true or false")

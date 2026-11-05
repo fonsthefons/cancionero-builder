@@ -355,6 +355,24 @@ read as images; the text layer is OCR noise).
   public repo https://github.com/fonsthefons/cancionero-liturgia, Pages
   https://fonsthefons.github.io/cancionero-liturgia/. Name and title chosen without asking.
 
+## 2026-11-05 — Psalm fórmulas (branch psalm-formula)
+- First psalm in the real book: `hymn_books/cancionero-liturgia/songs/salmo-086.md` (Semana III,
+  Jueves, Laudes, Salmo 1; new tag `salmos` in its tags.yaml).
+- book.yaml `psalm_tags` / `formula_tag` (builder/book.py; liturgia: `[salmos]` / `formulas`).
+  render.py: psalms get a "Choose fórmula…" button + `.psalm-formula`; `BOOK.formulas` lists
+  the fórmulas by subtag; `web/js/formula.js` only in such books.
+- formula.js: dialog with search (every word must match group or title; Enter picks the first),
+  "No fórmula", Cancel. The chosen fórmula's staff/tab/chords (copied as built) show above the
+  psalm and follow the psalm's transposition and Do Re Mi. Saved per psalm (songState
+  `formula`). session.js: list shows "Salmo 86 · 25 Glorioso"; share link `id~fórmula`.
+  search.js ignores the copied lines.
+- User's answers: reader chooses (no default yet), all fórmulas + search, key per psalm,
+  Gloria in the psalm file, no antífona, no `*`/`†` marks yet.
+- Checked: pytest 40; ui_check on the real book (local build) 216 passed (new formula_checks;
+  its reload checks run in a second tab: WebKit misses taps on far songs after a reload);
+  screenshots scratch/shots/formula-*.png.
+- The book's changes (psalm, tags, book.yaml, index.html) are local, not committed/published.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

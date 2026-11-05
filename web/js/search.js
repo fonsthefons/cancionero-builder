@@ -22,7 +22,9 @@ function searchText(text) {
 const searchIndex = [...document.querySelectorAll(".song")].map((song) => {
     // Lyric lines only: chord lines would add noise ("am", "do"...). A lyric
     // under a chord line is its .line-pair's own text.
+    // A psalm's fórmula (formula.js) is a copy of another song: not the psalm's words.
     const lines = [...song.querySelectorAll(".lyric-line, .line-pair")]
+        .filter((line) => !line.closest(".psalm-formula"))
         .map((line) => (line.matches(".lyric-line")
             ? line.textContent
             : [...line.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.data).join("")
