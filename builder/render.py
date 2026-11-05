@@ -203,16 +203,17 @@ def cover_html(book):
 
 
 def formula_choices(book, groups):
-    """(psalm songs, fórmulas offered as [[group label, [[song id, title], ...]], ...])
-    from book.yaml psalm_tags / formula_tag; nothing when either is unset or empty."""
+    """(psalm songs, fórmulas offered as [[group label, [[song id, title], ...], tag id], ...])
+    from book.yaml psalm_tags / formula_tag; nothing when either is unset or empty.
+    The tag id is the subtag's (or the tag's, for fórmulas without one)."""
     psalms, formulas = set(), []
     for group in groups:
         if group.tag.id in book.psalm_tags:
             psalms.update(id(song) for song in group.songs)
             psalms.update(id(song) for _, _, songs in group.subgroups for song in songs)
         if group.tag.id == book.formula_tag:
-            parts = ([(group.tag.label, group.songs)] if group.songs else []) + [(label, songs) for _, label, songs in group.subgroups]
-            formulas = [[label, [[song.anchor, song.title] for song in songs]] for label, songs in parts]
+            parts = ([(group.tag.id, group.tag.label, group.songs)] if group.songs else []) + group.subgroups
+            formulas = [[label, [[song.anchor, song.title] for song in songs], tag] for tag, label, songs in parts]
     return (psalms, formulas) if psalms and formulas else (set(), [])
 
 

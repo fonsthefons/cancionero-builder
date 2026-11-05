@@ -153,7 +153,7 @@ def test_psalm_formulas(tmp_path):
     build_book(on)
     html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
     assert html.count('data-action="formula-pick"') == 1 and "function setFormula" in html
-    assert '"formulas": [["Semitonos 2", [["song-f1", "Glorioso"]]]]' in html
+    assert '"formulas": [["Semitonos 2", [["song-f1", "Glorioso"]], "semitonos_2"]]' in html
     assert html.count('class="melody-play"') == 2  # the fórmula, and the psalm (for its fórmula)
     off = write_book(tmp_path / "off", "title: T\n", songs)
     build_book(off)

@@ -449,6 +449,25 @@ read as images; the text layer is OCR noise).
 - Checked: ui_check cancionero 200, hakuna 200, pagano 198, liturgia-real 224 (0 failed); play_check 26;
   pytest 45.
 
+## 2026-11-05 — Chords written over psalms for semitonos (branch psalm-auto-chords)
+- User's rules: one bar per line. De 2: bars 1, 2 alternate; an odd verse has one flexa
+  (flexa, 1, 2) on line 1/3/5…, placed by punctuation; Gloria follows the same rule (flexa on
+  its first line). De 3 / de 4: every verse exactly 3 / 4 lines; de 4's Gloria splits into
+  "Gloria al Padre, y al Hijo" / "y al Espíritu Santo.". "(FLEXA)" in red after the flexa chords.
+- User's answers: first chord over the first letter, the others over the last words (one each);
+  de 3/4 with a verse that doesn't fit -> no chords on the psalm at all (the fórmula still shows
+  above it); only Semitonos de 2/3/4 (not Benedictus/Magnificat, not tonos rectos yet); flexa
+  position = most strongly ended group-end lines (. ; : ? ! = 2, comma = 1), ties -> earliest.
+- render.py `formula_choices`: each BOOK.formulas group now carries its tag id. formula.js:
+  `SEMITONO_BARS` (liturgia's subtag ids), `semitono2Plan`, `versePlan`, `chordLineText`
+  ("(B7)" stays right after its chord), `setPsalmChords` (keeps the built lyrics, rewrites them
+  on each pick). styles.css `.chord-line.flexa::after` (not text, so transpose ignores it).
+- Real book (scratch/liturgia-real): de 2 gives chords on all 135 psalms/cánticos, de 3 on 1
+  (Salmo 99), de 4 on 10. Probe: `scratch/psalm_chords_probe.py`, shot scratch/shots/psalm-chords.png.
+- Checked: pytest 45; ui_check liturgia-real 228 passed (new rule checks with the user's
+  examples); play_check 26.
+- The real book is not rebuilt/published with it yet.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

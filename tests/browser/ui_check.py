@@ -669,6 +669,21 @@ def formula_checks(page, context):
     check("fórmula picked: dialog closed, staff + tab drawn, same chords as the fórmula",
           not dialog.is_visible() and box.locator(".melody svg.melody-tab").count() == 1
           and chords(box) == chords(own), psalm.locator(".formula-pick").text_content())
+    own_lines = psalm.locator(":scope > .lyrics .chord-line")
+    check(f"semitono de 2 writes chords over the psalm: {own_lines.count()} lines", own_lines.count() > 0)
+    # the user's examples: flexa on line 1 / line 3 by punctuation; chords over first and last words
+    rules = page.evaluate("""() => [
+        semitono2Plan(["Aunque uno viva setenta años,", "y el más robusto hasta ochenta,",
+            "la mayor parte son fatiga inútil.", "porque pasan aprisa y vuelan", "Ten compasión de tus siervos"], true),
+        semitono2Plan(["Tú reduces el hombre a polvo,", "diciendo: «Retornad, hijos de Adán.»",
+            "Mil años en tu presencia", "son un ayer, que pasó;", "una vigilia nocturna."], true),
+        semitono2Plan(["a", "b", "c", "d"], true), semitono2Plan(["a"], true),
+        chordLineText("Señor, tú has sido nuestro refugio", ["A", "D", "Em"]),
+        chordLineText("y él es excelso.", ["Em", "Bm", "(B7)"]),
+        versePlan(["a", "b", "c"], {size: 4})]""")
+    check(f"semitono rules: {rules}", rules == [
+        ["flexa", 0, 1, 0, 1], [0, 1, "flexa", 0, 1], [0, 1, 0, 1], None,
+        "A".ljust(19) + "D".ljust(8) + "Em", "Em      Bm (B7)", None])
     psalm.locator('[data-action="transpose-up"]').click()
     page.wait_for_timeout(200)
     check(f"psalm +1 moves the fórmula's chords ({chords(own)} -> {chords(box)}), not the fórmula song's",
@@ -692,7 +707,8 @@ def formula_checks(page, context):
     other_tab.close()
     psalm.locator(".formula-pick").click()
     page.locator(".formula-dialog button[data-formula='']").click()
-    check("'No fórmula' clears it", psalm.locator(".psalm-formula").inner_html() == "")
+    check("'No fórmula' clears it, and the psalm's chords",
+          psalm.locator(".psalm-formula").inner_html() == "" and own_lines.count() == 0)
     page.evaluate(f"removeFromSession('{psalm_id}')")
 
 
