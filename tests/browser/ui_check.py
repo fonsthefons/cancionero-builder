@@ -690,6 +690,13 @@ def formula_checks(page, context):
     check(f"semitono rules: {rules}", rules == [
         ["flexa", 0, 1, 0, 1], [0, 1, "flexa", 0, 1], *[[0, 1, "flexa", 0, 1]] * 6, [0, 1, 0, 1], None,
         "A".ljust(19) + "D".ljust(8) + "Em", "Em      Bm (B7)", None])
+    # a hymn's 3-line Gloria ("Gloria al Padre, gloria al Hijo, / …") splits to fit semitono de 4
+    hymn = page.locator("#song-himno_completas-tiembla_el_frio_de_los_astros")
+    if hymn.count():
+        lines = page.evaluate("""() => { const h = document.getElementById("song-himno_completas-tiembla_el_frio_de_los_astros");
+            setFormula(h, [...formulaBars].find(([, f]) => f.size === 4)[0]);
+            const n = h.querySelectorAll(":scope > .lyrics .chord-line").length; setFormula(h, null); return n; }""")
+        check(f"semitono de 4 on Tiembla el frío (hymn Gloria): {lines} chord lines", lines == 20)
     psalm.locator('[data-action="transpose-up"]').click()
     page.wait_for_timeout(200)
     check(f"psalm +1 moves the fórmula's chords ({chords(own)} -> {chords(box)}), not the fórmula song's",
