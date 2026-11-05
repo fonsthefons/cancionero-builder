@@ -12,6 +12,98 @@ const formulaHtml = new Map(BOOK.formulas.flatMap(([, items]) => items).map(([id
     return [id, (song.querySelector(".melody")?.outerHTML ?? "") + song.querySelector(".lyrics").outerHTML];
 }));
 
+// Chords written over the psalm itself, for semitonos only (tonos rectos: later).
+// Keys are the fórmula subtags of the liturgia book's tags.yaml; value = bars.
+const SEMITONO_BARS = { semitonos_2: 2, semitonos_3: 3, semitonos_4: 4 };
+
+// A semitono's bars as built: "Em Bm | A D Em" + "Flexa: Em D" ->
+// { size: 2, bars: [["Em", "Bm"], ["A", "D", "Em"]], flexa: ["Em", "D"] }
+const formulaBars = new Map(BOOK.formulas.flatMap(([, items, tag]) => (SEMITONO_BARS[tag] ? items : []).map(([id]) => {
+    const lyrics = document.getElementById(id).querySelector(".lyrics");
+    const bars = lyrics.querySelector(".chord-line")?.textContent.split("|").map((bar) => bar.trim().split(/\s+/)) ?? [];
+    const flexa = lyrics.querySelector(".chord-inline")?.textContent.replace(/^[^:]*:/, "").trim().split(/\s+/);
+    return [id, { size: SEMITONO_BARS[tag], bars, flexa }];
+})).filter(([, f]) => f.bars.length === f.size));
+
+// How strongly a line ends: 2 = . ; : ? ! (also before » or a quote), 1 = comma, 0 = none.
+function linePause(text) {
+    const end = text.replace(/[\s»”"’')\]]+$/u, "").slice(-1);
+    return end && ".;:?!".includes(end) ? 2 : end === "," ? 1 : 0;
+}
+
+// Semitono de 2: bars 1, 2 alternate line by line. An odd verse has one flexa
+// (flexa, 1, 2) on line 1, 3, 5…, never in the last two lines: placed where the
+// lines ending each group (every bar-2 line) end most strongly; ties -> earliest.
+function semitono2Plan(texts, hasFlexa) {
+    const alternate = (count) => Array.from({ length: count }, (_, i) => i % 2);
+    if (texts.length % 2 === 0) return alternate(texts.length);
+    if (texts.length < 3 || !hasFlexa) return null;
+    let best = null;
+    let bestScore = -1;
+    for (let k = 0; k <= texts.length - 3; k += 2) {
+        const plan = [...alternate(k), "flexa", ...alternate(texts.length - k - 1)];
+        const score = plan.reduce((sum, bar, i) => sum + (bar === 1 ? linePause(texts[i]) : 0), 0);
+        if (score > bestScore) [best, bestScore] = [plan, score];
+    }
+    return best;
+}
+
+// The bar of each line ("flexa" or an index into bars), or null if the verse doesn't fit.
+// De 3 / de 4: one bar per line, so exactly 3 / 4 lines.
+function versePlan(texts, f) {
+    if (f.size === 2) return semitono2Plan(texts, Boolean(f.flexa));
+    return texts.length === f.size ? texts.map((_, i) => i) : null;
+}
+
+// First chord over the first letter; the others over the last words, one word
+// each (the last chord on the last word), moved right if they would touch.
+// An optional chord "(B7)" stays right after the one before it.
+function chordLineText(text, bar) {
+    const starts = [...text.matchAll(/\S+/g)].map((m) => m.index + Math.max(0, m[0].search(/\p{L}/u)));
+    const chords = bar.join(" ").split(/ (?!\()/);
+    let line = "";
+    chords.forEach((chord, i) => {
+        const word = i === 0 ? 0 : starts.length - chords.length + i;
+        const col = Math.max(starts[word] ?? 0, line ? line.length + 1 : 0);
+        line = line.padEnd(col) + chord;
+    });
+    return line;
+}
+
+function chordedLine({ text, bold }, chords, flexa) {
+    const pair = Object.assign(document.createElement("div"), { className: bold ? "line-pair bold" : "line-pair" });
+    const line = Object.assign(document.createElement("div"), { className: flexa ? "chord-line flexa" : "chord-line" });
+    // separators in .sep spans, as lyrics.py chord_line_html writes them (transpose.js relies on it)
+    line.innerHTML = chordLineText(text, chords).replace(/[()|]/g, '<span class="sep">$&</span>');
+    pair.append(line, text);
+    return pair;
+}
+
+// The psalm's lyrics as built, put back before each fórmula's chords.
+const psalmLyrics = new WeakMap();
+
+function setPsalmChords(psalm, id) {
+    const lyrics = psalm.querySelector(":scope > .lyrics");
+    if (!psalmLyrics.has(psalm)) psalmLyrics.set(psalm, lyrics.innerHTML);
+    lyrics.innerHTML = psalmLyrics.get(psalm);
+    const f = formulaBars.get(id);
+    if (!f || lyrics.querySelector(".chord-line, .chord-inline")) return; // a psalm with its own chords keeps them
+    const verses = [...lyrics.querySelectorAll(".verse")].map((verse) => {
+        const lines = [...verse.children].map((line) => ({ text: line.textContent, bold: line.classList.contains("bold") }));
+        // Semitono de 4's Gloria: "Gloria al Padre, y al Hijo" / "y al Espíritu Santo." / …
+        if (f.size === 4 && lines.length === 3 && normalizeText(lines[0].text).startsWith("gloria al padre")) {
+            const [first, second] = lines[0].text.split(/,?\s+(?=y al Esp)/);
+            if (second) lines.splice(0, 1, { ...lines[0], text: first }, { ...lines[0], text: second });
+        }
+        return { verse, lines, plan: versePlan(lines.map((line) => line.text), f) };
+    });
+    if (f.size !== 2 && verses.some(({ plan }) => !plan)) return; // de 3 / de 4: every verse must fit
+    verses.forEach(({ verse, lines, plan }) => {
+        if (plan) verse.replaceChildren(...lines.map((line, i) => (plan[i] === "flexa"
+            ? chordedLine(line, f.flexa, true) : chordedLine(line, f.bars[plan[i]], false))));
+    });
+}
+
 function setFormula(psalm, id) {
     if (!formulaHtml.has(id)) id = null;
     songState.set(psalm, "formula", id);
@@ -20,6 +112,7 @@ function setFormula(psalm, id) {
     const box = psalm.querySelector(".psalm-formula");
     if (typeof playing !== "undefined" && playing?.song === psalm) stopMelody(); // melody.js
     box.innerHTML = id ? formulaHtml.get(id) : "";
+    setPsalmChords(psalm, id);
     // Not yet defined while the page loads; melody.js and transpose.js then do this themselves.
     if (typeof melodyObserver !== "undefined") melodyObserver.observe(psalm);
     if (typeof renderChords === "function") renderChords(psalm);

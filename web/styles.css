@@ -710,6 +710,13 @@ body.drawer-open {
     color: var(--ink);
 }
 
+/* A psalm line sung to the semitono's flexa (formula.js). Not text, so
+   transpose.js leaves it alone. */
+.chord-line.flexa::after {
+    content: " (FLEXA)";
+    color: #c62828;
+}
+
 /* Choruses (lines between `**` lines in the song file). Bold monospace keeps
    the same character width, so chords stay on their letters. */
 .lyric-line.bold,
