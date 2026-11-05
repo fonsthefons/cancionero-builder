@@ -41,6 +41,8 @@ DEFAULTS = {
     # Contents page: tags (and their subtags) start folded; tap to open.
     "fold_tags": True,
     "fold_subtags": True,
+    # Contents page: the "All Songs" list starts folded too.
+    "fold_all_songs": False,
     # Settings menu offers chord names as Do Re Mi.
     "notation_setting": True,
     # First visit on the website: how to add the book to the home screen.
@@ -159,7 +161,7 @@ def validate(settings):
         errors.append("psalm_tags must be a list of tag ids such as [salmos]")
     if not isinstance(settings.get("formula_tag", ""), (str, type(None))):
         errors.append("formula_tag must be a tag id such as formulas")
-    for name in ("fold_tags", "fold_subtags", "notation_setting", "language_tags", "record_added", "strict_tags"):
+    for name in ("fold_tags", "fold_subtags", "fold_all_songs", "notation_setting", "language_tags", "record_added", "strict_tags"):
         if name in settings and not isinstance(settings[name], bool):
             errors.append(f"{name} must be true or false")
     return errors

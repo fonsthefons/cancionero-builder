@@ -2,6 +2,8 @@
 # is placed there with `horas:` in its file, e.g.
 #   horas: [semana_i/domingo/laudes/himno, "*visperas/magnificat"]
 label: Liturgia de las Horas
+lists:   # extra sections: one part of every hour, e.g. Himnos > Laudes > "Lunes I: 5. Alfarero…"
+  Himnos: {part: Himno, groups: [Laudes, Vísperas, Completas]}
 parts:   # reusable lists of parts (anchors); not shown themselves
   laudes: &laudes [Apertura, Himno, Salmo 1, Cántico, Salmo 2, Responsorio, Benedictus, Padre Nuestro]
   visperas: &visperas [Apertura, Himno, Salmo 1, Salmo 2, Cántico, Responsorio, Magnificat, Padre Nuestro]

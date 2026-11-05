@@ -14,8 +14,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from builder import create  # noqa: E402
+from builder.book import load_book  # noqa: E402
 from builder.build import build_book, load_book_songs  # noqa: E402
-from builder.horas import load_horas  # noqa: E402
+from builder.horas import load_horas, place  # noqa: E402
 from builder.lyrics import lyric_line_html  # noqa: E402
 from builder.songs import SongError  # noqa: E402
 from test_builder import SONG, write_book  # noqa: E402
@@ -91,6 +92,33 @@ def test_horas_contents(scratch):
     assert '<details class="subtag-index" id="horas-semana_i-domingo"><summary><h4>Domingo</h4>' in index
     nav = html[html.index('<ul class="nav">'):]
     assert '<a class="nav-subtag" href="#horas-semana_ii">Semana II</a>' in nav and "#horas-completas" not in nav
+
+
+def test_place():
+    assert place(["Semana I", "Lunes", "Laudes"], "Laudes") == "Lunes I"
+    assert place(["Semana II", "Domingo", "Primeras Vísperas"], "Vísperas") == "Domingo II (primeras)"
+    assert place(["Completas", "Domingo (primeras Completas)"], "Completas") == "Domingo (primeras)"
+    assert place(["Completas", "Lunes"], "Completas") == "Lunes"
+
+
+def test_himnos_list_and_folded_all_songs(scratch):
+    book = write_book(scratch, songs={
+        "a": SONG.format(title="Alfarero", extra="horas: [semana_ii/lunes/laudes/himno, semana_i/lunes/laudes/himno]\n"),
+        "b": SONG.format(title="Luz", extra='horas: ["*primeras_visperas/himno", completas/lunes/himno]\n'),
+    })
+    (scratch / "book.yaml").write_text((scratch / "book.yaml").read_text(encoding="utf-8") + "fold_all_songs: true\n",
+                                       encoding="utf-8")
+    book.horas_file.write_text(HORAS.replace(
+        "tree:", "lists:\n  Himnos: {part: Himno, groups: [Laudes, Vísperas, Completas]}\ntree:"), encoding="utf-8")
+    build_book(load_book(scratch))  # reloaded: book.yaml changed
+    html = (scratch / "index.html").read_text(encoding="utf-8")
+    himnos = html[html.index('id="list-himnos"'):html.index('id="all-songs"')]
+    laudes = himnos[himnos.index('id="list-himnos-laudes"'):himnos.index('id="list-himnos-visperas"')]
+    assert laudes.index("Lunes I: 1. Alfarero") < laudes.index("Lunes II: 1. Alfarero")  # tree order
+    assert "Domingo I (primeras): 2. Luz" in himnos and "Domingo II (primeras): 2. Luz" in himnos
+    assert himnos.index('id="list-himnos-completas"') < himnos.index("Lunes: 2. Luz")
+    assert '<details class="tag-index" id="all-songs">' in html  # folded (no `open`)
+    assert '<a class="nav-tag" href="#list-himnos">Himnos</a>' in html
 
 
 def test_flexa_label():
