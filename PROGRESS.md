@@ -530,6 +530,15 @@ read as images; the text layer is OCR noise).
   (liturgia's 2nd song is now text-only, so the old pick had no chord line).
 - Checked: pytest 48; ui_check liturgia (real) 228, scratch cancionero 200.
 
+## 2026-11-05 — Fórmula picker on hymns without chords (branch hymn-formulas)
+- User asked: chordless hymns in cancionero-liturgia get the semitono picker, like salmos.
+- book.py `formula_parts` (list of horas.yaml parts, e.g. [Himno]); render.py
+  `formula_choices` adds songs in those parts of the filled horas tree with no chord line.
+  formula.js unchanged.
+- Book repo book.yaml: `formula_parts: [Himno]`; rebuilt (36 of 65 hymns get the picker),
+  not committed/published.
+- Checked: pytest 48 (test_psalm_formulas covers a hymn with and without chords).
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

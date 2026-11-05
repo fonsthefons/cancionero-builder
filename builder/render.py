@@ -10,7 +10,7 @@ from html import escape
 from pathlib import Path
 
 from .horas import part_list
-from .lyrics import lyrics_columns, lyrics_html
+from .lyrics import is_chord_line, lyrics_columns, lyrics_html
 from .text import slug
 
 PLACEHOLDER_RE = re.compile(r"{{\s*(\w+)\s*}}")
@@ -228,11 +228,16 @@ def cover_html(book):
     return "\n".join(parts)
 
 
-def formula_choices(book, groups):
+def formula_choices(book, groups, horas=None):
     """(psalm songs, fórmulas offered as [[group label, [[song id, title], ...], tag id], ...])
     from book.yaml psalm_tags / formula_tag; nothing when either is unset or empty.
-    The tag id is the subtag's (or the tag's, for fórmulas without one)."""
+    The tag id is the subtag's (or the tag's, for fórmulas without one).
+    Songs without chords in a `formula_parts` part of the filled horas tree count as psalms."""
     psalms, formulas = set(), []
+    wanted = {slug(p) for p in book.formula_parts}
+    if horas and wanted:
+        psalms.update(id(song) for part in horas.parts() if slug(part.label) in wanted
+                      for song in part.songs if not any(map(is_chord_line, song.body.splitlines())))
     for group in groups:
         if group.tag.id in book.psalm_tags:
             psalms.update(id(song) for song in group.songs)
@@ -263,7 +268,7 @@ def render_book(book, songs, groups, web_dir, horas=None):
     # abcjs (480 kB) and melody.js only in books with a song `melody:`.
     # formula.js only in books with psalm fórmulas (book.yaml psalm_tags / formula_tag).
     melodies = any(song.melody for song in songs)
-    psalms, formulas = formula_choices(book, groups)
+    psalms, formulas = formula_choices(book, groups, horas)
     skip = {"core.js"} | (set() if melodies else {"melody.js"}) | (set() if formulas else {"formula.js"})
     scripts = [web / "js" / "core.js"] + sorted(p for p in (web / "js").glob("*.js") if p.name not in skip)
     if melodies:
