@@ -83,6 +83,9 @@ square reciting note), `^F` `_B` `=F` accidentals, `"Em"` the chord over the nex
 `|` and `||` bars. `tab` is one `fret/string` per note (string 1 = high e … 6 = low E;
 `|` tokens are ignored); the build stops when the counts differ. Frets move with the
 transposition on the same string (12 frets up when they would go below 0).
+A "▶ Melody" button in the song's controls plays the melody (not the chords) with an
+organ-like tone made in the browser (works offline), at quarter = 80 unless the melody sets
+`Q:`, in the key on screen, lighting each note; a psalm's button plays its chosen fórmula.
 
 Songs are numbered in title order; numbers in titles count as numbers ("2 ..." before "10 ...").
 

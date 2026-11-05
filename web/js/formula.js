@@ -18,6 +18,7 @@ function setFormula(psalm, id) {
     psalm.querySelector(".formula-pick").textContent =
         id ? `Fórmula: ${document.getElementById(id).dataset.title}` : "Choose fórmula…";
     const box = psalm.querySelector(".psalm-formula");
+    if (typeof playing !== "undefined" && playing?.song === psalm) stopMelody(); // melody.js
     box.innerHTML = id ? formulaHtml.get(id) : "";
     // Not yet defined while the page loads; melody.js and transpose.js then do this themselves.
     if (typeof melodyObserver !== "undefined") melodyObserver.observe(psalm);

@@ -143,6 +143,15 @@ def melody_html(song):
     return f'<div class="melody" data-abc="{escape(abc)}" data-tab="{escape(song.tab or "")}"></div>\n'
 
 
+PLAY_HTML = '<button class="melody-play" aria-label="Play melody">▶ Melody</button>\n'
+
+
+def with_play(controls):
+    """The song's controls plus melody.js's play / pause button, at the end of the row."""
+    head, tail = controls.rsplit("</div>", 1)
+    return f"{head}  {PLAY_HTML}</div>{tail}"
+
+
 PSALM_HTML = ('<button class="formula-pick" data-action="formula-pick">Choose fórmula…</button>\n'
               '<div class="psalm-formula"></div>\n')
 
@@ -151,7 +160,10 @@ def song_html(song, controls, psalm=False):
     # --chars (widest line) lets CSS size the lyrics so every line fits the screen.
     # data-title / data-autor: plain values for the session list and search.
     # psalm: a fórmula picker, and room for the chosen fórmula (web/js/formula.js).
+    # A psalm's play button shows only with a fórmula (CSS .song:has(.melody)).
     autor = f' data-autor="{escape(song.autor)}"' if song.autor else ""
+    if song.melody or psalm:
+        controls = with_play(controls)
     return (
         f'<article class="song" id="{song.anchor}" data-title="{escape(song.title)}"{autor} '
         f'style="--chars: {lyrics_columns(song.body)}">\n'
