@@ -571,7 +571,7 @@ def reload(page):
 
 def persistence_checks(page):
     abba = "#" + page.evaluate("document.querySelector('.song .chord-line').closest('.song').id")
-    second = page.locator(".song").nth(1)  # A ti te alabo
+    second = page.locator(".song:has(.chord-line)").nth(1)  # first chorded song after Abba; books may start with text-only songs
     third = page.locator(".song").nth(2)
     first_chord = lambda: page.inner_text(f"{abba} .chord-line")  # noqa: E731
     original_chord = first_chord()

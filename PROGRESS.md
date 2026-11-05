@@ -509,6 +509,27 @@ read as images; the text layer is OCR noise).
   este nuevo día!".
 - Checked: pytest 48; ui_check liturgia-real 228. Real book rebuilt, not committed/published.
 
+## 2026-11-05 — Check liturgia salterio against Liturgia CEE
+
+- Liturgia CEE app: content is encrypted (Realm DB, Environments.bin) and behind login;
+  not used. Copies of its cache were deleted from scratch/.
+- liturgiadelashoras.github.io = old hymn edition (matches our repo). eltestigofiel.org
+  matches the app (checked: Jueves III Laudes "Autor del cielo y el suelo").
+- scratch/cee/: etf.py (fetch+parse, pages cached in etf/), compare.py → report.md,
+  site.json; plan.py (which CEE hymns exist in the repo).
+- Result over 240 parts (Laudes, Vísperas, Completas, 4 weeks): all salmos/cánticos match;
+  36 himnos differ. Only 2 of the 36 CEE hymns are already songs in the repo.
+- User's choice: CEE is right; replace conflicts, delete old text-only hymns, keep the chorded
+  "Alegre la mañana" and "Cuando la luz del sol es ya poniente" untagged; for double-tagged
+  chorded hymns keep only the CEE slot.
+- Book repo, branch `cee-himnos` (committed locally, not pushed/published): 34 new text-only
+  hymns written by scratch/cee/gen_hymns.py from the site text; 21 old hymns `git rm`;
+  11 files retagged with Edit (Como el niño renamed to himno_completas-…).
+- compare.py after: 240 parts match, 0 differ.
+- tests/browser/ui_check.py: the per-song chords check now picks the 2nd song *with chords*
+  (liturgia's 2nd song is now text-only, so the old pick had no chord line).
+- Checked: pytest 48; ui_check liturgia (real) 228, scratch cancionero 200.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
