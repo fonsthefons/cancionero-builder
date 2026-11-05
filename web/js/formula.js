@@ -100,8 +100,10 @@ function setPsalmChords(psalm, id) {
     const verses = [...lyrics.querySelectorAll(".verse")].map((verse) => {
         const lines = [...verse.children].map((line) => ({ text: line.textContent, bold: line.classList.contains("bold") }));
         // Semitono de 4's Gloria: "Gloria al Padre, y al Hijo" / "y al Espíritu Santo." / …
+        // or, in hymns, "Gloria al Padre," / "gloria al Hijo," / "gloria al Espíritu Santo," / …
         if (f.size === 4 && lines.length === 3 && normalizeText(lines[0].text).startsWith("gloria al padre")) {
-            const [first, second] = lines[0].text.split(/,?\s+(?=y al Esp)/);
+            const t = lines[0].text;
+            const [, first, second] = t.match(/^(.*?),?\s+(y al Esp.*)$/) || t.match(/^(.*?,)\s+(.+)$/) || [];
             if (second) lines.splice(0, 1, { ...lines[0], text: first }, { ...lines[0], text: second });
         }
         return { verse, lines, plan: versePlan(lines.map((line) => line.text), f) };

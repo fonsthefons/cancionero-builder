@@ -539,6 +539,14 @@ read as images; the text layer is OCR noise).
   not committed/published.
 - Checked: pytest 48 (test_psalm_formulas covers a hymn with and without chords).
 
+## 2026-11-05 — Semitono de 4 on hymn Glorias (branch hymn-gloria-split)
+
+- User: "Tiembla el frío de los astros" got no de-4 chords; its Gloria is 3 lines
+  ("Gloria al Padre, gloria al Hijo, / gloria al Espíritu Santo, / por los siglos…").
+- formula.js: the 3-line Gloria's first line splits before "y al Esp…", else at its first comma.
+- ui_check: new check (de 4 on Tiembla el frío -> 20 chord lines).
+- Checked: ui_check liturgia-real 230 passed.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
