@@ -349,6 +349,11 @@ read as images; the text layer is OCR noise).
   600) while frets on one string touch (Cantad al Señor bar 2). ui_check checks shiftFret.
 - Checked: pytest 39 passed; check_all 0 problems; ui_check scratch/liturgia-book 202 passed.
 - Item 2 (chords placed right in the hymns) is the user's manual check, not done here.
+- Merged (PR #4). Then the real book (user asked for "the gh page"):
+  `scratch/liturgia/new_liturgia_book.py` -> `~/Documents/programs/hymn_books/cancionero-liturgia`
+  (template liturgia, 115 songs, title "Cancionero - Liturgia de las Horas", banner install tip),
+  public repo https://github.com/fonsthefons/cancionero-liturgia, Pages
+  https://fonsthefons.github.io/cancionero-liturgia/. Name and title chosen without asking.
 
 ## Blocked
 
