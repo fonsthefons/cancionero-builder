@@ -170,7 +170,12 @@ function playMelody(element) {
         drawMelody(element);
     }
     const tune = melodyTunes.get(element);
-    audio ??= new AudioContext();
+    // iOS Safari leaves the context "interrupted"/suspended after the app is backgrounded,
+    // and resume() can't revive it: start a fresh one (this runs inside the tap).
+    if (audio?.state !== "running") {
+        audio?.close();
+        audio = new AudioContext();
+    }
     audio.resume();
     tune.setUpAudio({ chordsOff: true });
     const timer = new ABCJS.TimingCallbacks(tune, {
