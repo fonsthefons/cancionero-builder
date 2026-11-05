@@ -19,13 +19,20 @@ let session = (() => {
 
 const songTitle = (id) => document.getElementById(id).dataset.title;
 
+// A psalm's chosen fórmula (formula.js): shown with it and kept in shared links.
+const sessionFormula = (id) => {
+    const formula = songState.all[id]?.formula;
+    return formula && document.getElementById(formula) ? formula : null;
+};
+const sessionLabel = (id) => songTitle(id) + (sessionFormula(id) ? ` · ${songTitle(sessionFormula(id))}` : "");
+
 function renderSession() {
     const list = document.querySelector(".session-list");
     list.replaceChildren(...session.map((id) => {
         const item = document.createElement("li");
         item.dataset.song = id;
 
-        const link = Object.assign(document.createElement("a"), { href: "#" + id, textContent: songTitle(id) });
+        const link = Object.assign(document.createElement("a"), { href: "#" + id, textContent: sessionLabel(id) });
 
         const remove = Object.assign(document.createElement("button"), { textContent: "✕" });
         Object.assign(remove.dataset, { action: "session-remove", song: id });
@@ -88,10 +95,11 @@ onAction("session-clear", () => {
 });
 
 // Share: a link with ?session=id1,id2 that replaces the opener's session
-// (only the session; their settings and song changes stay).
+// (only the session and the fórmulas of its psalms, id~fórmula; their other
+// settings and song changes stay).
 onAction("session-share", () => {
     const url = new URL(location.pathname, location.href);
-    url.searchParams.set("session", session.join(","));
+    url.searchParams.set("session", session.map((id) => (sessionFormula(id) ? `${id}~${sessionFormula(id)}` : id)).join(","));
     const text = `Someone shared a song session with you (${document.title})`;
     const copy = () => (navigator.clipboard?.writeText(`${text}\n${url.href}`) ?? Promise.reject())
         .then(() => alert("Link copied"), () => prompt("Copy this link:", url.href));
@@ -104,7 +112,12 @@ onAction("session-share", () => {
 
 const shared = new URLSearchParams(location.search).get("session");
 if (shared !== null) {
-    session = [...new Set(shared.split(","))].filter((id) => document.getElementById(id)?.classList.contains("song"));
+    const entries = shared.split(",").map((entry) => entry.split("~"));
+    entries.forEach(([id, formula]) => {
+        const psalm = document.getElementById(id);
+        if (formula && psalm?.querySelector(".formula-pick") && typeof setFormula === "function") setFormula(psalm, formula);
+    });
+    session = [...new Set(entries.map(([id]) => id))].filter((id) => document.getElementById(id)?.classList.contains("song"));
     prefs.set(SESSION_KEY, JSON.stringify(session));
     try {
         history.replaceState(null, "", location.pathname + (session.length ? "#" + session[0] : ""));

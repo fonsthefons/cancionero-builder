@@ -150,6 +150,7 @@ def run(engine_name, engine):
         if device == "phone":
             skipped_song_checks(context)
             melody_checks(page)
+            formula_checks(page, context)
             session_checks(page, name)
             persistence_checks(page)
             autoscroll_checks(page)
@@ -598,6 +599,55 @@ def melody_checks(page):
     moves = page.evaluate("[[0,1,-1],[0,2,-1],[1,3,-3],[0,6,-1],[2,1,-12]].map(a => shiftFret(...a))")
     check(f"tab frets below the nut move string: {moves}",
           moves == [[4, 2], [3, 3], [3, 4], [11, 6], [4, 4]], moves)
+
+
+def formula_checks(page, context):
+    """Books with psalm fórmulas (formula.js): pick by search, transpose with the
+    psalm, remembered, shown in the session and carried by a shared link."""
+    psalm = page.locator(".song:has(.formula-pick)").first
+    if not psalm.count():
+        return
+    psalm_id = psalm.get_attribute("id")
+    psalm.scroll_into_view_if_needed()
+    psalm.locator(".formula-pick").click()
+    dialog = page.locator(".formula-dialog")
+    dialog.locator("input").fill("glorioso")
+    visible = dialog.locator(".formula-options button:visible")
+    check(f"fórmula search 'glorioso': {visible.count()} match", visible.count() == 1)
+    formula_id = visible.first.get_attribute("data-formula")
+    dialog.locator("input").press("Enter")
+    page.wait_for_timeout(400)
+    box = psalm.locator(".psalm-formula")
+    chords = lambda loc: loc.locator(".chord-line").first.text_content()  # noqa: E731
+    own = page.locator(f"#{formula_id}")
+    check("fórmula picked: dialog closed, staff + tab drawn, same chords as the fórmula",
+          not dialog.is_visible() and box.locator(".melody svg.melody-tab").count() == 1
+          and chords(box) == chords(own), psalm.locator(".formula-pick").text_content())
+    psalm.locator('[data-action="transpose-up"]').click()
+    page.wait_for_timeout(200)
+    check(f"psalm +1 moves the fórmula's chords ({chords(own)} -> {chords(box)}), not the fórmula song's",
+          chords(box) != chords(own))
+    psalm.locator('[data-action="transpose-reset"]').click()
+    page.evaluate(f"addToSession('{psalm_id}')")
+    label = page.locator(f'.session-list li[data-song="{psalm_id}"] a').text_content()
+    check(f"session shows the psalm with its fórmula: {label}", "·" in label)
+    # Reloads in a second tab: the next checks expect this page as it was (WebKit
+    # misses taps on far songs after a reload, while skipped songs get laid out).
+    base = page.url.split("?")[0].split("#")[0]
+    other_tab = context.new_page()
+    other_tab.goto(base)
+    other_tab.wait_for_timeout(300)
+    check("fórmula remembered after reload", other_tab.locator(f"#{psalm_id} .psalm-formula .melody").count() == 1)
+    other = page.locator(".formula-dialog .formula-options button").nth(1).get_attribute("data-formula")
+    other_tab.goto(base + f"?session={psalm_id}~{other}")
+    other_tab.wait_for_timeout(300)
+    check("shared link sets the psalm's fórmula",
+          other == other_tab.evaluate(f"songState.get(document.getElementById('{psalm_id}'), 'formula')"))
+    other_tab.close()
+    psalm.locator(".formula-pick").click()
+    page.locator(".formula-dialog button[data-formula='']").click()
+    check("'No fórmula' clears it", psalm.locator(".psalm-formula").inner_html() == "")
+    page.evaluate(f"removeFromSession('{psalm_id}')")
 
 
 def parseFloat(value):

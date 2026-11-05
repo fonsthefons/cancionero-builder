@@ -143,9 +143,14 @@ def melody_html(song):
     return f'<div class="melody" data-abc="{escape(abc)}" data-tab="{escape(song.tab or "")}"></div>\n'
 
 
-def song_html(song, controls):
+PSALM_HTML = ('<button class="formula-pick" data-action="formula-pick">Choose fórmula…</button>\n'
+              '<div class="psalm-formula"></div>\n')
+
+
+def song_html(song, controls, psalm=False):
     # --chars (widest line) lets CSS size the lyrics so every line fits the screen.
     # data-title / data-autor: plain values for the session list and search.
+    # psalm: a fórmula picker, and room for the chosen fórmula (web/js/formula.js).
     autor = f' data-autor="{escape(song.autor)}"' if song.autor else ""
     return (
         f'<article class="song" id="{song.anchor}" data-title="{escape(song.title)}"{autor} '
@@ -153,6 +158,7 @@ def song_html(song, controls):
         f"<h3>{escape(song_label(song))}</h3>\n"
         f"{song_meta_html(song)}\n"
         f"{controls}\n"
+        f"{PSALM_HTML if psalm else ''}"
         f"{melody_html(song)}"
         f"{lyrics_html(song.body)}\n"
         "</article>"
@@ -184,9 +190,25 @@ def cover_html(book):
     return "\n".join(parts)
 
 
-def book_json(book):
+def formula_choices(book, groups):
+    """(psalm songs, fórmulas offered as [[group label, [[song id, title], ...]], ...])
+    from book.yaml psalm_tags / formula_tag; nothing when either is unset or empty."""
+    psalms, formulas = set(), []
+    for group in groups:
+        if group.tag.id in book.psalm_tags:
+            psalms.update(id(song) for song in group.songs)
+            psalms.update(id(song) for _, _, songs in group.subgroups for song in songs)
+        if group.tag.id == book.formula_tag:
+            parts = ([(group.tag.label, group.songs)] if group.songs else []) + [(label, songs) for _, label, songs in group.subgroups]
+            formulas = [[label, [[song.anchor, song.title] for song in songs]] for label, songs in parts]
+    return (psalms, formulas) if psalms and formulas else (set(), [])
+
+
+def book_json(book, formulas=None):
     """Settings the page's scripts need (as `const BOOK = ...`)."""
     data = {"storagePrefix": book.storage_prefix, "notationSetting": book.notation_setting}
+    if formulas:
+        data["formulas"] = formulas
     # "</" can't appear inside a <script>; json.dumps never makes it but be safe
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
 
@@ -200,10 +222,11 @@ def render_book(book, songs, groups, web_dir, horas=None):
 
     # core.js first (it defines helpers the feature scripts use), then the rest.
     # abcjs (480 kB) and melody.js only in books with a song `melody:`.
+    # formula.js only in books with psalm fórmulas (book.yaml psalm_tags / formula_tag).
     melodies = any(song.melody for song in songs)
-    scripts = [web / "js" / "core.js"] + sorted(
-        p for p in (web / "js").glob("*.js") if p.name != "core.js" and (melodies or p.name != "melody.js")
-    )
+    psalms, formulas = formula_choices(book, groups)
+    skip = {"core.js"} | (set() if melodies else {"melody.js"}) | (set() if formulas else {"formula.js"})
+    scripts = [web / "js" / "core.js"] + sorted(p for p in (web / "js").glob("*.js") if p.name not in skip)
     if melodies:
         scripts.insert(0, web / "vendor" / "abcjs-basic-min.js")
     controls = read("song-controls.html").strip()
@@ -221,7 +244,7 @@ def render_book(book, songs, groups, web_dir, horas=None):
             "notation_setting": read("parts/notation-setting.html").rstrip("\n") if book.notation_setting else "",
             "cover": cover_html(book),
             "install_tip": install_tip.rstrip("\n"),
-            "book_json": book_json(book),
+            "book_json": book_json(book, formulas),
             "css": read("styles.css"),
             "scripts": "\n".join(
                 f"<script>\n{p.read_text(encoding='utf-8')}</script>" for p in scripts
@@ -230,6 +253,6 @@ def render_book(book, songs, groups, web_dir, horas=None):
             "tag_index": (horas_html(horas, book.fold_tags, book.fold_subtags) + "\n" if horas else "")
             + tag_index_html(groups, book.fold_tags, book.fold_subtags),
             "all_songs": collapsible("all-songs", "h2", "All Songs", song_list(songs), "tag-index"),
-            "songs": "\n".join(song_html(song, controls) for song in songs),
+            "songs": "\n".join(song_html(song, controls, id(song) in psalms) for song in songs),
         },
     )

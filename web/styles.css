@@ -768,6 +768,59 @@ body.drawer-open {
     font-size: 9px;
 }
 
+/* Psalm fórmulas (formula.js): the chosen semitono above the psalm, set apart. */
+.formula-pick {
+    margin-bottom: 12px;
+}
+
+.psalm-formula:not(:empty) {
+    margin-bottom: 1.2em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid var(--border);
+}
+
+.formula-dialog {
+    box-sizing: border-box;
+    width: min(26rem, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: 16px;
+}
+
+.formula-dialog[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formula-dialog input {
+    font: inherit;
+    padding: 8px;
+}
+
+.formula-options {
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.formula-options h4 {
+    margin: 0.8em 0 0.3em;
+}
+
+.formula-options button {
+    display: block;
+    width: 100%;
+    margin: 2px 0;
+    text-align: left;
+}
+
+.formula-options button[aria-pressed="true"] {
+    font-weight: bold;
+}
+
+.formula-options [hidden] {
+    display: none;
+}
+
 /* Never split a verse or a chord+lyric pair across columns/pages */
 .verse,
 .line-pair {
@@ -881,6 +934,7 @@ body[data-columns="2"] .song:not([data-columns="1"]),
     .backdrop,
     .drawer,
     .controls,
+    .formula-pick,
     .install-banner,
     .print-dialog {
         display: none !important;
