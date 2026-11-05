@@ -433,6 +433,22 @@ read as images; the text layer is OCR noise).
 - Then (user asked) `cancionero.py publish` cancionero-liturgia: 250 songs, with the renamed
   fórmulas and the "▶ Melody" button; Pages built.
 
+## 2026-11-05 — Per-song text size; autoscroll stops at the song's end (branch song-zoom-scroll)
+- User asked: A− / A+ per song (menu A− / A+ kept as the book-wide default; they multiply),
+  and autoscroll (option A, the one top-bar ▶) stopping when the song's bottom reaches the
+  screen's bottom.
+- song-controls.html: A− / 100% / A+ stepper. display.js `setSongScale`: `--song-scale` on
+  .song, saved as songState "textScale"; "Reset songs" clears it. styles.css multiplies it in
+  .lyrics font-size; print forces it to 1.
+- autoscroll.js: scrolls the song cut off at the bottom of the screen (`songAtScreenBottom`,
+  re-picked after a manual scroll), stop point re-read every frame; ▶ again goes on to the
+  next song. 2px threshold: WebKit stopped ~1.5px short and re-picked the same song.
+- ui_check: song size checks + remembered after reload; autoscroll checks now run in a long
+  song (the old jump to y=200 landed at a short song's end); new "stops at the end of the
+  song" / "▶ again goes on".
+- Checked: ui_check cancionero 200, hakuna 200, pagano 198, liturgia-real 224 (0 failed); play_check 26;
+  pytest 45.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

@@ -18,16 +18,35 @@ onAction("reset-songs", () => {
         .forEach((song) => setTranspose(song, 0));
     chordsSetting.clearSongs();
     columnsSetting.clearSongs();
+    document.querySelectorAll(".song[data-song-scale]").forEach((song) => setSongScale(song, 1));
     songState.clearAll();
 });
 
 // ---- Text size: multiplies the fit-to-screen lyrics size (see styles.css) ----
+// Book-wide (menu) and per song (song controls); the two multiply.
 
 const TEXT_SCALE = { min: 0.4, max: 3, step: 0.1 };
 
+const clampScale = (scale) =>
+    Math.round(Math.min(TEXT_SCALE.max, Math.max(TEXT_SCALE.min, scale)) * 10) / 10;
+
+function setSongScale(song, scale) {
+    const rounded = clampScale(scale);
+    song.style.setProperty("--song-scale", rounded);
+    song.dataset.songScale = rounded;
+    song.querySelector(".song-scale-value").textContent = `${Math.round(rounded * 100)}%`;
+    songState.set(song, "textScale", rounded === 1 ? null : rounded);
+}
+
+const songScale = (song) => Number(song.dataset.songScale || 1);
+
+onAction("song-text-smaller", (button, song) => setSongScale(song, songScale(song) - TEXT_SCALE.step));
+onAction("song-text-bigger", (button, song) => setSongScale(song, songScale(song) + TEXT_SCALE.step));
+onAction("song-text-reset", (button, song) => setSongScale(song, 1));
+songState.each("textScale", (song, scale) => setSongScale(song, Number(scale) || 1));
+
 function setTextScale(scale) {
-    const clamped = Math.min(TEXT_SCALE.max, Math.max(TEXT_SCALE.min, scale));
-    const rounded = Math.round(clamped * 10) / 10;
+    const rounded = clampScale(scale);
     document.body.style.setProperty("--text-scale", rounded);
     document.body.dataset.textScale = rounded;
     prefs.set("textScale", rounded);

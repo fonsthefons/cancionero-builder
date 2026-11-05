@@ -235,6 +235,17 @@ def ui_checks(page, context, name):
     song.locator('[data-action="transpose-up"]').click()
     song.locator('[data-action="transpose-value"], .transpose-value').first.click()
     check("tapping the transpose value resets it", song.locator(".transpose-value").inner_text() == "0")
+    other = page.locator(".song").nth(2).locator(".lyrics")
+    font = lambda loc: float(loc.evaluate("e => parseFloat(getComputedStyle(e).fontSize)"))  # noqa: E731
+    size, other_size = font(song.locator(".lyrics")), font(other)
+    song.locator('[data-action="song-text-bigger"]').click()
+    check("song A+ grows only that song",
+          song.locator(".song-scale-value").inner_text() == "110%"
+          and font(song.locator(".lyrics")) > size and font(other) == other_size)
+    song.locator('[data-action="song-text-reset"]').click()
+    check("tapping the song size resets it",
+          song.locator(".song-scale-value").inner_text() == "100%" and font(song.locator(".lyrics")) == size)
+    song.locator('[data-action="song-text-smaller"]').click()
 
     # Settings: remembered after reload
     page.click('[data-action="open-drawer"]')
@@ -249,13 +260,14 @@ def ui_checks(page, context, name):
     page.add_script_tag(path=CHECKS)
     after = page.evaluate("""() => ({
         scale: document.querySelector('.text-scale-value').textContent,
+        songScale: document.querySelectorAll('.song')[1].querySelector('.song-scale-value').textContent,
         theme: document.body.dataset.theme,
         chords: document.body.dataset.chords,
         bg: getComputedStyle(document.body).backgroundColor,
         size: getComputedStyle(document.querySelector('.lyrics')).fontSize,
     })""")
-    check(f"text size, theme and chords remembered after reload {after}",
-          after["scale"] == "110%" and after["theme"] == "dark" and after["chords"] == "hide"
+    check(f"text size, song text size, theme and chords remembered after reload {after}",
+          after["scale"] == "110%" and after["songScale"] == "90%" and after["theme"] == "dark" and after["chords"] == "hide"
           and parseFloat(after["size"]) > parseFloat(size_before))
     if TAKE_SHOTS:
         page.evaluate(f"document.getElementById('{A_ID}').scrollIntoView()")
@@ -278,7 +290,17 @@ def autoscroll_checks(page):
     speed = lambda: page.inner_text(".autoscroll-speed")  # noqa: E731
     scroll_y = lambda: page.evaluate("scrollY")  # noqa: E731
 
-    page.evaluate(f"document.getElementById('{A_ID}').scrollIntoView()")
+    # Autoscroll stops at the end of a song, so these checks run inside a long one.
+    # Songs are laid out first: skipped (off-screen) songs report a 900px estimate.
+    long_id = page.evaluate("""() => {
+        const songs = [...document.querySelectorAll('.song')];
+        songs.forEach((s) => { s.style.contentVisibility = 'visible'; });
+        const song = songs.find((s) => s.getBoundingClientRect().height > innerHeight + 800);
+        songs.forEach((s) => { s.style.contentVisibility = ''; });
+        return song.id;
+    }""")
+    top = lambda: page.evaluate(f"Math.round(scrollY + document.getElementById('{long_id}').getBoundingClientRect().top)")  # noqa: E731
+    page.evaluate(f"scrollTo(0, {top()})")
     start_y = scroll_y()
     check("autoscroll shows default speed 3 and ▶", speed() == "3" and page.inner_text(toggle) == "▶")
 
@@ -303,10 +325,11 @@ def autoscroll_checks(page):
     for _ in range(6):
         page.click('[data-action="autoscroll-slower"]')  # 10 -> 4
 
-    page.evaluate("scrollTo(0, 200)")  # a manual scroll / jump while running
+    jump = top() + 200  # a manual scroll / jump while running, within the long song
+    page.evaluate(f"scrollTo(0, {jump})")
     page.wait_for_timeout(500)
     y = scroll_y()
-    check(f"continues from a manual scroll position ({y:.0f})", 200 < y < 240)
+    check(f"continues from a manual scroll position ({y - jump:.0f}px past it)", jump < y < jump + 40)
 
     page.click('[data-action="open-drawer"]')
     page.wait_for_timeout(300)
@@ -325,6 +348,29 @@ def autoscroll_checks(page):
     page.reload()
     page.add_script_tag(path=CHECKS)
     check("speed remembered after reload", speed() == "4")
+
+    # Stops where the song cut off at the bottom of the screen ends; ▶ again goes on.
+    cut = page.evaluate("""() => {
+        const song = [...document.querySelectorAll('.song')]
+            .find((s) => s.getBoundingClientRect().height > innerHeight * 1.2);
+        if (!song) return null;
+        scrollTo(0, scrollY + song.getBoundingClientRect().top);
+        return song.id;
+    }""")
+    if cut:
+        page.evaluate("localStorage.setItem(BOOK.storagePrefix + 'autoscrollSpeed', 10)")
+        page.reload()
+        page.add_script_tag(path=CHECKS)
+        page.evaluate(f"scrollTo(0, scrollY + document.getElementById('{cut}').getBoundingClientRect().top)")
+        page.click(toggle)
+        page.wait_for_function(f"document.querySelector('{toggle}').textContent === '▶'", timeout=60000)
+        gap = page.evaluate(f"document.getElementById('{cut}').getBoundingClientRect().bottom - innerHeight")
+        check(f"stops at the end of the song ({gap:.1f}px from the screen bottom)", abs(gap) <= 2)
+        y = scroll_y()
+        page.click(toggle)
+        page.wait_for_timeout(500)
+        check("▶ again goes on into the next song", scroll_y() > y + 5)
+        page.click(toggle)
 
     # Twice: the first jump lays out the last songs (skipped till then), which
     # changes the page height and can leave the view a few hundred px from the end.
