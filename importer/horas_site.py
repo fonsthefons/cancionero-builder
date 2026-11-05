@@ -202,6 +202,22 @@ def psalmody(parts):
     return [p for p in parts if p["kind"] in ("salmo", "cantico") and p["section"].startswith("SALMODIA")]
 
 
+def himnos(parts):
+    """The hour's himno (a one-item list, as salterio() wants a list of parts)."""
+    return [p for p in parts if p["kind"] == "himno"]
+
+
+def himno_title(part):
+    """'Himno: SEÑOR, TÚ ME LLAMASTE.' -> 'Señor, tú me llamaste': the heading's words
+    taken from the text, which has their real case; the heading capitalized otherwise."""
+    words = part["heading"].split(":", 1)[-1].strip(" .").split()
+    first = part["text"].split()[:len(words)]
+    plain = lambda ws: [w.strip(",.;:!?¡¿").casefold() for w in ws]
+    if plain(first) == plain(words):
+        return " ".join(first).strip(",.;:")
+    return " ".join(words).capitalize()
+
+
 def day_dirs(repo):
     return sorted(Path(repo).glob("sync/20*/*/[0-3][0-9]"), key=lambda d: read_date(d))
 
@@ -249,9 +265,9 @@ def part_names(page, count):
     return PART_NAMES[page] if count == 3 else [f"salmo_{i + 1}" for i in range(count)]
 
 
-def salterio(repo, samples=5):
-    """{slot prefix: {page, sources: [dates], parts: psalmody}}, plus notes on slots whose
-    samples disagree. The site has typos (a missing verse range, a lost stanza break), so
+def salterio(repo, samples=5, pick=psalmody):
+    """{slot prefix: {page, sources: [dates], parts: pick(hour parts)}}, plus notes on slots
+    whose samples disagree. The site has typos (a missing verse range, a lost stanza break), so
     each slot reads `samples` plain days and keeps the version most of them share."""
     dirs = day_dirs(repo)
     found = {}  # prefix -> (page, [(date, parts)])
@@ -270,7 +286,7 @@ def salterio(repo, samples=5):
         for prefix, page in slots(day, next_day):
             page_, got = found.setdefault(prefix, (page, []))
             if len(got) < samples and page in day["hours"]:
-                got.append((day["date"].isoformat(), psalmody(day["hours"][page])))
+                got.append((day["date"].isoformat(), pick(day["hours"][page])))
 
     result, problems = {}, []
     for prefix, (page, got) in found.items():
