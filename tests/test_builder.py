@@ -159,6 +159,15 @@ def test_psalm_formulas(tmp_path):
     build_book(off)
     html = (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
     assert 'data-action="formula-pick"' not in html and "function setFormula" not in html
+    # formula_parts: a hymn without chords gets the picker, one with chords doesn't
+    hymns = {**songs,
+             "h1": "---\ntitle: Sin acordes\nhoras: [lunes/laudes/himno]\n---\n\nla la la\n",
+             "h2": SONG.format(title="Con acordes", extra="horas: [lunes/laudes/himno]\n")}
+    hy = write_book(tmp_path / "hy", "title: T\npsalm_tags: [salmos]\nformula_tag: formulas\nformula_parts: [Himno]\n", hymns)
+    (tmp_path / "hy" / "horas.yaml").write_text("tree:\n  Lunes: {Laudes: [Himno]}\n", encoding="utf-8")
+    build_book(hy)
+    html = (tmp_path / "hy" / "index.html").read_text(encoding="utf-8")
+    assert html.count('data-action="formula-pick"') == 2  # the psalm and "Sin acordes"
 
 
 def test_settings_yaml_round_trip(tmp_path):

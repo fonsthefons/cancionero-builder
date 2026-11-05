@@ -67,9 +67,11 @@ DEFAULTS = {
     "url": None,
     # Psalm fórmulas: songs with one of `psalm_tags` (e.g. [salmos]) get a picker of the
     # songs tagged `formula_tag` (e.g. formulas); the chosen one's staff, tab and chords
-    # show above the psalm. Off unless both are set.
+    # show above the psalm. Off unless both are set. `formula_parts` (e.g. [Himno]):
+    # songs without chords placed in those horas.yaml parts get the picker too.
     "psalm_tags": [],
     "formula_tag": None,
+    "formula_parts": [],
 }
 INSTALL_TIPS = ("popup", "banner", "off")
 KEY_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
@@ -159,6 +161,9 @@ def validate(settings):
     psalm_tags = settings.get("psalm_tags", [])
     if not (isinstance(psalm_tags, list) and all(isinstance(t, str) for t in psalm_tags)):
         errors.append("psalm_tags must be a list of tag ids such as [salmos]")
+    parts = settings.get("formula_parts", [])
+    if not (isinstance(parts, list) and all(isinstance(p, str) for p in parts)):
+        errors.append("formula_parts must be a list of horas.yaml parts such as [Himno]")
     if not isinstance(settings.get("formula_tag", ""), (str, type(None))):
         errors.append("formula_tag must be a tag id such as formulas")
     for name in ("fold_tags", "fold_subtags", "fold_all_songs", "notation_setting", "language_tags", "record_added", "strict_tags"):
