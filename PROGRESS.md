@@ -468,6 +468,20 @@ read as images; the text layer is OCR noise).
   examples); play_check 26.
 - The real book is not rebuilt/published with it yet.
 
+## 2026-11-05 — Missing himnos of the salterio (branch salterio-himnos)
+- `scratch/check_salterio.py`: every Himno/Salmo/Cántico part of liturgia's horas.yaml
+  (240) has a song? Psalms/cánticos all there; 29 himnos missing (Laudes/Vísperas only).
+- importer/horas_site.py: `salterio(pick=…)` (default psalmody), `himnos`, `himno_title`
+  (heading words in the text's case). `scratch/add_himnos.py [--write]` reads the site's himno
+  per slot (majority of 5 days), fills only empty slots: 23 new files
+  `himno_<hour>-<title>.md` (plain text, no chords), 6 slots added to a sung himno already
+  in the book (matched by its first 4 lyric words). Semana I Sábado Laudes "no majority" =
+  same himno, typo-level differences.
+- Not changed: 30 filled slots whose book himno is not the site's for that slot (report from
+  add_himnos.py); the user's placement kept.
+- Checked: check_salterio 0 missing; `cancionero.py build cancionero-liturgia` 273 songs;
+  pytest 46. Book not committed/published.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

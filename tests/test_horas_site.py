@@ -1,6 +1,6 @@
 import datetime
 
-from importer.horas_site import psalmody, read_hour, slots, song_id, song_title
+from importer.horas_site import himno_title, psalmody, read_hour, slots, song_id, song_title
 
 R, B = '<FONT COLOR="#FF0000">', '<FONT COLOR="#000000">'
 
@@ -47,6 +47,12 @@ def test_titles():
     assert song_title("Cántico: SÚPLICA Sir. 36, 1-7. 13-16") == "Cántico Sir 36, 1-7. 13-16"
     assert song_title("Cántico: DIOS JUZGARÁ Is 33,13-16") == "Cántico Is 33, 13-16"
     assert song_id("Salmo 86 - HIMNO A JERUSALÉN") == "salmo-086"
+
+
+def test_himno_title():
+    assert himno_title({"heading": "Himno: SEÑOR, TÚ ME LLAMASTE.", "text": "Señor, tú me llamaste\npara ser"}) \
+        == "Señor, tú me llamaste"
+    assert himno_title({"heading": "Himno: LUZ DE LA TARDE", "text": "Otra letra"}) == "Luz de la tarde"
 
 
 def day(date, week, plain=True):
