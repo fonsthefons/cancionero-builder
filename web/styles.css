@@ -1011,6 +1011,11 @@ body[data-columns="2"] .song:not([data-columns="1"]),
         display: none;
     }
 
+    body[data-print-session] .index,
+    body[data-print-session] .song:not(.print-pick) {
+        display: none !important;
+    }
+
     body[data-print-chords="hide"] .chord-line {
         display: none !important;
     }
