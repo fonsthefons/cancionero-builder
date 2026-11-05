@@ -134,6 +134,7 @@ def test_melody(tmp_path):
     build_book(book)
     html = (tmp_path / "ok" / "index.html").read_text(encoding="utf-8")
     assert html.count('<div class="melody"') == 1
+    assert html.count('class="melody-play"') == 1  # only the song with a melody
     assert 'data-abc="X:1\nM:none\nL:1/4\nK:D\n&quot;D&quot;F8' in html and "ABCJS" in html
     plain = write_book(tmp_path / "plain", songs={"b": SONG.format(title="Dos", extra="")})
     build_book(plain)
@@ -153,6 +154,7 @@ def test_psalm_formulas(tmp_path):
     html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
     assert html.count('data-action="formula-pick"') == 1 and "function setFormula" in html
     assert '"formulas": [["Semitonos 2", [["song-f1", "Glorioso"]]]]' in html
+    assert html.count('class="melody-play"') == 2  # the fórmula, and the psalm (for its fórmula)
     off = write_book(tmp_path / "off", "title: T\n", songs)
     build_book(off)
     html = (tmp_path / "off" / "index.html").read_text(encoding="utf-8")

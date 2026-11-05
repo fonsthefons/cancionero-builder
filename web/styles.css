@@ -768,6 +768,16 @@ body.drawer-open {
     font-size: 9px;
 }
 
+/* Play / pause (melody.js), in the song's controls; a psalm shows it once it has
+   a fórmula. */
+.song:not(:has(.melody)) .melody-play {
+    display: none;
+}
+
+.melody .melody-playing {
+    fill: var(--chord);
+}
+
 /* Psalm fórmulas (formula.js): the chosen semitono above the psalm, set apart. */
 .formula-pick {
     margin-bottom: 12px;

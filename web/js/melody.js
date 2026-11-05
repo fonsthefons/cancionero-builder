@@ -10,12 +10,15 @@
 const TAB_LINE = 10; // space between tab lines, in staff units
 const TAB_GAP = 12; // between the staff (and notes under it) and the tab: 1.5 staff spaces
 
+const melodyTunes = new WeakMap(); // .melody -> its abcjs tune, for playing
+
 function renderMelody(element, shift = 0, width = 380) {
+    if (playing?.element === element) stopMelody(); // redrawn: the notes to light are gone
     const abc = element.dataset.abc;
     const staff = document.createElement("div");
     element.replaceChildren(staff);
     // staffwidth: the size a phone shows at about 1:1 (the SVG scales to the width).
-    ABCJS.renderAbc(staff, abc, {
+    const [tune] = ABCJS.renderAbc(staff, abc, {
         responsive: "resize", staffwidth: width, visualTranspose: shift, add_classes: true,
         paddingtop: 0, paddingbottom: 0, paddingleft: 0, paddingright: 0,
     });
@@ -38,6 +41,7 @@ function renderMelody(element, shift = 0, width = 380) {
 
     const tab = tabSvg(svg, element.dataset.tab, shift);
     element.append(tab);
+    melodyTunes.set(element, tune);
     // Two-digit frets on short notes can touch: draw a wider staff (it scales to fit,
     // so notes get more room) until frets on the same string clear each other.
     const boxes = [...tab.querySelectorAll("text:not(.melody-tab-label)")].map((t) => t.getBBox());
@@ -94,6 +98,127 @@ function tabSvg(staffSvg, tab, shift) {
     svg.innerHTML = content;
     return svg;
 }
+
+// Play / pause the melody (not the chords) with an organ-like tone made in the
+// browser (no sound files, works offline), lighting each note as it sounds. It
+// plays in the key on screen. One melody at a time. The button is in the song's
+// controls (render.py PLAY_HTML) and plays the song's melody, or its fórmula.
+const MELODY_QPM = 80; // quarter notes per minute, unless the melody sets Q:
+const ORGAN = [[1, 0.5], [2, 0.3], [4, 0.12], [3, 0.08]]; // harmonic, level: 8', 4', 2' stops
+let audio = null;
+let playing = null; // {element, song, timer, out, paused}
+
+function setButton(song, isPlaying) {
+    const button = song?.querySelector(".melody-play");
+    if (!button) return;
+    button.textContent = isPlaying ? "⏸ Pause" : "▶ Melody";
+    button.setAttribute("aria-label", isPlaying ? "Pause melody" : "Play melody");
+}
+
+function organNote(out, midi, seconds) {
+    const start = audio.currentTime, end = start + Math.max(seconds, 0.08);
+    const note = audio.createGain();
+    note.gain.setValueAtTime(0, start);
+    note.gain.linearRampToValueAtTime(0.25, start + 0.03);
+    note.gain.setValueAtTime(0.25, end - 0.04); // a small gap between repeated notes
+    note.gain.linearRampToValueAtTime(0, end);
+    note.connect(out);
+    ORGAN.forEach(([harmonic, level]) => {
+        const osc = audio.createOscillator();
+        const gain = audio.createGain();
+        osc.frequency.value = 440 * 2 ** ((midi - 69) / 12) * harmonic;
+        gain.gain.value = level;
+        osc.connect(gain).connect(note);
+        osc.start(start);
+        osc.stop(end + 0.05);
+    });
+}
+
+function soundNotes(notes) {
+    notes.filter(([, seconds]) => seconds > 0.05).forEach(([midi, seconds]) => organNote(playing.out, midi, seconds));
+}
+
+function lightNotes(element, notes) {
+    element.querySelectorAll(".melody-playing").forEach((n) => n.classList.remove("melody-playing"));
+    notes.forEach((n) => n.classList.add("melody-playing"));
+}
+
+// A fresh output per start, so pausing silences the notes already sounding.
+function newOutput() {
+    const out = audio.createGain();
+    out.connect(audio.destination);
+    return out;
+}
+
+function stopMelody() {
+    if (!playing) return;
+    const { element, song, timer, out } = playing;
+    playing = null;
+    timer.stop();
+    out.disconnect();
+    lightNotes(element, []);
+    setButton(song, false);
+}
+
+function playMelody(element) {
+    const song = element.closest(".song");
+    const shift = Number(song?.dataset.transpose || 0);
+    // Not drawn yet (tapped right away), or copied HTML: draw it now, marked as drawn so
+    // the pending draw doesn't redraw it (a redraw stops the playing).
+    if (!melodyTunes.has(element)) {
+        delete element.dataset.drawn;
+        drawMelody(element);
+    }
+    const tune = melodyTunes.get(element);
+    audio ??= new AudioContext();
+    audio.resume();
+    tune.setUpAudio({ chordsOff: true });
+    const timer = new ABCJS.TimingCallbacks(tune, {
+        qpm: tune.metaText.tempo ? undefined : MELODY_QPM,
+        eventCallback: (event) => {
+            if (playing?.timer !== timer) return; // stopped, or another melody started
+            if (!event) return stopMelody(); // the end
+            lightNotes(element, (event.elements || []).flat());
+            const notes = event.midiPitches.filter((p) => p.cmd === "note").map((p) =>
+                [p.pitch + shift, (p.duration * event.millisecondsPerMeasure) / 1000]);
+            playing.sounding = { notes, at: audio.currentTime };
+            soundNotes(notes);
+        },
+    });
+    playing = { element, song, timer, out: newOutput(), paused: false, sounding: null };
+    setButton(song, true);
+    timer.start();
+}
+
+function toggleMelody(element) {
+    if (playing?.element !== element) {
+        stopMelody();
+        return playMelody(element);
+    }
+    const { sounding } = playing;
+    if (playing.paused) {
+        playing.out = newOutput();
+        playing.paused = false;
+        // The note cut by the pause sounds again for the time it had left (a reciting
+        // note can last seconds); the timer then resumes where it paused.
+        if (sounding) {
+            soundNotes(sounding.notes.map(([midi, seconds]) => [midi, seconds - sounding.played]));
+            sounding.at = audio.currentTime - sounding.played;
+        }
+        playing.timer.start();
+    } else {
+        playing.timer.pause();
+        playing.out.disconnect();
+        playing.paused = true;
+        if (sounding) sounding.played = audio.currentTime - sounding.at;
+    }
+    setButton(playing.song, !playing.paused);
+}
+
+document.addEventListener("click", (e) => {
+    const melody = e.target.closest(".melody-play")?.closest(".song").querySelector(".melody");
+    if (melody) toggleMelody(melody);
+});
 
 // In the book: draw a song's melody once it is near the screen.
 const songsNearScreen = new Set();

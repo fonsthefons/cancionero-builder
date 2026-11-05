@@ -397,6 +397,24 @@ read as images; the text layer is OCR noise).
   the user's untracked salmo-137 differs only in a 4-line Gloria). `cancionero.py publish`:
   250 songs, pushed; https://fonsthefons.github.io/cancionero-liturgia/.
 
+## 2026-11-05 — Melody play button (branch melody-play)
+- User's answers: tone made in the browser (no sound files, offline), one fixed tempo,
+  follows the transposition, every book with melodies, also the fórmula above a psalm,
+  light the playing note.
+- render.py `PLAY_HTML`/`with_play`: "▶ Melody" at the end of the controls of songs with a
+  melody and of psalms (CSS hides it in a song without `.melody`, so a psalm shows it once it
+  has a fórmula). A first try over the staff's corner covered notes; moved to the controls.
+- melody.js: abcjs `TimingCallbacks` (after `setUpAudio`, chords off) gives each note's
+  pitch (+ the song's transposition) and length; `organNote` = sine harmonics 1/2/3/4
+  (8', 4', 2' stops) with short attack/release; quarter = 80 unless `Q:`. Pause/resume (the
+  cut note sounds again for its remaining time), one melody at a time, a redraw stops it;
+  a tap before the first draw draws it via drawMelody so the pending draw doesn't stop it.
+  formula.js: changing a psalm's fórmula stops its playing.
+- New `tests/browser/play_check.py <book>` (26 checks, Chromium + WebKit) on a scratch copy of
+  cancionero-liturgia (`scratch/real_copy_build.py` -> scratch/liturgia-real); ui_check there
+  216 passed; pytest 45 (play-button counts added to test_melody / test_psalm_formulas).
+- The real book is not rebuilt/published with it yet.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
