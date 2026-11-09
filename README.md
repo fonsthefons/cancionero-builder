@@ -81,7 +81,8 @@ added to books that use it); both follow the song's transposition:
 octave up, `B,` an octave down, lengths `C2` half, `C/` eighth, `C8` a breve (drawn as a
 square reciting note), `^F` `_B` `=F` accidentals, `"Em"` the chord over the next note,
 `|` and `||` bars. `tab` is one `fret/string` per note (string 1 = high e … 6 = low E;
-`|` tokens are ignored); the build stops when the counts differ. Frets move with the
+`|` tokens are ignored); the build stops when the counts differ. For a tab under only the
+first notes, add `ignore: ["tab-melody-check"]`. Frets move with the
 transposition on the same string (12 frets up when they would go below 0).
 A "▶ Melody" button in the song's controls plays the melody (not the chords) with an
 organ-like tone made in the browser (works offline), at quarter = 80 unless the melody sets

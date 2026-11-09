@@ -128,6 +128,14 @@ def test_melody(tmp_path):
         book = write_book(tmp_path / str(len(error)), songs={"a": SONG.format(title="Uno", extra=MELODY.format(tab=tab))})
         with pytest.raises(SongError, match=error):
             build_book(book)
+    partial = MELODY.format(tab="4/4 0/3") + 'ignore: ["tab-melody-check"]\n'
+    build_book(write_book(tmp_path / "partial", songs={"a": SONG.format(title="Uno", extra=partial)}))
+    for tab, ignore, error in [("4/4 0/7", "tab-melody-check", '"0/7" is not fret/string'),
+                               ("4/4 0/3", "typo", '"typo" is not a check')]:
+        extra = MELODY.format(tab=tab) + f"ignore: [{ignore}]\n"
+        book = write_book(tmp_path / ignore, songs={"a": SONG.format(title="Uno", extra=extra)})
+        with pytest.raises(SongError, match=error):
+            build_book(book)
     book = write_book(tmp_path / "ok", songs={
         "a": SONG.format(title="Uno", extra=MELODY.format(tab="4/4 0/3 2/3 | 4/4 2/4 0/4")),
         "b": SONG.format(title="Dos", extra="")})
