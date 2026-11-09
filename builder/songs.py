@@ -11,7 +11,8 @@ from .text import spanish_sort_key
 # Frontmatter fields a song may use. Anything else is reported as an error,
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
-OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab"}
+OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore"}
+IGNORABLE_CHECKS = ("tab-melody-check",)  # tab covers only the first notes of the melody
 
 
 class SongError(Exception):
@@ -89,8 +90,20 @@ def parse_horas(raw):
     return raw
 
 
-def check_tab(melody, tab):
-    """Each note of the melody needs one "fret/string" tab token (bars are ignored)."""
+def parse_ignore(raw):
+    """ignore as written: a list of checks to skip; a single one is accepted too."""
+    checks = [raw] if isinstance(raw, str) else raw or []
+    if not isinstance(checks, list):
+        raise SongError('ignore must be a list like `["tab-melody-check"]`')
+    unknown = [check for check in checks if check not in IGNORABLE_CHECKS]
+    if unknown:
+        raise SongError(f'ignore: "{unknown[0]}" is not a check (allowed: {", ".join(sorted(IGNORABLE_CHECKS))})')
+    return checks
+
+
+def check_tab(melody, tab, count_notes=True):
+    """Each note of the melody needs one "fret/string" tab token (bars are ignored).
+    count_notes=False keeps the token check but allows any number of them."""
     # shortcut: counts pitch letters outside "chords" and header lines; ABC chords
     # ([CEG]), grace notes and !decorations! would miscount; fine for the fórmulas.
     body = re.sub(r'"[^"]*"|![^!]*!', "", re.sub(r"(?m)^[A-Za-z]:.*$", "", melody or ""))
@@ -99,7 +112,7 @@ def check_tab(melody, tab):
     bad = [t for t in tokens if not re.fullmatch(r"\d{1,2}/[1-6]", t)]
     if bad:
         raise SongError(f'tab: "{bad[0]}" is not fret/string (like 2/1, string 1 = high e … 6 = low E)')
-    if len(tokens) != notes:
+    if count_notes and len(tokens) != notes:
         raise SongError(f"tab has {len(tokens)} notes but melody has {notes}")
 
 
@@ -133,8 +146,9 @@ def load_song(path):
     if link and not re.match(r"https?://", link):
         raise SongError(f'link must be a web address starting with http:// or https:// (got "{link}")')
     melody, tab = optional_text(meta.get("melody")), optional_text(meta.get("tab"))
+    ignore = parse_ignore(meta.get("ignore"))
     if melody or tab:
-        check_tab(melody, tab)
+        check_tab(melody, tab, count_notes="tab-melody-check" not in ignore)
 
     return Song(
         id=Path(path).stem,

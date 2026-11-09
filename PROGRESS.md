@@ -547,6 +547,15 @@ read as images; the text layer is OCR noise).
 - ui_check: new check (de 4 on Tiembla el frío -> 20 chord lines).
 - Checked: ui_check liturgia-real 230 passed.
 
+## 2026-11-09 — Tab under only the first notes (branch tab-partial-ignore)
+
+- User: the liturgia song saludo_inicial-dios_mio_ven_en_mi_auxilio tabs only its first notes,
+  with `ignore: ["tab-melody-check"]` in the song.
+- songs.py: `ignore` field; skips only the note count (fret/string format still checked);
+  unknown values stop the build. melody.js unchanged (it already draws frets from the first note).
+- Checked: pytest 48; scratch/check_partial_tab.py loads all 288 liturgia songs. Browser not
+  run; book not rebuilt, committed or published.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
