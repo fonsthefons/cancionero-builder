@@ -39,9 +39,10 @@ function renderMelody(element, shift = 0, width = 380) {
         if (/^[_^=]*[A-Ga-g]/.test(path.dataset.name)) squareNotehead(path, space);
     });
 
+    melodyTunes.set(element, tune);
+    if (!element.dataset.tab) return; // staff only, no tab lines
     const tab = tabSvg(svg, element.dataset.tab, shift);
     element.append(tab);
-    melodyTunes.set(element, tune);
     // Two-digit frets on short notes can touch: draw a wider staff (it scales to fit,
     // so notes get more room) until frets on the same string clear each other.
     const boxes = [...tab.querySelectorAll("text:not(.melody-tab-label)")].map((t) => t.getBBox());
