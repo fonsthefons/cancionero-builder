@@ -556,6 +556,21 @@ read as images; the text layer is OCR noise).
 - Checked: pytest 48; scratch/check_partial_tab.py loads all 288 liturgia songs. Browser not
   run; book not rebuilt, committed or published.
 
+## 2026-11-11 — Organo songs from screenshots (branch organo-progress; book branch organo-songs)
+
+- Followed scratch/organo/PLAN.md: 3 parallel agents read organo/screenshots/ (20 PNGs) and wrote
+  19 songs to cancionero-organo/songs (4 aleluyas, 5 santos, 5 corderos, comunion, adoracion,
+  entrada+ofertorio, 2 aclamacion_memorial). tags.yaml: added `aclamacion_memorial` after santo.
+  The agents stopped at the usage limit once and were resumed after it reset.
+- Doubts per song: scratch/organo/a1..a3/notes.md (40 in all).
+- Builder: a melody without `tab:` is now allowed (songs.py checks the tab only when there is one;
+  melody.js draws no empty TAB staff). The plan says "no tab", and the build refused them before.
+  New case in test_melody (pytest 48 passed).
+- Checked: build 19 songs; scratch/organo/check_melodies.py draws all 19 melodies in Chromium:
+  0 abcjs warnings, 0 JS errors, no tab staff. Full ui_check not run (its melody check expects a tab).
+- File names: A1 used the screenshot name (aleluya-aleluya_97, comunion-oh_buen_jesus_leon...),
+  A2/A3 composer-based slugs; left as is, both fit `<subtag>-<slug>.md`.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

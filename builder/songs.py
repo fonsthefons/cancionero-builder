@@ -147,7 +147,7 @@ def load_song(path):
         raise SongError(f'link must be a web address starting with http:// or https:// (got "{link}")')
     melody, tab = optional_text(meta.get("melody")), optional_text(meta.get("tab"))
     ignore = parse_ignore(meta.get("ignore"))
-    if melody or tab:
+    if tab:  # a melody without a tab is allowed (staff only)
         check_tab(melody, tab, count_notes="tab-melody-check" not in ignore)
 
     return Song(
