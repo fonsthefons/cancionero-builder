@@ -582,6 +582,14 @@ read as images; the text layer is OCR noise).
 - scratch/organo/chord_cols.py prints the letters under each chord (found and fixed 8 off-by-one).
 - Checked: build 20 songs; check_melodies.py 20/20; review_check.py 20 cards OK.
 
+## 2026-11-12 — Organo review round 2 (book branch organo-review-2)
+
+- User's corrections: Hacia ti morada santa removed ("we don't want it"); Hambre de Dios body
+  replaced (estribillo after every verse, no verse numbers). entrada/ofertorio now have no songs.
+- review_page.py: Hacia ti dropped; its 2 screenshots are allowed to stay unused.
+- Checked: build 19 songs; check_melodies.py 19/19; review_check.py 19 cards OK; chord_cols.py
+  on Hambre de Dios: every chord on its syllable.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
