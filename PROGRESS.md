@@ -571,6 +571,17 @@ read as images; the text layer is OCR noise).
 - File names: A1 used the screenshot name (aleluya-aleluya_97, comunion-oh_buen_jesus_leon...),
   A2/A3 composer-based slugs; left as is, both fit `<subtag>-<slug>.md`.
 
+## 2026-11-12 — Organo review round 1 (book branch organo-review-1)
+
+- Review page: scratch/organo/review_page.py (reuses scratch/liturgia/review2_template.html; each
+  screenshot beside the drawn staff) -> scratch/organo/review/index.html; review_check.py checks it.
+- User's corrections ("organo/screenshots/Organ Review Corrections.json": 2 corderos' melodies)
+  applied with scratch/liturgia/apply_corrections.py --songs-dir <book>/songs.
+- Hacia ti morada santa redone with the new part_2 screenshot (full verses, repeat written out).
+- New song comunion-hambre_de_dios.md (200, parts 1-2); tag misa/comunion chosen. 20 songs.
+- scratch/organo/chord_cols.py prints the letters under each chord (found and fixed 8 off-by-one).
+- Checked: build 20 songs; check_melodies.py 20/20; review_check.py 20 cards OK.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
