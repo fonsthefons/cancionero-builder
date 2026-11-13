@@ -1,5 +1,156 @@
 # Progress
 
+## Plan: fill-chords (2026-11-13)
+Goal: a script that copies chords into hakuna stanzas that have none (repeated choruses, verses
+shaped like an earlier verse with chords), shown on an editable HTML review page whose export is
+applied with the existing apply_corrections.py. Online chord sheets (existing importer search/read)
+are a second opinion only: our songs are the main truth. Out of scope: changing lyrics or line
+breaks (split lines stay split; the user rejoins them in the page), books other than hakuna, a
+cancionero.py subcommand, applying the corrections to the hakuna repo (the user does that after
+reviewing).
+Branch: feature/fill-chords
+
+Decisions (user, 2026-11-13): preview on an HTML review page like the organo/liturgia ones, then
+write; chord lines copied with the model stanza's columns; "clear" = same lyrics, or same line
+count as the nearest stanza with chords. Revised by the user: also look at online versions, but
+only for chord patterns and which stanza is which; the chords written in are always taken from
+our own song, never the online layout or lyrics.
+Defaults chosen here: no reviewer step (every change is reviewed by the user in the page;
+apply_corrections.py refuses results that don't load). Online pages are cached in scratch so
+reruns don't download again.
+Survey (scratch/chordless_survey.py): 91 of 126 hakuna songs with chords have stanzas without any,
+318 such stanzas, 206 with the same line count as some stanza with chords.
+
+- [x] S1 importer/fill_chords.py + tests
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: high
+  after: -
+  context: builder/lyrics.py:17-75 (CHORD_RE, SEPARATOR_RE, clean_line, is_chord_line), :88-90
+           (LABEL_RE), :149-167 (split_verses, for the ** bold rule); tests/test_importer.py:1-20
+           (test style); /Users/fons/Documents/programs/hymn_books/cancionero-hakuna/songs/me_sobrepasa.md
+           (read with `cat <abs path>`, the Read tool is refused in that repo)
+  do: New `fill_chords(body) -> (new_body, filled, doubts)` working on raw lines so blank lines,
+      `**` markers, indentation and everything else stay byte-identical. A stanza = run of lines
+      between blank lines / `**` lines; bold = inside `**` markers. Lyric lines = lines where
+      not is_chord_line(clean_line(l)). A stanza "has chords" if any line is a chord line; skip
+      stanzas with a LABEL_RE line (Intro: ...) and bare stanzas with 1 lyric line.
+      For each bare stanza (no chord line, >=2 lyric lines), pick a model stanza that has chords:
+      (1) same lyric lines after normalizing (casefold, no accents/punctuation, repeat marks like
+      "(x2)" dropped), else (2) nearest EARLIER stanza with the same bold flag and the same number
+      of lyric lines, else nearest later one. Copy, above each lyric line i, the chord line that
+      sits directly above the model's lyric line i (none if the model has none there); don't copy
+      chord-only lines that aren't above a lyric. Keep the model's columns, but pull a chord that
+      would end past the lyric's end back to fit (keep chord order, >=1 space between chords).
+      No model -> line unchanged + a doubt "stanza N (<first words>…): <k> lines, stanzas with
+      chords have <sorted counts>". `filled` notes "stanza N (<first words>…) <- stanza M".
+      Tests in tests/test_fill_chords.py: me_sobrepasa body (lines after the frontmatter, inline
+      as a string): stanza "Todas mis sendas…" gets exactly "G", "Em", "   C", "  D7" above its 4
+      lines (the user's expected result); the 5-line "Mas si digo…" stanza is unchanged with one
+      doubt; nothing else changes. Plus: a repeated chorus with the same text but other line
+      count elsewhere matched by text; clamping of a chord past a short line; body without chords
+      unchanged.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python -m pytest /Users/fons/Documents/programs/cancionero-builder/tests -q  -> all pass
+  return: <= 10 lines: files changed, done result, anything surprising
+
+- [x] S2 Online second opinion: importer/online_chords.py + tests
+  result: guide(original body, [(url, text)]) runs fill_chords itself; fetch_online takes a 4th arg `stem`.
+          scratch/hakuna_chords/fetch_online.py: 62 of 82 songs have versions cached in
+          scratch/hakuna_chords/online/; guide_stats.py: 86 fills confirmed online, ~26 stanzas filled
+          or re-modelled from online, 30 versions ignored (other arrangement), 85 online doubts.
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: opus    effort: high
+  after: S1
+  context: importer/fill_chords.py (from S1); importer/search.py:38-60 (Result) and :202-end
+           (search(title, artist, sites)); importer/read.py (read_song_any_way(url) -> Draft,
+           Draft.text with chords as [ch]Am[/ch] when Draft.marked, importer/sites/common.py:14-22);
+           find with grep how importer/clean.py turns a Draft into chord-over-lyric text and reuse it;
+           find an existing transpose helper (grep "transpose" in importer/ builder/) before writing one
+  do: Split in two so tests run offline:
+      (a) `fetch_online(title, artist, cache_dir)`: search, take up to 2 best results, read each,
+          save the cleaned chord-over-lyric text as cache_dir/<stem>-<n>.txt (+ url on line 1); reuse
+          the cache when present. Network/site errors -> no versions, never a crash.
+      (b) pure `guide(body, online_texts) -> (new_body, filled, doubts)`, run after fill_chords on the
+          body S1 left: split online texts into stanzas; match each of our stanzas to an online one
+          by normalized lyric words (difflib ratio >= 0.6). Key: find the 0-11 semitone shift that
+          makes the online chords of matched stanzas agree best with OUR chords there; under 60%
+          agreement -> ignore that version (doubt "online version in another arrangement").
+          Uses, ours always winning:
+          1. Confirm/override the model: a stanza S1 filled whose online chord sequence (shifted)
+             matches another of our stanzas better -> refill from that stanza; agreeing -> note
+             "confirmed online".
+          2. Stanzas S1 left alone (odd line count, split lines, single lines): take the online
+             stanza's chord sequence shifted to our key; every chord must already occur in our song
+             (map enharmonic spellings to ours), else doubt. Place each chord above the same word
+             our line shares with the online line (word anchor; keep our line breaks and lyrics
+             unchanged); if a word isn't found, doubt.
+          3. Online disagrees with a stanza that already had chords -> change nothing, note it.
+      filled/doubt notes say the source: "shape", "same lyrics", "confirmed online", "online: <url>".
+      Tests tests/test_online_chords.py with hand-written online texts (no network): online in
+      another key (shift found); Me sobrepasa "Mas si digo… / me encubra," (5 lines) filled from an
+      online 4-line version with our chords, line break kept; a wrong-model override; online chord
+      not in our song -> doubt; a single-line stanza filled.
+      Then run fetch_online over all hakuna songs that S1 leaves with a fill or doubt (one at a
+      time, cache in scratch/hakuna_chords/online/), print found/not found counts.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python -m pytest /Users/fons/Documents/programs/cancionero-builder/tests -q  -> all pass; the cache folder holds versions for most songs
+  return: <= 10 lines: files changed, done result, songs with/without online versions, anything surprising
+
+- [x] S3 Review page for hakuna
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: medium
+  after: S2
+  context: scratch/organo/review_page.py (whole, 141 lines: pattern to follow);
+           scratch/liturgia/review2_template.html (whole, 185 lines); scratch/organo/review_check.py
+           (25 lines); scratch/liturgia/apply_corrections.py:1-7 (corrections JSON format)
+  do: scratch/hakuna_chords/review_page.py: for every song in
+      /Users/fons/Documents/programs/hymn_books/cancionero-hakuna/songs (read-only; load with
+      builder.songs.split_frontmatter) run importer.online_chords.guide(original_body, versions)
+      (it runs fill_chords itself; versions = list of (url, text), each cache file is "url\ntext", so
+      path.read_text().split("\n", 1)) with the cached versions in scratch/hakuna_chords/online/ (no
+      downloads here); one card per song with a fill or a doubt (filled songs first, then
+      doubt-only). Card: title, file stem, doubts + filled notes with their source (shape / same
+      lyrics / confirmed online / online), links to the online versions used; left column = the original body as a line diff (added chord
+      lines highlighted, <pre>, monospace so columns line up); right = "Chords (body)" textarea
+      with the proposed body, OK checkbox, note. Export must produce the format
+      apply_corrections.py takes: {"<stem>": {"body": ..., "note": ...}}. Reuse
+      review2_template.html as organo did; if its melody/abcjs parts get in the way, copy it to
+      scratch/hakuna_chords/review_template.html and strip them. localStorage key
+      "hakuna-chords-review:". Output scratch/hakuna_chords/review/index.html; print cards / filled
+      stanzas / doubts counts. Write scratch/hakuna_chords/review_check.py (playwright, like
+      organo's): every card has a textarea whose value == proposed body, no JS errors, export
+      button yields JSON with every card's stem; screenshot review/shot.png. Put the apply
+      command in the page's header: `.venv/bin/python scratch/liturgia/apply_corrections.py
+      <export.json> --songs-dir /Users/fons/Documents/programs/hymn_books/cancionero-hakuna/songs`.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/scratch/hakuna_chords/review_check.py  -> exit 0, "N cards, 0 bad, JS errors: []"
+  return: <= 10 lines: counts (cards, filled stanzas, doubts), done result, me_sobrepasa card OK?, anything surprising
+
+- [x] S4 Log + ship
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: inline
+  model: sonnet    effort: low
+  after: S3
+  context: -
+  do: Look at review/shot.png and the me_sobrepasa card. Add a PROGRESS.md entry (what, counts,
+      how to apply). Commit importer/fill_chords.py, importer/online_chords.py + tests + PROGRESS.md (scratch is gitignored),
+      push, PR, merge per CLAUDE.md. Tell the user the page path and the apply command.
+  done: git -C /Users/fons/Documents/programs/cancionero-builder status  -> clean on main (organo/ untracked is pre-existing)
+  return: page path, counts, PR URL
+
+Escalation: a failed step is retried once one level higher (low → medium → high, then sonnet → opus) with the
+failure in its brief; failing again, or no longer fitting the code, it goes under "Blocked" with the reason;
+continue with steps that don't depend on it.
+
+### Run log
+- S1 2026-11-13: pass, 52 tests; me_sobrepasa fills G/Em/C/D7, "Mas si digo" left with 1 doubt.
+- S2 2026-11-13: pass, 58 tests; online versions for 62/82 songs. guide() takes the original body (S3 brief updated). Strict chord match (Am vs Am7 -> doubt) inflates online doubts (85).
+- S3 2026-11-13: pass, "82 cards, 0 bad, JS errors: []", me_sobrepasa OK. 200 filled stanzas, 165 doubts. Export sends EVERY card's body (not only edited/OK), so applying it writes all proposals.
+- S4 2026-11-13: screenshot checked; shipped.
+
+Result: review page scratch/hakuna_chords/review/index.html (rebuild: .venv/bin/python scratch/hakuna_chords/review_page.py).
+Apply after review: .venv/bin/python scratch/liturgia/apply_corrections.py <export.json> --songs-dir /Users/fons/Documents/programs/hymn_books/cancionero-hakuna/songs
+
 ## 2026-10-12 — Decisions (asked before starting)
 
 - **Code lives only in the builder.** A book repo holds `songs/`, `book.yaml`
