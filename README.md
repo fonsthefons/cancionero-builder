@@ -4,7 +4,31 @@ One builder for every song book (cancionero, cancionero-hakuna, cancionero-pagan
 ones). Each book is its own folder and GitHub repo with Pages; it holds only songs and
 settings. All the code — the build, adding songs, the web page — lives here.
 
+## Main commands, step by step
+
+`./help.sh` lists them with examples. If something breaks, see
+[to_check_in_case_of_failure.md](to_check_in_case_of_failure.md).
+
+**`add <book>`** (the usual day-to-day):
+1. You give a link, a search, pasted text, a PDF or a list.
+2. The importer reads the song from its site (with WebKit if the site blocks scripts) and cleans the title,
+   author and chords.
+3. It looks for a Spotify link (else YouTube) and asks about tags.
+4. It writes `songs/<title>_<author>.md` in the book.
+
+**`publish <book>`**:
+1. Build: checks every song and the settings (it stops on the first invalid file), then writes `index.html`,
+   `sw.js`, the manifest and the icons.
+2. Commit in the book's repo, with a message that lists the new songs.
+3. Push: GitHub Pages updates the website within a minute or two.
+
+**`new <name>`**: creates the folder, `book.yaml` and `tags.yaml` (or copies a `--template`), does a first
+build, runs `git init`, creates the GitHub repo with `gh`, turns on Pages and pushes.
+
 ## Setup
+
+`./install.sh` does all of this: `.venv`, the packages, WebKit, and it clones the book repos into
+`../hymn_books/`. Or by hand:
 
     python3 -m venv .venv
     .venv/bin/pip install -r requirements.txt

@@ -32,4 +32,22 @@ cancionero-builder: builds song-book websites (one folder + GitHub Pages per boo
 
   .venv/bin/python cancionero.py help new
       step-by-step guide (also: help edit)
+
+  .venv/bin/python cancionero.py
+      no arguments: a menu with the same commands
+
+Books live in ../hymn_books/<book> (cancionero, cancionero-hakuna, cancionero-pagano, cancionero-liturgia,
+cancionero-organo), each its own GitHub repo + Pages. Another folder: CANCIONERO_BOOKS=~/elsewhere.
+
+Setup and checks
+  ./install.sh
+      .venv, packages, the WebKit browser some song sites need, and the book repos; safe to re-run
+
+  .venv/bin/python -m pytest tests -p no:cacheprovider
+      run the tests
+
+  .venv/bin/python tests/browser/ui_check.py ../hymn_books/cancionero
+      check a built page in Chromium and WebKit (phone, iPad, laptop)
+
+More: README.md (how it works), to_check_in_case_of_failure.md (what to do when it breaks).
 EOF
