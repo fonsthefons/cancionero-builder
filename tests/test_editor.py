@@ -66,9 +66,13 @@ def test_rows():
 
 def test_rows_keep_chord_lines_with_marks():
     # writing these back from chord positions would drop (x2), the bars, the parens or the tab
-    for line in ("G  D  (x2)", "| Em | C |", "(G)", "G\tD"):
+    for line in ("G  D  (x2)", "| Em | C |", "(G", "G\tD"):
         assert rows(f"{line}\nla la\nC\nmore") == [{"text": line}, {"text": "la la"},
                                                    {"chords": [[0, "C"]], "lyric": "more"}]
+
+
+def test_rows_parenthesized_chord():
+    assert rows("      G (D)\nTómala") == [{"chords": [[6, "G"], [8, "(D)"]], "lyric": "Tómala"}]
 
 
 def test_host_header(editor):

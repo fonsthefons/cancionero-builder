@@ -11,6 +11,7 @@ so other web pages open in the browser can't change the book.
 import html
 import json
 import mimetypes
+import re
 import secrets
 import threading
 import webbrowser
@@ -57,6 +58,11 @@ def fail(message, status=400):
 
 # ---------- song text as rows ----------
 
+def chord_word(word):
+    """A chord the editor can move as one name: "G", or "(D)" (an optional chord)."""
+    return bool(CHORD_RE.fullmatch(word) or (word[:1] == "(" and word[-1:] == ")" and CHORD_RE.fullmatch(word[1:-1])))
+
+
 def rows(body):
     """The body as the editor shows it: [{chords: [[col, name]], lyric}] for a chord
     line over its lyric line (lyric None: chords alone) and a lyric line alone
@@ -72,11 +78,11 @@ def rows(body):
         if pending is not None and (special or chords):
             found.append({"chords": pending, "lyric": None})
             pending = None
-        keep = chords and ("\t" in raw or not all(CHORD_RE.fullmatch(word) for word in line.split()))
+        keep = chords and ("\t" in raw or not all(chord_word(word) for word in line.split()))
         if keep or special or (kept and not chords):
             found.append({"text": raw})
         elif chords:
-            pending = [[m.start(), m.group(1)] for m in CHORD_RE.finditer(raw)]
+            pending = [[m.start(), m.group()] for m in re.finditer(r"\S+", raw)]
         else:
             found.append({"chords": pending or [], "lyric": raw})
             pending = None
