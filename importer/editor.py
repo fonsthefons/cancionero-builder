@@ -66,29 +66,41 @@ def chord_word(word):
 def rows(body):
     """The body as the editor shows it: [{chords: [[col, name]], lyric}] for a chord
     line over its lyric line (lyric None: chords alone) and a lyric line alone
-    (chords []); {text} for blank, **, label and tablature lines, and for chord lines
+    (chords []); {text} for blank, label and tablature lines, and for chord lines
     the editor can't write back as they are (marks like (x2) or |, tab characters)
-    with the lyric line under them."""
-    found, pending, kept = [], None, False
+    with the lyric line under them. ** lines aren't rows: the non-blank rows between
+    them get bold: true (editor.js writes the ** lines back)."""
+    found, pending, kept, bold = [], None, False, False
+
+    def add(row):
+        if bold and row.get("text", "x").strip():
+            row["bold"] = True
+        found.append(row)
+
     for raw in body.split("\n"):
         line = clean_line(raw)
-        special = (not line.strip() or line.strip() == BOLD_MARK or LABEL_RE.fullmatch(line)
+        if line.strip() == BOLD_MARK:
+            if pending is not None:
+                add({"chords": pending, "lyric": None})
+            pending, kept, bold = None, False, not bold
+            continue
+        special = (not line.strip() or LABEL_RE.fullmatch(line)
                    or any(is_tablature(word) for word in line.split()))
         chords = not special and is_chord_line(line)
         if pending is not None and (special or chords):
-            found.append({"chords": pending, "lyric": None})
+            add({"chords": pending, "lyric": None})
             pending = None
         keep = chords and ("\t" in raw or not all(chord_word(word) for word in line.split()))
         if keep or special or (kept and not chords):
-            found.append({"text": raw})
+            add({"text": raw})
         elif chords:
             pending = [[m.start(), m.group()] for m in re.finditer(r"\S+", raw)]
         else:
-            found.append({"chords": pending or [], "lyric": raw})
+            add({"chords": pending or [], "lyric": raw})
             pending = None
         kept = keep
     if pending is not None:
-        found.append({"chords": pending, "lyric": None})
+        add({"chords": pending, "lyric": None})
     return found
 
 

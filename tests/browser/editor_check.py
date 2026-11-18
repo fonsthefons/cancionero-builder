@@ -101,6 +101,15 @@ with sync_playwright() as p:
     page.keyboard.press("ControlOrMeta+Shift+z")
     check("redo lyric", page.locator("#grid .lyric").nth(1).text_content() == "Second line edited")
 
+    # a verse is made bold (a chorus) with Cmd/Ctrl+B or its B button
+    page.locator("#grid .lyric").nth(1).click()
+    page.keyboard.press("ControlOrMeta+b")
+    check("bold verse", page.locator("#grid .verse.bold").count() == 1)
+    page.keyboard.press("ControlOrMeta+z")
+    check("undo bold", page.locator("#grid .verse.bold").count() == 0)
+    page.click("#grid .bold-toggle")
+    check("bold button", page.locator("#grid .verse.bold").count() == 1)
+
     page.fill("#title", "Brand new")
     page.click("#save")
     page.wait_for_function("document.querySelector('#status').textContent.startsWith('Saved')")
@@ -110,6 +119,8 @@ with sync_playwright() as p:
         lines = load_song(saved[0]).body.split("\n")
         check("chord line is 8 spaces + G", lines[lines.index("Hello world") - 1] == " " * 8 + "G")
         check("edited lyric saved", "Second line edited" in lines)
+        check("bold marks saved", [i for i, x in enumerate(lines) if x == "**"]
+              == [lines.index("Hello world") - 2, lines.index("Second line edited") + 1])
 
     # an existing song saved unchanged keeps its body
     page.select_option("#picker", existing.stem)

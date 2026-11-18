@@ -36,13 +36,25 @@ function chordLine(chords) {
     return line;
 }
 
+const isBlank = (row) => "text" in row && !row.text.trim();
+
+// Bold rows get a ** line before them and one right after their last line (before any blank lines).
 function serialize(rows) {
     const lines = [];
+    let bold = false, end = 0; // end: just after the last non-blank line
     for (const row of rows) {
-        if ("text" in row) { lines.push(row.text); continue; }
-        if (row.chords.length) lines.push(chordLine(row.chords));
-        if (row.lyric !== null) lines.push(row.lyric);
+        if (!isBlank(row) && !!row.bold !== bold) {
+            if (bold) lines.splice(end, 0, "**"); else lines.push("**");
+            bold = !bold;
+        }
+        if ("text" in row) lines.push(row.text);
+        else {
+            if (row.chords.length) lines.push(chordLine(row.chords));
+            if (row.lyric !== null) lines.push(row.lyric);
+        }
+        if (!isBlank(row)) end = lines.length;
     }
+    if (bold) lines.splice(end, 0, "**");
     return lines.join("\n");
 }
 
@@ -174,11 +186,47 @@ function editable(element, store) {
     });
 }
 
+// A verse (rows between blank lines) is made bold or plain as a whole: choruses.
+function newVerse(grid) {
+    const verse = document.createElement("div"), button = document.createElement("button"), lines = document.createElement("div");
+    verse.className = "verse";
+    verse.rows = [];
+    button.className = "bold-toggle";
+    button.textContent = "B";
+    button.title = "Bold (chorus) — Cmd/Ctrl+B";
+    verse.toggle = () => {
+        commit(); // a lyric edit in progress stays its own undo step
+        const bold = !verse.rows.every((row) => row.bold);
+        verse.rows.forEach((row) => { if (bold) row.bold = true; else delete row.bold; });
+        changed();
+    };
+    button.addEventListener("click", verse.toggle);
+    verse.append(button, lines);
+    grid.append(verse);
+    return verse;
+}
+
+document.addEventListener("keydown", (e) => {
+    if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "b" || song.textMode) return;
+    const verse = e.target.closest && e.target.closest("#grid .verse");
+    if (!verse) return;
+    e.preventDefault();
+    verse.toggle();
+});
+
 function renderGrid() {
     const grid = $("grid");
     grid.replaceChildren();
+    let verse = null;
     song.rows.forEach((row, index) => {
         const block = document.createElement("div");
+        if (isBlank(row)) verse = null;
+        else {
+            verse = verse || newVerse(grid);
+            verse.rows.push(row);
+            if (verse.rows.every((r) => r.bold)) verse.classList.add("bold");
+            else verse.classList.remove("bold");
+        }
         if ("text" in row) {
             block.className = "text";
             block.textContent = row.text;
@@ -203,7 +251,7 @@ function renderGrid() {
                 block.append(lyric);
             }
         }
-        grid.append(block);
+        (verse ? verse.lastChild : grid).append(block);
     });
 }
 
