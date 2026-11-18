@@ -122,9 +122,13 @@ with sync_playwright() as p:
         check("bold marks saved", [i for i, x in enumerate(lines) if x == "**"]
               == [lines.index("Hello world") - 2, lines.index("Second line edited") + 1])
 
-    # an existing song saved unchanged keeps its body
-    page.select_option("#picker", existing.stem)
+    # an existing song saved unchanged keeps its body (opened from the search box, by a lyric)
+    page.fill("#song-find", "SECOND lin")
+    hit = page.locator("#song-found button", has_text="Existing - Ana")
+    check("search finds by lyric", hit.count() == 1 and hit.text_content() == "Existing - Anasecond line")
+    hit.click()
     page.wait_for_function("document.querySelector('#title').value == 'Existing'")
+    check("picker follows search", page.input_value("#picker") == existing.stem)
     page.click("#save")
     page.wait_for_function("document.querySelector('#status').textContent.startsWith('Saved')")
     check("existing body unchanged", load_song(existing).body == before)

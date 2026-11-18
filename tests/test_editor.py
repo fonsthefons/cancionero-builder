@@ -122,7 +122,8 @@ def test_save_new_and_edit(editor):
     added = load_song(path).added
     assert added and load_song(path).tags == {"fiesta": []}
     assert "fiesta" in (root / "tags.yaml").read_text(encoding="utf-8")
-    assert call("/api/book")[1]["songs"] == [{"id": "hola_ana", "title": "Hola", "autor": "Ana"}]
+    assert call("/api/book")[1]["songs"] == [{"id": "hola_ana", "title": "Hola", "autor": "Ana",
+                                                  "lyrics": ["Hello my friend", "only words"]}]
 
     assert save(call)[0] == 409  # same title again
     status, result = save(call, id="hola_ana", title="Adiós", melody="K:D\nDE", tab="2/2 0/1")
