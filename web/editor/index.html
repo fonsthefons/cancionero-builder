@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="token" content="{{TOKEN}}">
+<title>Song editor - {{BOOK}}</title>
+<link rel="stylesheet" href="/static/editor.css">
+</head>
+<body>
+<header>
+  <h1>{{BOOK}}</h1>
+  <label>Song <select id="picker"></select></label>
+  <span id="status" role="status"></span>
+</header>
+
+<main>
+  <section id="source">
+    <h2>Source</h2>
+    <div class="row">
+      <button type="button" data-src="paste">Paste</button>
+      <button type="button" data-src="link">Link</button>
+      <button type="button" data-src="search">Search</button>
+    </div>
+    <div class="panel" id="src-paste" hidden>
+      <textarea id="paste-text" rows="8" placeholder="Paste the song, chords above the lyrics"></textarea>
+      <button type="button" id="paste-go">Use this text</button>
+    </div>
+    <div class="panel" id="src-link" hidden>
+      <input id="fetch-link" type="url" placeholder="https://...">
+      <button type="button" id="fetch-go">Read the song</button>
+    </div>
+    <div class="panel" id="src-search" hidden>
+      <input id="search-title" placeholder="Title">
+      <input id="search-artist" placeholder="Artist">
+      <button type="button" id="search-go">Search</button>
+      <ul id="results"></ul>
+    </div>
+    <ul id="notes"></ul>
+  </section>
+
+  <section id="song">
+    <h2>Chords <button type="button" id="text-toggle">Text</button></h2>
+    <p class="hint">Click a chord line to add a chord, drag a chord to move it, click it to rename (empty name or Delete removes it).</p>
+    <div id="grid"></div>
+    <textarea id="body" rows="24" spellcheck="false" hidden></textarea>
+  </section>
+
+  <section id="melody">
+    <h2>Melody</h2>
+    <label><input type="checkbox" id="has-melody"> Melody</label>
+    <label><input type="checkbox" id="has-tab"> Guitar tab</label>
+    <div id="melody-edit" hidden>
+      <textarea id="abc" rows="4" spellcheck="false" aria-label="Melody in ABC notation"></textarea>
+      <p class="hint">Click a note to select it, drag it (or arrow keys) to change its pitch.</p>
+      <div id="melody-staff"></div>
+      <div class="row">
+        <button type="button" data-note="delete">Delete</button>
+        <button type="button" data-note="copy">Add after</button>
+        <button type="button" data-note="longer">Length ×2</button>
+        <button type="button" data-note="shorter">Length /2</button>
+        <button type="button" data-note="^" aria-label="Sharp">♯</button>
+        <button type="button" data-note="_" aria-label="Flat">♭</button>
+        <button type="button" data-note="=" aria-label="Natural">♮</button>
+      </div>
+      <div id="tab-edit" hidden>
+        <p class="hint">fret/string for each note (string 1 = high e … 6 = low E)</p>
+        <div id="tab-inputs"></div>
+        <p id="tab-error" role="alert"></p>
+      </div>
+      <h3>In the book</h3>
+      <div id="melody-look" class="song" data-transpose="0">
+        <button type="button" class="melody-play">▶ Melody</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="form">
+    <h2>Song</h2>
+    <label>Title <input id="title"></label>
+    <label>Author <input id="autor"></label>
+    <label>Capo <input id="capo"></label>
+    <label>Link <input id="link" type="url"> <button type="button" id="find-link">Find link</button></label>
+    <ul id="link-choices"></ul>
+    <fieldset id="tags"><legend>Tags</legend>
+      <div id="tag-boxes"></div>
+      <label id="new-tags-label">New tags <input id="new-tags" placeholder="Tag or Tag/Subtag, separated by commas"></label>
+    </fieldset>
+    <label id="horas-label" hidden>Horas (one per line) <textarea id="horas" rows="3"></textarea></label>
+    <details><summary>Ignore</summary>
+      <label>Ignore (one per line) <textarea id="ignore" rows="3"></textarea></label>
+    </details>
+    <div class="row">
+      <button type="button" id="save" class="primary">Save</button>
+      <button type="button" id="publish">Publish</button>
+    </div>
+    <pre id="report"></pre>
+  </section>
+</main>
+<script src="/static/abcjs-basic-min.js"></script>
+<script src="/static/melody.js"></script>
+<script src="/static/melody-editor.js"></script>
+<script src="/static/editor.js"></script>
+</body>
+</html>

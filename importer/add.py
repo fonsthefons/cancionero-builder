@@ -250,5 +250,6 @@ def menu(book):
     print("  3) Search for it by title and artist")
     print("  4) From a PDF songbook")
     print("  5) A list of songs (Title - Artist, one per line), added without questions")
+    print("  6) Open the song editor in the browser")
     print("  0) Done")
     return ask("Choose", "3")

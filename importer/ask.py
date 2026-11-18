@@ -110,7 +110,12 @@ def ask_tags(book, taxonomy, suggested=None):
             print("This book only takes the tags listed (book.yaml strict_tags); pick numbers.")
             continue
         break
+    return save_tags(book, taxonomy, picked)
 
+
+def save_tags(book, taxonomy, picked):
+    """{tag id: [subtag ids]} of the picked tags [(tag id, sub id, tag label|None,
+    sub label|None)]; new ones (with a label) are added to the book's tags.yaml."""
     tags = {}
     for tag_id, sub_id, tag_label, sub_label in picked:
         subtags = tags.setdefault(tag_id, [])

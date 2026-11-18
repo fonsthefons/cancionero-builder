@@ -32,6 +32,7 @@ class Song:
     horas: list = field(default_factory=list)  # slot patterns in horas.yaml, as written
     melody: str | None = None  # ABC notation body ("K:D\n...") shown as a staff
     tab: str | None = None  # guitar tab, one "fret/string" per melody note
+    ignore: list = field(default_factory=list)  # IGNORABLE_CHECKS skipped
     number: int = 0  # assigned after sorting
 
     @property
@@ -162,6 +163,7 @@ def load_song(path):
         horas=parse_horas(meta.get("horas")),
         melody=melody,
         tab=tab,
+        ignore=ignore,
     )
 
 
