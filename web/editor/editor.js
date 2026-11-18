@@ -63,7 +63,38 @@ function charWidth() {
     return width;
 }
 
-function changed() { song.dirty = true; renderGrid(); }
+// Undo: snapshots of song.rows. `last` is the current state; the bottom of `undo` is the loaded song.
+const history = { undo: [], redo: [], last: "[]" };
+
+function resetHistory() { Object.assign(history, { undo: [], redo: [], last: JSON.stringify(song.rows) }); }
+
+function commit() {
+    const now = JSON.stringify(song.rows);
+    if (now === history.last) return;
+    history.undo.push(history.last);
+    history.redo.length = 0; // in place: step() holds these arrays
+    history.last = now;
+}
+
+function step(from, to) {
+    commit();
+    if (!from.length) return;
+    to.push(history.last);
+    history.last = from.pop();
+    song.rows = JSON.parse(history.last);
+    song.dirty = history.undo.length > 0; // back at the loaded song: save its body byte for byte
+    renderGrid();
+}
+
+document.addEventListener("keydown", (e) => {
+    if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z" || song.textMode) return;
+    if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return; // their own undo
+    e.preventDefault();
+    if (e.shiftKey) step(history.redo, history.undo);
+    else step(history.undo, history.redo);
+});
+
+function changed() { song.dirty = true; commit(); renderGrid(); }
 
 // An input on a chord line at `col`; Enter or leaving it keeps the name, empty removes the chord.
 function editChord(line, col, chord) {
@@ -136,6 +167,11 @@ function editable(element, store) {
         store(element.textContent.replace(/\n/g, ""));
         song.dirty = true;
     });
+    element.addEventListener("blur", commit); // one undo step per line edit
+    element.addEventListener("beforeinput", (e) => { // the browser's own undo (Edit menu, editing commands)
+        if (e.inputType === "historyUndo") { e.preventDefault(); step(history.undo, history.redo); }
+        if (e.inputType === "historyRedo") { e.preventDefault(); step(history.redo, history.undo); }
+    });
 }
 
 function renderGrid() {
@@ -175,6 +211,7 @@ function setText(data) {
     song.body = data.body;
     song.rows = data.rows;
     song.dirty = false;
+    resetHistory();
     $("body").value = data.body;
     renderGrid();
     $("notes").replaceChildren(...(data.notes || []).map((note) => Object.assign(document.createElement("li"), { textContent: note })));
