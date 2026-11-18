@@ -12,7 +12,9 @@ from .text import spanish_sort_key
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
 OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore"}
-IGNORABLE_CHECKS = ("tab-melody-check",)  # tab covers only the first notes of the melody
+# tab-melody-check: the tab covers only the first notes of the melody; long-lines-check and
+# far-chords-check: build warnings (builder/build.py) the song is fine without
+IGNORABLE_CHECKS = ("tab-melody-check", "long-lines-check", "far-chords-check")
 
 
 class SongError(Exception):

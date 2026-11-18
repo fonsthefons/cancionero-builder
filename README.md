@@ -113,6 +113,11 @@ A "▶ Melody" button in the song's controls plays the melody (not the chords) w
 organ-like tone made in the browser (works offline), at quarter = 80 unless the melody sets
 `Q:`, in the key on screen, lighting each note; a psalm's button plays its chosen fórmula.
 
+The build warns about lines over 50 columns (the whole song gets small on phones; the editor
+marks them yellow) and chords written far past the end of their lyric; `cancionero.py`
+offers to move those chords next to the lyric (y/n). A song turns either warning off with
+`ignore: ["long-lines-check"]` or `ignore: ["far-chords-check"]`.
+
 Songs are numbered in title order; numbers in titles count as numbers ("2 ..." before "10 ...").
 
 **Tags are free**: any tag written in a song appears in the book, as an id (`pasion`) or a

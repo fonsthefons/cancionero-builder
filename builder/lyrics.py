@@ -51,6 +51,41 @@ def lyrics_columns(body):
     return max((line_columns(clean_line(raw)) for raw in body.split("\n")), default=0)
 
 
+# Over this many columns a song's text gets small on a phone (the font shrinks so the
+# widest line fits: at 50 columns it is ~75% of full size).
+LONG_LINE = 50
+
+
+def long_lines(body):
+    """[(line number, columns)] of the lines over LONG_LINE columns."""
+    return [(n, cols) for n, raw in enumerate(body.split("\n"), start=1)
+            if (cols := line_columns(clean_line(raw))) > LONG_LINE]
+
+
+def pack_far_chords(body, max_shift=2):
+    """(body, [line numbers changed]): chords written past the end of their lyric are
+    moved next to it, one space apart ("tempestad          F#" -> "tempestad F#"),
+    when that moves the line's end by more than max_shift columns. Chord lines with
+    3+ chords past the lyric are left as they are (an instrumental bit after the singing)."""
+    lines, changed = body.split("\n"), []
+    for i in range(len(lines) - 1):
+        chords, lyric = clean_line(lines[i]), clean_line(lines[i + 1])
+        if ("\t" in lines[i] or not is_chord_line(chords) or LABEL_RE.fullmatch(chords) or not lyric.strip()
+                or lyric.strip() == BOLD_MARK or is_chord_line(lyric) or LABEL_RE.fullmatch(lyric)):
+            continue
+        end, packed, past = line_columns(lyric), "", 0
+        for m in re.finditer(r"\S+", chords):
+            col = m.start()
+            if col > end:
+                past += 1
+                col = min(col, max(end + 1, len(packed) + 1))
+            packed = packed.ljust(col) + m.group()
+        if past < 3 and len(chords) - len(packed) > max_shift:
+            lines[i] = packed
+            changed.append(i + 1)
+    return "\n".join(lines), changed
+
+
 # Guitar tablature ("G|--2----0--|", "B-------"): a string name followed by a
 # bar or dashes, or digits next to "--". Not a chord, though it starts with a
 # letter like one. ("C7-9", "D--A" and "|C---|G---|" are chords.)

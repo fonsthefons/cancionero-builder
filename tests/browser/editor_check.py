@@ -206,6 +206,16 @@ with sync_playwright() as p:
     page.keyboard.press("Enter")
     check("enter at the end, then on the empty line: a verse break",
           text() == f"{chords}\n{lyric}\nCuando salga\nbajo el sol.\n")
+    # a line over the build's limit (50 columns) is marked yellow; shortening it clears the mark
+    page.click("[data-src=paste]")
+    page.fill("#paste-text", "short line\n" + "x" * 51)
+    page.click("#paste-go")
+    page.wait_for_function("document.querySelector('#grid').textContent.includes('short line')")
+    check("long line marked", page.locator("#grid .too-long").count() == 1
+          and "x" * 51 in page.locator("#grid .too-long").text_content())
+    page.evaluate(f"focusRow({page.locator('#grid .too-long [data-edit]').get_attribute('data-edit')}, 99)")
+    page.keyboard.press("Backspace")
+    check("shortened: no mark", page.locator("#grid .too-long").count() == 0)
     check("no page errors", not errors)
     browser.close()
 
