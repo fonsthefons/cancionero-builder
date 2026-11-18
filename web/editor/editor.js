@@ -269,6 +269,7 @@ function editable(element, store, index) {
     element.addEventListener("input", () => {
         store(element.textContent.replace(/\n/g, ""));
         song.dirty = true;
+        element.closest("[data-block]")?.markLong();
     });
     element.addEventListener("blur", commit); // one undo step per line edit
     element.addEventListener("beforeinput", (e) => { // the browser's own undo (Edit menu, editing commands)
@@ -342,6 +343,12 @@ function renderGrid() {
                 block.append(lyric);
             }
         }
+        // as the build's long-lines warning (builder/lyrics.py LONG_LINE)
+        block.dataset.block = index;
+        block.markLong = () => block.classList.toggle("too-long", Math.max(
+            ("text" in row ? row.text : row.lyric || "").trimEnd().length,
+            ...(row.chords || []).map(([col, name]) => col + name.length)) > book.long_line);
+        block.markLong();
         (verse ? verse.lastChild : grid).append(block);
     });
 }

@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 from builder.book import BookError, load_book
-from builder.build import build_book, load_book_songs
+from builder.build import build_book, fix_far_chords, load_book_songs
 from builder.create import CreateError, create_book, default_title, publish_book
 from builder.songs import SongError
 
@@ -66,8 +66,15 @@ def pick_book():
 
 
 def build_and_report(book):
+    from importer.ask import ask_yes
+
     try:
-        print(build_book(book).report(book))
+        result = build_book(book)
+        print(result.report(book))
+        if result.far_chords and sys.stdin.isatty() and ask_yes(
+                f"Move the far chords next to their lyric in these {len(result.far_chords)} songs?"):
+            print(f"Moved the chords on {fix_far_chords(book, result.far_chords)} lines. Rebuilding...")
+            print(build_book(book).report(book))
         return True
     except SongError as e:
         print(e, file=sys.stderr)

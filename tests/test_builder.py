@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from builder.book import BookError, load_book, settings_yaml  # noqa: E402
-from builder.build import build_book  # noqa: E402
-from builder.lyrics import chord_line_html, is_chord_line, verse_html  # noqa: E402
+from builder.build import build_book, fix_far_chords  # noqa: E402
+from builder.lyrics import chord_line_html, is_chord_line, pack_far_chords, verse_html  # noqa: E402
 from builder.songs import SongError  # noqa: E402
 from builder.tags import Taxonomy, add_to_tags_file  # noqa: E402
 from builder.text import slug, spanish_sort_key  # noqa: E402
@@ -201,3 +201,35 @@ def test_add_to_tags_file_keeps_comments(tmp_path):
     assert list(tags) == ["misa", "otra", "nueva"]
     assert list(tags["misa"].subtags) == ["entrada", "salida"]
     assert tags["otra"].subtags == {"uno": "Uno"}
+
+
+FAR = ("                                Em                F#\npodrá calmar de mi alma la tempestad\n"
+       "                  A         G     F#\nque me amaste desde siempre\n"
+       "            G\nque solo tú\n"
+       "      Am    F    C    G\n Try\n")
+
+
+def test_pack_far_chords():
+    body, changed = pack_far_chords(FAR)
+    assert changed == [1, 3]
+    assert body.split("\n")[:6] == [
+        "                                Em   F#", "podrá calmar de mi alma la tempestad",
+        "                  A         G F#", "que me amaste desde siempre", "            G", "que solo tú"]
+    assert body.endswith("      Am    F    C    G\n Try\n")  # 3+ chords past the lyric: an instrumental bit
+
+
+def test_line_warnings_and_fix(tmp_path):
+    long = "x" * 51
+    book = write_book(tmp_path, songs={
+        "a": "---\ntitle: A\n---\n\n" + FAR + long + "\n",
+        "b": "---\ntitle: B\nignore: [long-lines-check, far-chords-check]\n---\n\n" + FAR + long + "\n",
+    })
+    result = build_book(book)
+    assert result.long_lines == {"a": [(5, 52), (13, 51)]} and result.far_chords == {"a": [5, 7]}
+    report = result.report(book)
+    assert "a.md: line 5, 13" in report and "a.md: line 5, 7" in report and "b.md" not in report
+    assert fix_far_chords(book, result.far_chords) == 2
+    text = (tmp_path / "songs" / "a.md").read_text(encoding="utf-8")
+    assert text.startswith("---\ntitle: A\n---\n\n") and "Em   F#\n" in text
+    again = build_book(book)
+    assert again.far_chords == {} and again.long_lines == {"a": [(13, 51)]}  # packing fixed the long chord line

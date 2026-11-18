@@ -68,6 +68,9 @@ button.primary { background: var(--accent); color: var(--page); }
 #grid .verse.bold .bold-toggle { opacity: 1; background: var(--accent); color: var(--page); }
 #grid .verse.bold .lyric, #grid .verse.bold .text { font-weight: bold; color: var(--ink); }
 #grid .chord { position: absolute; top: 0; color: var(--chord); font-weight: bold; cursor: grab; touch-action: none; user-select: none; }
+#grid .too-long { background: color-mix(in srgb, #f5c400 30%, transparent); }
+#grid .too-long::after { content: "too long, might not render properly"; display: block; font: 0.75rem var(--sans); color: #8a6d00; }
+@media (prefers-color-scheme: dark) { #grid .too-long::after { color: #f5c400; } }
 #grid .chord.sep { color: var(--muted); font-weight: normal; }
 #abc { display: block; width: 100%; box-sizing: border-box; font-family: var(--mono); }
 /* Positioned: abcjs reads the mouse as layerX/Y (relative to this). Not scaled: it turns pixels into staff steps. */

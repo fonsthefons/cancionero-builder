@@ -23,7 +23,7 @@ import yaml
 
 from builder.build import build_book, load_book_songs
 from builder.create import CreateError, publish_book
-from builder.lyrics import LABEL_RE, BOLD_MARK, clean_line, is_chord_line, is_tablature
+from builder.lyrics import LONG_LINE, LABEL_RE, BOLD_MARK, clean_line, is_chord_line, is_tablature
 from builder.songs import SongError, load_song
 from builder.tags import Taxonomy
 from builder.text import slug
@@ -130,7 +130,7 @@ def api_book(book, _):
     if book.strict_tags:  # as ask_tags: only flat tags and subtags
         choices = [c for c in choices if c[1] is not None or taxonomy.tags[c[0]].is_flat]
     return {"title": book.title, "default_author": book.default_author, "strict_tags": book.strict_tags,
-            "has_horas": book.horas_file.exists(),
+            "has_horas": book.horas_file.exists(), "long_line": LONG_LINE,
             "tags": [{"tag": tag, "sub": sub, "label": label} for tag, sub, label in choices],
             "songs": [{"id": path.stem, "title": song.title, "autor": song.autor,
                        "lyrics": [r.get("lyric") or r.get("text") for r in rows(song.body) if r.get("lyric") or r.get("text")]}
