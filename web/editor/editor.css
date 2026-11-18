@@ -54,6 +54,12 @@ button.primary { background: var(--accent); color: var(--page); }
 #grid .lyric, #grid .text { white-space: pre; min-height: 1.3em; }
 #grid .text { color: var(--muted); }
 #grid .lyric:focus, #grid .text:focus { outline: 1px dashed var(--muted); }
+#grid .verse { display: flex; align-items: flex-start; gap: 0.4rem; }
+#grid .verse > div { flex: 1; }
+#grid > .text { margin-left: 2.2rem; }
+#grid .bold-toggle { font: bold 0.75rem var(--sans); width: 1.8rem; padding: 0.1rem 0; opacity: 0.5; flex: none; }
+#grid .verse.bold .bold-toggle { opacity: 1; background: var(--accent); color: var(--page); }
+#grid .verse.bold .lyric, #grid .verse.bold .text { font-weight: bold; color: var(--ink); }
 #grid .chord { position: absolute; top: 0; color: var(--chord); font-weight: bold; cursor: grab; touch-action: none; user-select: none; }
 #abc { display: block; width: 100%; box-sizing: border-box; font-family: var(--mono); }
 /* Positioned: abcjs reads the mouse as layerX/Y (relative to this). Not scaled: it turns pixels into staff steps. */

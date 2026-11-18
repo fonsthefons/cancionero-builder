@@ -56,8 +56,7 @@ def test_rows():
         {"chords": [[0, "G"], [8, "D"]], "lyric": "Hello my friend"},
         {"text": ""},
         {"chords": [[0, "Em"]], "lyric": None},
-        {"text": "**"},
-        {"chords": [[0, "C"]], "lyric": "only words"},
+        {"chords": [[0, "C"]], "lyric": "only words", "bold": True},
         {"text": ""},
     ]
     assert rows("Intro: G D\ne|--2--|\nla la") == [{"text": "Intro: G D"}, {"text": "e|--2--|"},
@@ -69,6 +68,15 @@ def test_rows_keep_chord_lines_with_marks():
     for line in ("G  D  (x2)", "| Em | C |", "(G", "G\tD"):
         assert rows(f"{line}\nla la\nC\nmore") == [{"text": line}, {"text": "la la"},
                                                    {"chords": [[0, "C"]], "lyric": "more"}]
+
+
+def test_rows_bold():
+    assert rows("**\nC\nChorus\nmore\n**\n\nVerse") == [
+        {"chords": [[0, "C"]], "lyric": "Chorus", "bold": True}, {"chords": [], "lyric": "more", "bold": True},
+        {"text": ""}, {"chords": [], "lyric": "Verse"}]
+    # a ** may span verses; blank lines are never bold
+    assert rows("**\nla\n\nlo\n**") == [{"chords": [], "lyric": "la", "bold": True}, {"text": ""},
+                                       {"chords": [], "lyric": "lo", "bold": True}]
 
 
 def test_rows_parenthesized_chord():
