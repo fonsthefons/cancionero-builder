@@ -83,12 +83,23 @@ with sync_playwright() as p:
     page.mouse.move(x + 3 * cw, y, steps=6)
     page.mouse.up()
     check("chord at col 8", page.locator("#grid .chord").first.evaluate("e => e.style.left") == "8ch")
+    page.keyboard.press("ControlOrMeta+z")
+    check("undo drag", page.locator("#grid .chord").first.evaluate("e => e.style.left") == "5ch")
+    page.keyboard.press("ControlOrMeta+z")
+    check("undo add", page.locator("#grid .chord").count() == 0)
+    page.keyboard.press("ControlOrMeta+Shift+z")
+    page.keyboard.press("ControlOrMeta+Shift+z")
+    check("redo", page.locator("#grid .chord").first.evaluate("e => e.style.left") == "8ch")
 
     # lyrics are typed into in place
     second = page.locator("#grid .lyric").nth(1)
     second.click()
     page.keyboard.press("End")
     page.keyboard.type(" edited")
+    page.keyboard.press("ControlOrMeta+z")
+    check("undo lyric", page.locator("#grid .lyric").nth(1).text_content() == "Second line")
+    page.keyboard.press("ControlOrMeta+Shift+z")
+    check("redo lyric", page.locator("#grid .lyric").nth(1).text_content() == "Second line edited")
 
     page.fill("#title", "Brand new")
     page.click("#save")
