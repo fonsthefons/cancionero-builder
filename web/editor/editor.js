@@ -127,6 +127,17 @@ function chordElement(line, chord) {
     return span;
 }
 
+// Lyric and text lines are typed into in place; no re-render while typing so the caret stays put.
+function editable(element, store) {
+    element.contentEditable = "plaintext-only";
+    element.spellcheck = false;
+    element.addEventListener("keydown", (e) => { if (e.key === "Enter") e.preventDefault(); });
+    element.addEventListener("input", () => {
+        store(element.textContent.replace(/\n/g, ""));
+        song.dirty = true;
+    });
+}
+
 function renderGrid() {
     const grid = $("grid");
     grid.replaceChildren();
@@ -135,6 +146,7 @@ function renderGrid() {
         if ("text" in row) {
             block.className = "text";
             block.textContent = row.text;
+            editable(block, (value) => { row.text = value; });
         } else {
             const line = document.createElement("div");
             line.className = "chords";
@@ -151,6 +163,7 @@ function renderGrid() {
                 const lyric = document.createElement("div");
                 lyric.className = "lyric";
                 lyric.textContent = row.lyric;
+                editable(lyric, (value) => { row.lyric = value; });
                 block.append(lyric);
             }
         }

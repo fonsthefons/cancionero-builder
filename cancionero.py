@@ -354,7 +354,7 @@ def interactive():
 
     print("Song books\n")
     print("  1) Create a new song book")
-    print("  2) Add songs to a book")
+    print("  2) Edit/Add songs to a book")
     print("  3) Find Spotify/YouTube links for a book's songs")
     print("  4) Rebuild a book (after editing songs by hand)")
     print("  5) Publish a book (commit and push)")

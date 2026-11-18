@@ -53,6 +53,7 @@ button.primary { background: var(--accent); color: var(--page); }
 #grid .chords:hover { background: color-mix(in srgb, var(--chord) 16%, transparent); }
 #grid .lyric, #grid .text { white-space: pre; min-height: 1.3em; }
 #grid .text { color: var(--muted); }
+#grid .lyric:focus, #grid .text:focus { outline: 1px dashed var(--muted); }
 #grid .chord { position: absolute; top: 0; color: var(--chord); font-weight: bold; cursor: grab; touch-action: none; user-select: none; }
 #abc { display: block; width: 100%; box-sizing: border-box; font-family: var(--mono); }
 /* Positioned: abcjs reads the mouse as layerX/Y (relative to this). Not scaled: it turns pixels into staff steps. */
