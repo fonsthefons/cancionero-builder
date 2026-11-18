@@ -11,6 +11,10 @@
 <header>
   <h1>{{BOOK}}</h1>
   <label>Song <select id="picker"></select></label>
+  <div id="song-search">
+    <input type="search" id="song-find" placeholder="Search songs..." aria-label="Search songs" autocomplete="off">
+    <div id="song-found" hidden></div>
+  </div>
   <span id="status" role="status"></span>
 </header>
 

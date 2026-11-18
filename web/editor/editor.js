@@ -475,6 +475,53 @@ function fillPicker(selected) {
 
 $("picker").addEventListener("change", () => run("Opening...", () => pick($("picker").value)));
 
+// Song search, ranked as the book's (web/js/search.js): title start, title words, author, lyric phrase, any words.
+const searchText = (t) => (t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+
+function findSongs(query) {
+    const phrase = searchText(query), words = phrase.split(" ");
+    if (!phrase) return [];
+    const hasAll = (text) => words.every((w) => text.includes(w));
+    return book.songs.map((s, order) => {
+        const title = searchText(s.title), autor = searchText(s.autor), lines = s.lyrics.map(searchText);
+        const lyrics = " " + lines.join(" ") + " ";
+        const rank = title.startsWith(phrase) ? 1 : hasAll(title) ? 2 : hasAll(autor) ? 3
+            : lyrics.includes(" " + phrase) ? 4 : hasAll(title + " " + autor + lyrics) ? 5 : null;
+        let i = rank >= 4 ? lines.findIndex((l) => (" " + l).includes(" " + phrase)) : -1;
+        if (rank === 5 && i < 0) i = lines.findIndex((l) => l.includes(words[0]));
+        return { s, order, rank, snippet: i >= 0 ? s.lyrics[i] : "" };
+    }).filter((h) => h.rank !== null).sort((a, b) => a.rank - b.rank || a.order - b.order).slice(0, 50);
+}
+
+function showFound() {
+    const found = findSongs($("song-find").value);
+    $("song-found").replaceChildren(...(found.length ? found.map(({ s, snippet }) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.dataset.song = s.id;
+        item.textContent = s.title + (s.autor ? " - " + s.autor : "");
+        if (snippet) item.append(Object.assign(document.createElement("span"), { textContent: snippet }));
+        return item;
+    }) : [Object.assign(document.createElement("div"), { textContent: "No songs found" })]));
+    $("song-found").hidden = !$("song-find").value.trim();
+}
+
+$("song-find").addEventListener("input", showFound);
+$("song-find").addEventListener("focus", showFound);
+$("song-find").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { $("song-find").value = ""; $("song-found").hidden = true; }
+    if (e.key === "Enter") $("song-found").querySelector("button")?.click();
+});
+$("song-found").addEventListener("click", (e) => {
+    const id = e.target.closest("button")?.dataset.song;
+    if (!id) return;
+    $("song-find").value = "";
+    $("song-found").hidden = true;
+    $("picker").value = id;
+    $("picker").dispatchEvent(new Event("change"));
+});
+document.addEventListener("click", (e) => { if (!$("song-search").contains(e.target)) $("song-found").hidden = true; });
+
 function pickedTags() {
     const chosen = [...document.querySelectorAll("#tag-boxes input:checked")].map((b) => [b.dataset.tag, b.dataset.sub || null, null, null]);
     const typed = book.strict_tags ? [] : $("new-tags").value.split(",").map((t) => t.trim()).filter(Boolean).map((t) => {

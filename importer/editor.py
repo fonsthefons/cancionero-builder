@@ -134,7 +134,9 @@ def api_book(book, _):
     return {"title": book.title, "default_author": book.default_author, "strict_tags": book.strict_tags,
             "has_horas": book.horas_file.exists(),
             "tags": [{"tag": tag, "sub": sub, "label": label} for tag, sub, label in choices],
-            "songs": [{"id": path.stem, "title": song.title, "autor": song.autor} for path, song in book_songs(book)]}
+            "songs": [{"id": path.stem, "title": song.title, "autor": song.autor,
+                       "lyrics": [r.get("lyric") or r.get("text") for r in rows(song.body) if r.get("lyric") or r.get("text")]}
+                      for path, song in book_songs(book)]}
 
 
 def api_song(book, query):
