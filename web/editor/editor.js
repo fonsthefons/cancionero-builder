@@ -170,11 +170,101 @@ function chordElement(line, chord) {
     return span;
 }
 
+// ---------- splitting and joining lines ----------
+
+function caretOffset(element) {
+    const selection = getSelection();
+    if (!selection.rangeCount) return null;
+    const range = selection.getRangeAt(0), before = document.createRange();
+    before.selectNodeContents(element);
+    before.setEnd(range.startContainer, range.startOffset);
+    return before.toString().length;
+}
+
+function focusRow(index, offset) {
+    const element = $("grid").querySelector(`[data-edit="${index}"]`);
+    if (!element) return;
+    element.focus();
+    const range = document.createRange(), node = element.firstChild;
+    if (node) range.setStart(node, Math.min(offset, node.length)); else range.setStart(element, 0);
+    range.collapse(true);
+    getSelection().removeAllRanges();
+    getSelection().addRange(range);
+}
+
+const withBold = (from, row) => (from.bold ? { ...row, bold: true } : row);
+
+// Enter at `at` in row `index`: a lyric's chords from the second part's first letter on go down with it.
+function splitRow(index, at) {
+    const row = song.rows[index];
+    let caret = [index + 1, 0];
+    if ("text" in row) {
+        song.rows.splice(index, 1, { ...row, text: row.text.slice(0, at) }, withBold(row, { text: row.text.slice(at) }));
+    } else if (row.lyric === "" && !row.chords.length) {
+        song.rows[index] = { text: "" }; // Enter on an empty line: a verse break
+        caret = [index, 0];
+    } else {
+        const left = row.lyric.slice(0, at).trimEnd(), rest = row.lyric.slice(at);
+        const right = rest.trimStart(), start = at + rest.length - right.length;
+        if (!left.trim() && right) { // at the start: an empty line above
+            song.rows.splice(index, 0, withBold(row, { chords: [], lyric: "" }));
+            caret = [index + 1, at];
+        } else {
+            const moved = right ? row.chords.filter(([col]) => col >= start) : [];
+            row.chords = row.chords.filter((chord) => !moved.includes(chord));
+            row.lyric = left;
+            song.rows.splice(index + 1, 0, withBold(row, { chords: moved.map(([col, name]) => [col - start, name]), lyric: right }));
+        }
+    }
+    changed();
+    focusRow(...caret);
+}
+
+// Backspace at the start of row `index`: joins it to the row above. Returns false when it can't.
+function joinRow(index) {
+    const row = song.rows[index], above = song.rows[index - 1];
+    if (!above) return false;
+    let caret;
+    if (isBlank(above)) {
+        song.rows.splice(index - 1, 1);
+        caret = [index - 1, 0];
+    } else if ("text" in row && "text" in above) {
+        caret = [index - 1, above.text.length];
+        above.text += row.text;
+        song.rows.splice(index, 1);
+    } else if (!("text" in row) && !("text" in above) && above.lyric !== null) {
+        const left = above.lyric.trimEnd(), right = row.lyric.trimStart();
+        // shortcut: chords of the line above that reach past its lyric push the joined ones right; fine for real songs
+        const shift = (left ? left.length + 1 : 0) - (row.lyric.length - right.length);
+        above.lyric = left && right ? left + " " + right : left + right;
+        above.chords = [...above.chords, ...row.chords.map(([col, name]) => [Math.max(0, col + shift), name])];
+        song.rows.splice(index, 1);
+        caret = [index - 1, left && right ? left.length + 1 : left.length];
+    } else return false;
+    changed();
+    focusRow(...caret);
+    return true;
+}
+
 // Lyric and text lines are typed into in place; no re-render while typing so the caret stays put.
-function editable(element, store) {
+function editable(element, store, index) {
     element.contentEditable = "plaintext-only";
     element.spellcheck = false;
-    element.addEventListener("keydown", (e) => { if (e.key === "Enter") e.preventDefault(); });
+    element.dataset.edit = index;
+    element.addEventListener("keydown", (e) => {
+        if (e.isComposing) return;
+        if (e.key === "Enter") {
+            e.preventDefault();
+            const range = getSelection().rangeCount && getSelection().getRangeAt(0);
+            if (range && !range.collapsed) { range.deleteContents(); store(element.textContent); }
+            commit(); // typing so far is its own undo step
+            splitRow(index, caretOffset(element) ?? element.textContent.length);
+        }
+        if (e.key === "Backspace" && getSelection().isCollapsed && caretOffset(element) === 0) {
+            commit();
+            if (joinRow(index)) e.preventDefault();
+        }
+    });
     element.addEventListener("input", () => {
         store(element.textContent.replace(/\n/g, ""));
         song.dirty = true;
@@ -230,7 +320,7 @@ function renderGrid() {
         if ("text" in row) {
             block.className = "text";
             block.textContent = row.text;
-            editable(block, (value) => { row.text = value; });
+            editable(block, (value) => { row.text = value; }, index);
         } else {
             const line = document.createElement("div");
             line.className = "chords";
@@ -247,7 +337,7 @@ function renderGrid() {
                 const lyric = document.createElement("div");
                 lyric.className = "lyric";
                 lyric.textContent = row.lyric;
-                editable(lyric, (value) => { row.lyric = value; });
+                editable(lyric, (value) => { row.lyric = value; }, index);
                 block.append(lyric);
             }
         }

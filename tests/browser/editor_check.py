@@ -169,6 +169,39 @@ with sync_playwright() as p:
         page.click("#save")
         page.wait_for_function("document.querySelector('#status').textContent.startsWith('Saved')")
         check(f"{path.stem}: tab unchanged", load_song(path).tab == loaded)
+    # Enter splits a lyric line (its chords from the cut on go down); Backspace at a line's start joins
+    chords = "F          Bb  F                      Gm7 C7"
+    lyric, other = "No podemos caminar con hambre bajo el sol.", "Cuando salga bajo el sol."
+    whole = f"{chords}\n{lyric}\n{other}"
+    split = f"F          Bb  F\nNo podemos caminar\n{' ' * 19}Gm7 C7\ncon hambre bajo el sol.\n{other}"
+    page.click("[data-src=paste]")
+    page.fill("#paste-text", whole)
+    page.click("#paste-go")
+    page.wait_for_function("document.querySelector('#grid').textContent.includes('Cuando')")
+    def text():  # from the song's first chord line on (the paste cleaning adds an Intro before it)
+        body = page.evaluate("serialize(song.rows)")
+        return body[body.index("F          Bb  F"):]
+
+    first = page.locator("#grid .lyric").nth(0).get_attribute("data-edit")
+    check("pasted as is", text() == whole)
+    for at in (19, 18):  # before "con", or before the space
+        page.evaluate(f"focusRow({first}, {at})")
+        page.keyboard.press("Enter")
+        check(f"split at {at}", text() == split)
+        page.keyboard.press("Backspace")
+        check(f"join after split at {at}", text() == whole)
+    page.evaluate(f"focusRow({first}, 19)")
+    page.keyboard.press("Enter")
+    page.keyboard.press("ControlOrMeta+z")
+    check("undo split", text() == whole)
+    page.evaluate(f"focusRow({int(first) + 1}, 13)")  # "Cuando salga |bajo el sol."
+    page.keyboard.press("Enter")
+    check("split a line without chords", text() == f"{chords}\n{lyric}\nCuando salga\nbajo el sol.")
+    page.evaluate(f"focusRow({int(first) + 2}, 99)")
+    page.keyboard.press("Enter")
+    page.keyboard.press("Enter")
+    check("enter at the end, then on the empty line: a verse break",
+          text() == f"{chords}\n{lyric}\nCuando salga\nbajo el sol.\n")
     check("no page errors", not errors)
     browser.close()
 
