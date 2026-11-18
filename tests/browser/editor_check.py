@@ -84,6 +84,12 @@ with sync_playwright() as p:
     page.mouse.up()
     check("chord at col 8", page.locator("#grid .chord").first.evaluate("e => e.style.left") == "8ch")
 
+    # lyrics are typed into in place
+    second = page.locator("#grid .lyric").nth(1)
+    second.click()
+    page.keyboard.press("End")
+    page.keyboard.type(" edited")
+
     page.fill("#title", "Brand new")
     page.click("#save")
     page.wait_for_function("document.querySelector('#status').textContent.startsWith('Saved')")
@@ -92,6 +98,7 @@ with sync_playwright() as p:
     if saved:
         lines = load_song(saved[0]).body.split("\n")
         check("chord line is 8 spaces + G", lines[lines.index("Hello world") - 1] == " " * 8 + "G")
+        check("edited lyric saved", "Second line edited" in lines)
 
     # an existing song saved unchanged keeps its body
     page.select_option("#picker", existing.stem)
