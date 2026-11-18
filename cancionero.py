@@ -4,6 +4,7 @@
     .venv/bin/python cancionero.py help [new|edit] how to create a book, or add songs to one
     .venv/bin/python cancionero.py new [name]      create a new song book (asks the rest)
     .venv/bin/python cancionero.py add <book>      add songs: link, search, paste, PDF, list
+    .venv/bin/python cancionero.py edit <book>     add and change songs in the browser (Ctrl+C stops it)
     .venv/bin/python cancionero.py add-list <book> <list.txt> [--section Want] [--report Checked.txt]
     .venv/bin/python cancionero.py add-pdf <book> <songbook.pdf> [--all] [--author A] [--section-tags] [--links]
     .venv/bin/python cancionero.py links <book> [--ask]   find Spotify/YouTube links for songs without one
@@ -175,6 +176,10 @@ def add_loop(book, offline=False):
             if path:
                 section = ask("Only the songs under this heading (Enter for all)") or None
                 added += len(add_list(book, Path(path).expanduser(), section=section)[0])
+        elif choice == "6":
+            from importer.editor import serve
+            serve(book)
+            added += 1  # may have changed songs: offer to publish
         else:
             print("Please choose a number from the menu.")
             continue
@@ -189,6 +194,13 @@ def add_loop(book, offline=False):
 
 def cmd_add(args):
     return add_loop(open_book(args.book), offline=args.offline)
+
+
+def cmd_edit(args):
+    from importer.editor import serve
+
+    serve(open_book(args.book))
+    return 0
 
 
 def cmd_add_list(args):
@@ -304,6 +316,10 @@ WORK ON AN EXISTING BOOK
                            (one song per line: Title - Artist)
   Find Spotify/YouTube links for songs without one:
                            {RUN} links my-book
+  Add or edit one song in the browser (chords, melody, tab, tags):
+                           {RUN} edit my-book    (also add menu, option 6)
+                           Saves go straight into songs/ and rebuild the book;
+                           Publish pushes it. Ctrl+C stops the editor.
 
   Edit a song by hand:     change ~/Documents/programs/hymn_books/my-book/songs/<song>.md, then
                            {RUN} build my-book
@@ -387,6 +403,10 @@ def parser():
     c.add_argument("book")
     c.add_argument("--offline", action="store_true", help="don't look up Spotify/YouTube links")
     c.set_defaults(run=cmd_add)
+
+    c = sub.add_parser("edit", help="add and change songs in the browser (Ctrl+C stops it)")
+    c.add_argument("book")
+    c.set_defaults(run=cmd_edit)
 
     c = sub.add_parser("add-list", help="add a list of songs without questions")
     c.add_argument("book")

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from builder.book import load_book  # noqa: E402
-from builder.songs import load_song  # noqa: E402
+from builder.songs import Song, load_song  # noqa: E402
 from builder.tags import Taxonomy  # noqa: E402
 from importer.ask import parse_tag_answer  # noqa: E402
 from importer.batch import read_list  # noqa: E402
@@ -17,7 +17,7 @@ from importer.clean import clean_song  # noqa: E402
 from importer.links import set_link  # noqa: E402
 from importer.pdf import META_RE, column_split, nice_case, split_title  # noqa: E402
 from importer.pdf_add import parse_selection  # noqa: E402
-from importer.songfile import existing_song, write_song  # noqa: E402
+from importer.songfile import existing_song, update_song, write_song  # noqa: E402
 
 
 def test_chord_names():
@@ -57,6 +57,21 @@ def test_write_song(tmp_path):
     assert existing_song(book, "Por qué", "Otro") == other
     set_link(other, "https://open.spotify.com/track/abc")
     assert load_song(other).link == "https://open.spotify.com/track/abc"
+
+
+def test_song_file_round_trip(tmp_path):
+    book = make_book(tmp_path)
+    template = ROOT / "templates/liturgia/songs/himno_laudes-alegre_la_manana.md"
+    path = tmp_path / "songs" / template.name
+    path.write_text(template.read_text(encoding="utf-8"), encoding="utf-8")
+    song = load_song(path)
+    assert song.melody and song.tab and song.horas
+    fields = {name: getattr(song, name) for name in
+              ("title", "autor", "capo", "link", "tags", "body", "added", "horas", "melody", "tab", "ignore")}
+    update_song(book, path, {**fields, "ignore": ["tab-melody-check"]})
+    assert load_song(path) == Song(**{**vars(song), "ignore": ["tab-melody-check"]})
+    update_song(book, path, fields)
+    assert load_song(path) == song
 
 
 def test_tag_answer():

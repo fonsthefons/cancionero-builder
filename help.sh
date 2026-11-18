@@ -9,6 +9,9 @@ cancionero-builder: builds song-book websites (one folder + GitHub Pages per boo
   .venv/bin/python cancionero.py add mybook
       add songs interactively: a link, a search, pasted text, a PDF or a list
 
+  .venv/bin/python cancionero.py edit mybook
+      add or edit one song in a browser page (chords, melody, tab, tags); saves rebuild, Ctrl+C stops
+
   .venv/bin/python cancionero.py add-list mybook list.txt
       add a list of songs without questions
 

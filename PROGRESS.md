@@ -1,5 +1,170 @@
 # Progress
 
+## Plan: song-editor (2026-11-18)
+Goal: `cancionero.py edit <book>` opens a local web page to add or edit one song at a time
+(lyrics with click-to-place and draggable chords, melody staff with draggable notes and playback,
+guitar tab, tags, metadata, the same sources as `add`) that writes songs/<name>.md in the book.
+Out of scope: PDF and list import (stay in the CLI), several songs per page, a book-styled lyrics
+preview (the chord view is the preview), editing horas.yaml / tags.yaml beyond adding new tags,
+hosting the editor anywhere but 127.0.0.1.
+Branch: feature/song-editor
+
+Decisions (user, 2026-11-18): a local stdlib server (no static download page); every source the CLI
+has (link, site search, paste, Spotify/YouTube link lookup); melody = draggable notes on the staff +
+select/delete/add/length buttons + an ABC text box kept in sync + Play; tab = suggested automatically
+from the notes, every token editable.
+Defaults chosen here: editing keeps the file name (the id is stable: anchors, sessions) even if the
+title changes; new songs use write_song naming (song_name + free_path). Doubtful chord lines from
+clean_song are taken as chords (CLI default is yes too); the user fixes them in the page. Fields the
+page doesn't show (`added`) are kept; `horas` and `ignore` show as plain text fields. Blocked sites:
+use the hidden browser if browser_available(), else an error telling the user to paste (no install
+from the page). Publish = a button that calls publish_book (commit + push the book repo), like the
+CLI's question at the end of `add`. Rebuild after every save (build_book) and show its report.
+Security: bind 127.0.0.1 on a free port; a random token in the served page is required on every
+POST; song ids accepted only if `<id>.md` already exists in songs_dir (no path traversal).
+
+- [x] S1 Server, song writing and API (Python) + tests
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: opus    effort: high
+  after: -
+  context: importer/songfile.py (all, 128 lines); importer/add.py:53-185 (from_link, preview,
+           from_search, ask_link, suggested_title, ask_details: the logic to reuse); importer/ask.py:81-126
+           (ask_tags); cancionero.py:155-200 and :336-452 (add_loop, cmd_add, interactive menu, parser);
+           builder/songs.py:104-165 (check_tab, load_song); tests/test_importer.py:1-40 (test style, how
+           tests make a scratch book)
+  do: (a) songfile.song_file: also write melody (YAML block `melody: |` indented 2), tab, horas (list),
+      ignore (list), in the order title, autor, capo, link, added, song_tags, horas, melody, tab, ignore.
+      New `update_song(book, path, fields)`: build the text, validate it by writing `<path>.new`,
+      load_song on it, then os.replace onto path; on error remove the .new and raise SongError (the old
+      file is never touched). A round-trip test: load_song(write(load_song(x))) == x for a template song
+      with melody+tab+horas (templates/liturgia/songs/himno_laudes-alegre_la_manana.md).
+      (b) Split ask_tags' tail (lines 114-126) into `save_tags(book, taxonomy, picked) -> {tag: [subs]}`,
+      reused by ask_tags and the server; picked = [(tag_id, sub_id, tag_label|None, sub_label|None)].
+      (c) New importer/editor.py: http.server ThreadingHTTPServer on 127.0.0.1:0, webbrowser.open.
+      GET / serves web/editor/index.html with `{{TOKEN}}` and `{{BOOK}}` filled in; GET /static/<f>
+      serves only web/editor/*, web/vendor/abcjs-basic-min.js, web/js/melody.js, web/js/transpose.js.
+      JSON API (POST needs header X-Token): GET /api/book -> {title, default_author, strict_tags,
+      has_horas, tags: taxonomy.choices() as [{tag, sub, label}], songs: [{id, title, autor}]};
+      GET /api/song?id= -> all fields + body; POST /api/rows {body} and POST /api/paste {text} (paste runs
+      clean_song(text, marked=False, ask=lambda l: True, from_web=False) first) -> {body, capo, notes,
+      language (detect(body)[0] if book.language_tags), rows}; POST /api/fetch {link} -> from_link
+      logic without prompts (Blocked: browser if browser_available() else 409 "paste it instead"), then
+      clean_song(draft.text, marked=draft.marked) -> same as paste + suggested title (suggested_title),
+      artist (alias_for), capo; POST /api/search {title, artist} -> [{url, site, label}];
+      POST /api/links {title, autor} -> {spotify: [{url,label}], youtube: url|null} (FetchError -> empty);
+      POST /api/save {id|null, title, autor, capo, link, tags: [[tag,sub,tagLabel,subLabel]...], horas,
+      melody, tab, ignore, body, force} -> new: existing_song() match and not force -> 409 {exists: file};
+      remember_alias as ask_details does; write_song / update_song; then build_book and return
+      {id, file, report}; SongError -> 400 {error}. POST /api/publish -> publish_book output.
+      rows format (built with builder.lyrics clean_line/is_chord_line/LABEL_RE, server side, so JS never
+      re-implements chord detection): [{chords: [[col, name], ...], lyric: str|null}] for a chord line
+      over a lyric line (lyric null = chord-only line) and for a lyric line alone (chords []);
+      {text: str} for blank, `**`, label and tablature lines. Chord col = char index in the raw line.
+      (d) cancionero.py: `edit <book>` subcommand (cmd_edit -> editor.serve(book), Ctrl+C stops), and
+      menu entry "6) Open the song editor in the browser" in importer/add.py menu + add_loop.
+      Tests tests/test_editor.py (start the server in a thread on a scratch book under scratch/): token
+      required, unknown/`../` ids refused, rows for a pasted chord sheet, new save, edit save keeps file
+      name and `added`, invalid melody/tab keeps the old file, duplicate title -> 409.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python -m pytest /Users/fons/Documents/programs/cancionero-builder/tests -q  -> all pass
+  return: <= 10 lines: files changed, done result, the final API (any change to the brief's contract)
+
+- [x] S2 Editor page: lyrics + chords, metadata, tags, sources, save
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: high
+  after: S1
+  context: importer/editor.py (from S1: routes and JSON shapes); web/styles.css:1-60 (colors/fonts to
+           match); tests/browser/ui_check.py:1-30 (playwright setup: PLAYWRIGHT_BROWSERS_PATH=scratch/browsers)
+  do: web/editor/index.html + editor.js + editor.css, plain JS, no new dependencies. Top: song picker
+      (new / existing from /api/book songs), source buttons: Paste (textarea -> /api/paste), Link
+      (-> /api/fetch), Search (title+artist -> /api/search list, click a result -> /api/fetch).
+      Chord view from `rows` in a monospace grid: every pair row has a chord line above its lyric, even
+      when empty; click a column on a chord line -> small inline input -> insert chord there; drag a chord
+      left/right snapping to character columns; click a chord to rename, empty name or Delete removes it.
+      A "Text" toggle shows the raw body in a textarea; switching back calls /api/rows. Serialize rows to
+      body in JS: chords at their cols, pushed right to keep >= 1 space between chords, trailing spaces
+      trimmed; chord-only rows write only the chord line; {text} rows as-is.
+      Form: title, author, capo, link (+ "Find link" -> /api/links, pick one), tags as checkboxes from
+      /api/book (strict_tags: no new-tag input; else an input "Tag or Tag/Subtag" like the CLI), horas and
+      ignore text fields only when has_horas / always-collapsed. Save -> /api/save; 409 exists -> confirm
+      "Add anyway?" then force; show the build report; Publish button -> /api/publish. Placeholder
+      <section id="melody"> with checkboxes "Melody" and "Guitar tab" (S3 fills it; save sends melody/tab
+      from window.editorMelody?.value() if defined).
+      Browser check tests/browser/editor_check.py: start editor.serve on a copy of a scratch test book,
+      paste lyrics only -> empty chord lines present, click to add "G" at col 5, drag it to col 8, save,
+      assert the file's chord line is 8 spaces + "G"; open an existing song, save unchanged -> body bytes
+      identical.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/tests/browser/editor_check.py  -> prints OK, exit 0
+  return: <= 10 lines: files changed, done result, anything surprising
+
+- [x] S3 Melody and tab editor
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: opus    effort: high
+  after: S2
+  context: web/js/melody.js:1-51 (renderMelody, tabSvg use) and :140-215 (playMelody/toggleMelody, needs
+           element.closest(".song") with data-transpose); builder/songs.py:104-116 (check_tab: what counts
+           as a note); web/editor/index.html + editor.js (from S2: the #melody section, editorMelody hook)
+  do: New web/editor/melody-editor.js defining window.editorMelody = {load(melody, tab), value() ->
+      {melody, tab}}. "Melody" checkbox shows: an ABC textarea (default "K:C\n" + one note) and an editable
+      staff drawn with ABCJS.renderAbc(div, abc, {dragging: true, add_classes: true, clickListener}); the
+      clickListener's abcElem.startChar/endChar locate the note in the ABC text; a drag (drag.step) moves
+      the pitch by that many staff steps (rewrite the note letter/octave marks , ' in the text), click
+      selects. Buttons/keys for the selected note: delete, add a note after (copy), length x2 / /2,
+      sharp/flat/natural. Textarea and staff stay in sync both ways. Below: the book's look via
+      renderMelody on a `.melody` (data-abc, data-tab) inside a `.song` wrapper, and a Play/Stop button
+      calling toggleMelody. "Guitar tab" checkbox: one input per note showing fret/string, prefilled by a
+      suggestion: standard tuning E2 A2 D3 G3 B3 E4, string 1 = high e; take pitches from the tune
+      (honour the key signature: use abcjs' own midi pitches, e.g. tune.setUpAudio() / noteTimings),
+      choose frets 0-12 nearest the previous note's fret. A user-edited token stays fixed when notes change;
+      the count must match check_tab's (pitch letters outside "chords" and header lines); show the same
+      error text as check_tab when it doesn't.
+      Extend tests/browser/editor_check.py: enable melody, type "K:G\nG A B", drag the 2nd note up one
+      step -> textarea has "G B B"; delete a note; tab suggested "3/6"-style tokens count == notes; save
+      -> file loads with load_song and melody/tab match the page.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/tests/browser/editor_check.py  -> prints OK, exit 0
+  return: <= 10 lines: files changed, done result, anything surprising (abcjs drag API quirks)
+
+- [x] S4 Docs
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: inline
+  model: sonnet    effort: low
+  after: S3
+  context: README.md (section on adding songs); cancionero.py cmd_help (:321-335); help.sh
+  do: Document `cancionero.py edit <book>` and the add-menu entry 6: what the page does, Ctrl+C to
+      stop, that saves go straight into the book's songs/ and rebuild it, and Publish pushes.
+  done: /Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/cancionero.py help  -> mentions "edit"
+  return: <= 10 lines: files changed
+
+- [x] S5 Review
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:reviewer
+  model: opus    effort: high
+  after: S4
+  context: git diff main...feature/song-editor
+  do: Look for: an existing song file lost or corrupted on a failed save; fields dropped on edit
+      (added, horas, ignore, melody, tab); body bytes changed by a load+save with no edits; POST without
+      token or with a crafted id writing outside songs/; tags.yaml written for strict books; chord
+      serialization losing chords when two collide.
+  done: reviewer reports no high-severity findings (fix any it reports, then rerun S1-S3 done commands)
+  return: <= 10 lines: ranked findings
+
+Escalation: a failed step is retried once one level higher (low → medium → high, then sonnet → opus) with the
+failure in its brief; failing again, or no longer fitting the code, it goes under "Blocked" with the reason;
+continue with steps that don't depend on it.
+
+### Run log
+- S1 2026-11-18: pass, pytest 63 passed. Contract additions: /api/fetch returns site_artist, /api/save accepts it; save slugs tag ids (strict: unknown -> 400); build error after save -> 200 with report; /api/publish -> {output}; search fail 502; fetch only http(s); GET routes need no token. Limit: new tags hit tags.yaml even if save then fails (S5 to check).
+- S2 2026-11-18: pass, editor_check.py OK. Body rewritten from rows only after a chord edit; save reads window.editorMelody?.value?.() as {melody, tab}. Untested in browser: Text toggle, Search, Link, Find link, 409 confirm, Publish, horas/ignore.
+- S3 2026-11-18: pass, editor_check.py OK. abcjs needs #melody-staff position:relative and unscaled SVG; drag.step up is negative. Tab suggestion may drift with ties/chords (shortcut comment). Untested: arrow/Delete keys, audio.
+- S4 2026-11-18: pass (inline). `help edit` text, README commands table, help.sh document `edit <book>`.
+- S5 2026-11-18: review found 2 high (chord edit dropped bars/repeat marks; tab changed/lost on unchanged save), 1 medium (added stamped on edit), 1 low (DNS rebinding). All fixed; reran pytest 66 passed, editor_check.py OK. Known: unticking Melody with a matching tab -> save 400 unless ignore tab-melody-check; NBSP/trailing spaces in chord lines still re-spaced after a chord edit.
+- S5 fixes 2026-11-18: chord lines with marks ((x2), |, parens) or tab characters are {text} rows with their lyric;
+  a tab that doesn't fit the notes (no melody / other count) is a plain textarea, saved as loaded; value() keeps the
+  tab until "Guitar tab" is unchecked; update_song never stamps `added`; Host must be 127.0.0.1/localhost:<port>
+  (403). pytest 66 passed; editor_check.py OK.
+
 ## Plan: fill-chords (2026-11-13)
 Goal: a script that copies chords into hakuna stanzas that have none (repeated choruses, verses
 shaped like an earlier verse with chords), shown on an editable HTML review page whose export is
