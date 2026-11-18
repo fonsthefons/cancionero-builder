@@ -63,11 +63,15 @@ def test_rows():
                                                    {"chords": [], "lyric": "la la"}]
 
 
-def test_rows_keep_chord_lines_with_marks():
-    # writing these back from chord positions would drop (x2), the bars, the parens or the tab
-    for line in ("G  D  (x2)", "| Em | C |", "(G", "G\tD"):
-        assert rows(f"{line}\nla la\nC\nmore") == [{"text": line}, {"text": "la la"},
-                                                   {"chords": [[0, "C"]], "lyric": "more"}]
+def test_rows_chord_lines_with_marks():
+    # chord lines as the book sees them: marks are items at their columns, written back as they are
+    assert rows("  E   A      E      F#m    - D\nTú Señor sabes, puedes y me amas") == [
+        {"chords": [[2, "E"], [6, "A"], [13, "E"], [20, "F#m"], [27, "-"], [29, "D"]],
+         "lyric": "Tú Señor sabes, puedes y me amas"}]
+    assert rows("| Em | C |\nla")[0]["chords"] == [[0, "|"], [2, "Em"], [5, "|"], [7, "C"], [9, "|"]]
+    # a tab character would move columns: kept as text, with its lyric
+    assert rows("G\tD\nla la\nC\nmore") == [{"text": "G\tD"}, {"text": "la la"},
+                                           {"chords": [[0, "C"]], "lyric": "more"}]
 
 
 def test_rows_bold():
