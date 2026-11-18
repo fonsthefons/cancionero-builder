@@ -137,7 +137,8 @@ function editChord(line, col, chord) {
 
 function chordElement(line, chord) {
     const span = document.createElement("span");
-    span.className = "chord";
+    // marks (-, |, (x2)) shown plain, as the book does (builder/lyrics.py SEPARATOR_RE)
+    span.className = /^(?:[-|()]+|\(?[xX]\d{1,2}\)?)$/.test(chord[1]) ? "chord sep" : "chord";
     span.tabIndex = 0;
     span.textContent = chord[1];
     span.style.left = chord[0] + "ch";

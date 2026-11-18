@@ -23,7 +23,7 @@ import yaml
 
 from builder.build import build_book, load_book_songs
 from builder.create import CreateError, publish_book
-from builder.lyrics import CHORD_RE, LABEL_RE, BOLD_MARK, clean_line, is_chord_line, is_tablature
+from builder.lyrics import LABEL_RE, BOLD_MARK, clean_line, is_chord_line, is_tablature
 from builder.songs import SongError, load_song
 from builder.tags import Taxonomy
 from builder.text import slug
@@ -58,17 +58,13 @@ def fail(message, status=400):
 
 # ---------- song text as rows ----------
 
-def chord_word(word):
-    """A chord the editor can move as one name: "G", or "(D)" (an optional chord)."""
-    return bool(CHORD_RE.fullmatch(word) or (word[:1] == "(" and word[-1:] == ")" and CHORD_RE.fullmatch(word[1:-1])))
-
-
 def rows(body):
     """The body as the editor shows it: [{chords: [[col, name]], lyric}] for a chord
     line over its lyric line (lyric None: chords alone) and a lyric line alone
-    (chords []); {text} for blank, label and tablature lines, and for chord lines
-    the editor can't write back as they are (marks like (x2) or |, tab characters)
-    with the lyric line under them. ** lines aren't rows: the non-blank rows between
+    (chords []); a chord line is one as the book sees it (is_chord_line), each of
+    its words (marks like - | (x2) too) an item at its column. {text} for blank,
+    label and tablature lines, and for chord lines with tab characters, with the
+    lyric line under them. ** lines aren't rows: the non-blank rows between
     them get bold: true (editor.js writes the ** lines back)."""
     found, pending, kept, bold = [], None, False, False
 
@@ -90,7 +86,9 @@ def rows(body):
         if pending is not None and (special or chords):
             add({"chords": pending, "lyric": None})
             pending = None
-        keep = chords and ("\t" in raw or not all(chord_word(word) for word in line.split()))
+        # a chord line as the book sees it; its marks (-, |, (x2)) are items too, so they are written back.
+        # Tab characters would move columns: kept as text.
+        keep = chords and "\t" in raw
         if keep or special or (kept and not chords):
             add({"text": raw})
         elif chords:

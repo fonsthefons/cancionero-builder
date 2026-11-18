@@ -68,6 +68,7 @@ button.primary { background: var(--accent); color: var(--page); }
 #grid .verse.bold .bold-toggle { opacity: 1; background: var(--accent); color: var(--page); }
 #grid .verse.bold .lyric, #grid .verse.bold .text { font-weight: bold; color: var(--ink); }
 #grid .chord { position: absolute; top: 0; color: var(--chord); font-weight: bold; cursor: grab; touch-action: none; user-select: none; }
+#grid .chord.sep { color: var(--muted); font-weight: normal; }
 #abc { display: block; width: 100%; box-sizing: border-box; font-family: var(--mono); }
 /* Positioned: abcjs reads the mouse as layerX/Y (relative to this). Not scaled: it turns pixels into staff steps. */
 #melody-staff { position: relative; overflow-x: auto; }
