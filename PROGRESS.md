@@ -906,6 +906,24 @@ read as images; the text layer is OCR noise).
 - Checked: build 19 songs; check_melodies.py 19/19; review_check.py 19 cards OK; chord_cols.py
   on Hambre de Dios: every chord on its syllable.
 
+## 2026-11-19 — New book: cancionero-learn-harmony (piano harmony course)
+
+- User's choices: Spanish text, chords as C D E; reads music slowly; goal = song accompaniment
+  + classical harmony; create and publish on GitHub.
+- 39 lessons x 30 min in 6 blocks (tags) -> lessons (subtags) -> parts a, b, c... (one song file
+  each, `01a.md`, with a two-hand staff: fingerings, chord names, ▶ plays it). 157 songs.
+  Covers: all 12 major scales and the minors HS/HT, 1-2 octaves; arpeggios; triads, inversions,
+  voice leading, functions, cadences, accompaniment patterns, sus/add, slash chords, secondary
+  dominants, borrowed chords, 7ths/9ths, 4-voice writing, 6/4 cadences, modulation,
+  harmonizing a melody, sequences, circle of fifths.
+- Generator (scratch/learn-harmony/, also committed in the book's generator/): music.py
+  (spelling, fingerings, chord spelling, voice leading, ABC; self-checks), lessons.py (content),
+  make_book.py (writes songs + tags.yaml; rewraps prose so no sentence reads as a chord line).
+- No builder code changed: multi-voice ABC (`%%staves {RH LH}`) already renders and plays.
+- Checked: build 157 songs, no warnings; shots.py (Chromium) renders every staff, no ABC warnings
+  or page errors. Created with create_book(github=True), then `publish`.
+- Live: https://fonsthefons.github.io/cancionero-learn-harmony/
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);
