@@ -1,5 +1,104 @@
 # Progress
 
+## Plan: session-slides (2026-11-23)
+Goal: a "Create session PPT" button in the Session menu that opens the print dialog with one
+landscape-Letter page per slide holding the session's lyrics, without chords, as big as they fit, so
+they can be saved as a PDF and shown on TVs.
+Out of scope: a real .pptx or a direct PDF download (no bundled library), on-screen slideshow mode,
+dark theme, settings for size/fonts, changes to the builder (Python).
+Branch: feature/session-slides
+
+Decisions (user, 2026-11-23): print dialog → "Save as PDF" (same route as Print session); a separate
+title slide before each song (title only); minimum text size ≈ 10 lines per page; a psalm's chosen
+fórmula is included; choruses (bold) stay bold; label lines like "Intro: G D" are left out.
+Defaults chosen here: white page, black text, system-ui sans, weight 500 (bold parts 800), centered,
+line-height 1.2, verse gap 0.6em, page margin 0.4in. Fórmula order: psalm title slide → fórmula pages →
+psalm pages. Max text size capped (≈2.5× the minimum) so one short line isn't absurdly huge. Line wrapping
+at word boundaries is allowed only when a line can't fit at the minimum size.
+User's expectations (examples in the request): "Espíritu Ven… (x3)" → 1 page; "Mi Padre / Todo el cielo
+cantará" (8 lines, longest ~29 chars) → 1 page; "Hazme una antorcha" → 1 or 2; "Si puedo ayudarte" (lines
+up to 48 chars) → probably 2. Report the real counts; the minimum is one constant to tune.
+
+- [x] S1 slides.js + button + print CSS + checks
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: high
+  after: -
+  context: web/js/print.js (whole, 57 lines: pattern to follow); web/js/session.js:1-30 (session,
+           songTitle, sessionFormula); web/template.html:46-58 (Session menu); web/styles.css:944-1030
+           (@media print block); builder/lyrics.py:151-181 (song DOM); tests/browser/ui_check.py:387-430
+           and :540-564 (session_checks style, open_menu, titles)
+  do: Song DOM: `.song#id[data-title] .lyrics > .verse > (.line-pair[.bold] = .chord-line div + lyric text
+      node | .chord-line alone | .lyric-line[.bold] | .lyric-line.chord-inline = label line "Intro: G D")`.
+      Lyrics only: per .verse, the lines = .line-pair text minus its .chord-line (if the pair holds a
+      .chord-inline child, skip it) and .lyric-line not .chord-inline; trim; skip empty; keep .bold.
+      (a) template.html: after "Print session" add `<button class="session-clear"
+      data-action="session-slides">Create session PPT</button>` (session-clear class = hidden when empty).
+      (b) New web/js/slides.js (auto-included: render.py:273 globs web/js/*.js after core.js). onAction
+      "session-slides": setDrawerOpen(false); for each id in `session` (and sessionFormula(id) per the
+      order above) build `<section class="slide">` elements in a `<div class="slides">` appended to body:
+      a title slide, then lyric slides. Packing: measure in an offscreen box (position fixed, left -10000px,
+      same CSS as a slide, sizes in `in`, so px = CSS in*96) at MIN = content height/(10*1.2); add whole
+      verses to a page while it fits (scrollHeight <= clientHeight, wrapping allowed); a verse that doesn't
+      fit an empty page is split between lines. Then per page: binary-search the largest font with
+      `white-space: nowrap` that fits width and height (cap MAX); if that is < MIN, use wrapping and the
+      largest size that fits height. Set the size inline. Then inject `<style id="slides-page">@page { size:
+      letter landscape; margin: 0 }</style>`, set body.dataset.slides, window.print(); on afterprint remove
+      .slides, the style and the data attribute. Comment each why in one line.
+      (c) styles.css @media print: `body[data-slides] > :not(.slides) { display: none !important }`,
+      `.slide { width: 11in; height: 8.5in; padding: 0.4in; box-sizing: border-box; break-after: page;
+      display: flex; flex-direction: column; justify-content: center; text-align: center; overflow:
+      hidden }`; outside print `.slides { display: none }` (measuring uses its own offscreen box).
+      (d) ui_check.py session_checks: add 2 songs, `page.evaluate("window.print = () => {}")`, click the
+      button; check slide count >= 4, no `.chord` / `.chord-line` inside .slides, every slide fits
+      (scrollWidth<=clientWidth, scrollHeight<=clientHeight), every lyric slide font >= MIN; dispatch
+      `afterprint` → .slides gone. Chromium only: `page.emulate_media(media="print")`,
+      `page.pdf(prefer_css_page_size=True)` → pypdf page count == slide count and size 792×612.
+      (e) scratch/slides_check.py: find the 4 example songs in the source repos (grep "Espíritu Ven",
+      "Todo el cielo cantará", "Hazme una antorcha", "Si puedo ayudarte" under
+      /Users/fons/Documents/programs/hymn_books/cancionero*), copy their .md files into a scratch copy of a
+      book (scratch/copy_book.py / build_test_books.py show how), build it, open it in Chromium, put the 4
+      in the session, click the button, save scratch/slides/session.pdf, and print per song: pages and font
+      px of each page. Exit 1 if any slide overflows.
+  done: `/Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/scratch/slides_check.py` → exit 0, a per-song page count table, scratch/slides/session.pdf exists
+  return: <= 10 lines: files changed, the page/font table, ui_check session results, anything surprising
+
+- [x] S2 Full browser check
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:runner
+  model: haiku    effort: low
+  after: S1
+  context: README.md:160-166 (how ui_check runs)
+  do: Rebuild the scratch test books (`.venv/bin/python scratch/build_test_books.py`), then run
+      `.venv/bin/python tests/browser/ui_check.py <scratch cancionero test book>` (Chromium + WebKit).
+      Report pass/fail counts and every FAIL line; compare with the last known state (PROGRESS.md: the
+      5 skipped-song checks were already failing on some books).
+  done: runner's report shows no new FAIL lines about session or slides
+  return: <= 10 lines: pass/fail counts, new FAIL lines
+
+- [x] S3 Docs, show the PDF, ship
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: inline
+  model: sonnet    effort: low
+  after: S2
+  context: README.md section that lists the Session menu buttons (find "Print session")
+  do: One README line for "Create session PPT" (print dialog → Save as PDF, landscape Letter, lyrics
+      only, title slide per song). Send scratch/slides/session.pdf to the user (SendUserFile) with the
+      page-count table vs their expectations. PROGRESS.md entry; note books need a rebuild to get it.
+      Commit, push, PR, merge, `git checkout main` + `git pull` per CLAUDE.md.
+  done: `gh pr view --json state` → MERGED
+  return: PR URL, the table
+
+Escalation: a failed step is retried once one level higher (low → medium → high, then sonnet → opus) with the
+failure in its brief; failing again, or no longer fitting the code, it goes under "Blocked" with the reason;
+continue with steps that don't depend on it.
+
+### Run log
+- S1 2026-11-23 pass: slides_check exit 0, 37 slides, 0 overflow, MIN 61.6px. Only "Espíritu ven" was found in the source repos; the other 3 examples were replaced by the longest cancionero songs. ui_check (169-song book) 211 passed, 0 failed.
+- S1 follow-up (conductor): the examples are lyric lines, not titles; slides_check now matches lyrics. Muros ("Espíritu Ven (ven, ven… x3") 5 lyric pages; Hasta que el mundo arda ("Hazme una antorcha") 4; Dime cómo hacerlo ("Si puedo ayudarte") 7; "Todo el cielo cantará" isn't in any source song. 19 slides, 0 overflow.
+- S2 2026-11-23 pass: rebuilt test books; ui_check scratch/books/cancionero 211 passed, 0 failed.
+- S3 2026-11-23: README line added; books need a rebuild to get the button.
+
 ## Plan: song-editor (2026-11-18)
 Goal: `cancionero.py edit <book>` opens a local web page to add or edit one song at a time
 (lyrics with click-to-place and draggable chords, melody staff with draggable notes and playback,

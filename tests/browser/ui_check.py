@@ -425,6 +425,9 @@ def session_checks(page, name):
     if TAKE_SHOTS:
         page.screenshot(path=str(SHOTS / f"{name}-session.png"))
 
+    slides_checks(page, name)
+    open_menu()  # creating the slides closed it
+
     # Reorder by dragging the handle
     rows = page.locator(".session-list li")
     handles = page.locator(".session-list .session-handle")
@@ -562,6 +565,39 @@ def session_checks(page, name):
     page.evaluate("localStorage.clear()")
     page.goto(page.url.split("#")[0])
     page.add_script_tag(path=CHECKS)
+
+
+def slides_checks(page, name):
+    """"Create session PPT" with the 3 session songs: lyrics only, every slide fits."""
+    page.evaluate("window.print = () => {}")
+    page.click('[data-action="session-slides"]')
+    page.emulate_media(media="print")  # the slides are display: none on screen
+    found = page.evaluate("""() => {
+        const slides = [...document.querySelectorAll('.slides .slide')];
+        return {
+            count: slides.length,
+            chords: document.querySelectorAll('.slides .chord, .slides .chord-line').length,
+            unfit: slides.filter(s => s.scrollWidth > s.clientWidth || s.scrollHeight > s.clientHeight).length,
+            small: slides.filter(s => !s.classList.contains('slide-title') && parseFloat(s.style.fontSize) < SLIDE_MIN - 0.01).length,
+            min: SLIDE_MIN,
+        };
+    }""")
+    check(f"session slides: a title and lyrics per song ({found['count']} slides)", found["count"] >= 4)
+    check("session slides have no chords", found["chords"] == 0)
+    check("every slide fits its page", found["unfit"] == 0, found)
+    check(f"lyric slides use at least {found['min']:.1f}px text", found["small"] == 0, found)
+    if name.startswith("chromium"):
+        from io import BytesIO
+
+        from pypdf import PdfReader
+        pdf = PdfReader(BytesIO(page.pdf(prefer_css_page_size=True)))
+        size = (float(pdf.pages[0].mediabox.width), float(pdf.pages[0].mediabox.height))
+        check(f"session slides PDF: one letter-landscape page per slide ({len(pdf.pages)} pages, {size})",
+              len(pdf.pages) == found["count"] and size == (792, 612))
+    page.emulate_media(media="null")
+    page.evaluate("window.dispatchEvent(new Event('afterprint'))")
+    check("slides are removed after printing", page.evaluate(
+        "!document.querySelector('.slides') && !document.getElementById('slides-page') && !('slides' in document.body.dataset)"))
 
 
 def reload(page):

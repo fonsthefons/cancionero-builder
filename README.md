@@ -25,6 +25,10 @@ settings. All the code — the build, adding songs, the web page — lives here.
 **`new <name>`**: creates the folder, `book.yaml` and `tags.yaml` (or copies a `--template`), does a first
 build, runs `git init`, creates the GitHub repo with `gh`, turns on Pages and pushes.
 
+**Session menu → "Create session PPT"**: opens the print dialog with one landscape-Letter slide per page
+(a title slide per song, then the lyrics without chords, as big as they fit). Choose "Save as PDF" to show it
+on a TV. Books need a rebuild to get the button.
+
 ## Setup
 
 `./install.sh` does all of this: `.venv`, the packages, WebKit, and it clones the book repos into
