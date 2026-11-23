@@ -48,39 +48,42 @@ function slideProbe(verses, extraClass) {
     return probe;
 }
 
-function slideFitsAtMin(verses) {
+// A page whose text would come out smaller than this is split: merely fitting at
+// SLIDE_MIN made a dense 8-line verse look tiny next to the other pages.
+const SLIDE_GOOD = SLIDE_MIN * 1.25;
+
+function slideSize(verses) {
     const probe = slideProbe(verses);
-    probe.style.fontSize = SLIDE_MIN + "px";
-    const fits = slideFits(probe);
+    const size = slideFit(probe);
     probe.remove();
-    return fits;
+    return size;
 }
 
-// Whole verses per page while they fit at the minimum size; a verse too long
-// for a page of its own is cut between lines.
+// Whole verses per page while the text stays at least SLIDE_GOOD; a verse that
+// is smaller on a page of its own is cut into the fewest even parts that reach it.
 function slidePages(verses) {
     const pages = [];
     let page = [];
     for (const verse of verses) {
-        if (slideFitsAtMin([...page, verse])) { page.push(verse); continue; }
+        if (page.length && slideSize([...page, verse]) >= SLIDE_GOOD) { page.push(verse); continue; }
         if (page.length) pages.push(page);
-        page = [];
-        if (slideFitsAtMin([verse])) { page.push(verse); continue; }
-        let part = [];
-        for (const line of verse) {
-            if (part.length && !slideFitsAtMin([[...part, line]])) { pages.push([part]); part = []; }
-            part.push(line);
+        let parts;
+        for (let n = 1; n <= verse.length; n++) {
+            parts = Array.from({ length: n }, (_, i) =>
+                verse.slice(Math.round((i * verse.length) / n), Math.round(((i + 1) * verse.length) / n)));
+            if (parts.every((part) => slideSize([part]) >= SLIDE_GOOD)) break;
         }
-        page = [part];
+        pages.push(...parts.slice(0, -1).map((part) => [part]));
+        page = [parts.at(-1)];
     }
     if (page.length) pages.push(page);
     return pages;
 }
 
-// The slide with the largest text that fits: on one line per lyric line if that
-// is still at least SLIDE_MIN, otherwise wrapped (it fits at SLIDE_MIN, see above).
-function slideSized(verses, extraClass = "") {
-    const slide = slideProbe(verses, extraClass);
+// The largest text that fits, set on the slide: on one line per lyric line if
+// that is still at least SLIDE_GOOD, otherwise wrapped (a ~40-character line
+// can't pass ~62px on one line, so bigger text means wrapping it).
+function slideFit(slide) {
     const largest = () => {
         let low = 0, high = SLIDE_MAX;
         for (let i = 0; i < 12; i++) {
@@ -92,11 +95,17 @@ function slideSized(verses, extraClass = "") {
     };
     slide.style.whiteSpace = "nowrap";
     let size = largest();
-    if (size < SLIDE_MIN) {
+    if (size < SLIDE_GOOD) {
         slide.style.whiteSpace = "normal";
         size = largest();
     }
     slide.style.fontSize = size + "px";
+    return size;
+}
+
+function slideSized(verses, extraClass = "") {
+    const slide = slideProbe(verses, extraClass);
+    slideFit(slide);
     Object.assign(slide.style, { position: "", left: "", top: "" });
     return slide;
 }
