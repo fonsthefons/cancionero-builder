@@ -940,10 +940,66 @@ body[data-columns="2"] .song:not([data-columns="1"]),
 }
 
 /* ============================= */
+/* SESSION SLIDES (slides.js)    */
+/* ============================= */
+
+/* Only ever shown on paper. slides.js measures in its own off-screen .slide,
+   so the slide look lives out here (not in @media print) to match the print. */
+.slides {
+    display: none;
+}
+
+.slide {
+    width: 11in;
+    height: 8.5in;
+    padding: 0.4in;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+    background: white;
+    color: black;
+    font-family: system-ui, sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Auto margins centre the text like justify-content: center, but an overflow
+   stays measurable (it grows downwards instead of out of both ends). */
+.slide > :first-child {
+    margin-top: auto;
+}
+
+.slide > :last-child {
+    margin-bottom: auto;
+}
+
+.slide-verse + .slide-verse {
+    margin-top: 0.6em;
+}
+
+.slide-line.bold {
+    font-weight: 800;
+}
+
+/* ============================= */
 /* PRINT                         */
 /* ============================= */
 
 @media print {
+    body[data-slides] > :not(.slides) {
+        display: none !important;
+    }
+
+    .slides {
+        display: block;
+    }
+
+    .slide {
+        break-after: page;
+    }
+
     @page {
         size: A4;
         margin: 15mm;
