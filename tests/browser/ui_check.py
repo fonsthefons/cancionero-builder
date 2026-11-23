@@ -109,6 +109,10 @@ def run(engine_name, engine):
     for device, opts in DEVICES.items():
         print(f"--- {device}")
         context = browser.new_context(**opts)
+        # Pretend the tutorial was seen, so the tour doesn't cover every other check.
+        context.add_init_script(
+            "const get = Storage.prototype.getItem;"
+            "Storage.prototype.getItem = function (k) { return k.endsWith('tutorialSeen') ? '1' : get.call(this, k); };")
         page, errors = open_book(context)
         name = f"{engine_name}-{device}"
 
@@ -163,7 +167,56 @@ def run(engine_name, engine):
 
         check("no JavaScript errors", not errors, errors)
         context.close()
+        tutorial_checks(browser, opts, name)
     browser.close()
+
+
+def tutorial_checks(browser, opts, name):
+    """First visit shows the 4-step tour; every label stays on screen and apart."""
+    context = browser.new_context(**opts)  # no init script: this is a first visit
+    page = context.new_page()
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.goto(BOOK)
+    page.wait_for_timeout(500)
+    tour = lambda: page.locator(".tour")  # noqa: E731
+    header = lambda: page.inner_text(".tour-card h3")  # noqa: E731
+    check("tutorial shows on first visit (Paso 1/4)", tour().is_visible() and header().startswith("Paso 1/4"), header())
+
+    for n in range(1, 5):
+        page.wait_for_timeout(450)  # the menu slides in
+        if TAKE_SHOTS:
+            page.screenshot(path=str(SHOTS / f"{name}-tutorial-{n}.png"))
+        chips = page.evaluate("""() => [...document.querySelectorAll('.tour-chip')].map(c => {
+            const r = c.getBoundingClientRect();
+            return { text: c.textContent, left: r.left, top: r.top, right: r.right, bottom: r.bottom };
+        })""")
+        vw, vh = opts["viewport"]["width"], opts["viewport"]["height"]
+        outside = [c["text"] for c in chips if c["left"] < 0 or c["top"] < 0 or c["right"] > vw or c["bottom"] > vh]
+        check(f"tutorial step {n}: {len(chips)} labels inside the screen", chips and not outside, outside)
+        touching = [(a["text"], b["text"]) for i, a in enumerate(chips) for b in chips[i + 1:]
+                    if a["left"] < b["right"] and b["left"] < a["right"] and a["top"] < b["bottom"] and b["top"] < a["bottom"]]
+        check(f"tutorial step {n}: labels don't overlap", not touching, touching)
+        if n == 4:
+            check("tutorial step 4: menu is open", page.evaluate("document.body.classList.contains('drawer-open')"))
+        page.click('[data-action="tour-next"]')
+
+    check("Listo ends the tutorial and closes the menu", tour().count() == 0
+          and not page.evaluate("document.body.classList.contains('drawer-open')"))
+    page.reload()
+    page.wait_for_timeout(300)
+    check("tutorial does not come back after reload", tour().count() == 0)
+
+    page.click('[data-action="open-drawer"]')
+    page.click('[data-action="start-tutorial"]')
+    page.wait_for_timeout(300)
+    check("Ver tutorial restarts it (menu closed)", tour().is_visible() and header().startswith("Paso 1/4")
+          and not page.evaluate("document.body.classList.contains('drawer-open')"))
+    page.click('[data-action="tour-next"]')
+    page.click('[data-action="tour-skip"]')
+    check("Saltar on step 2 ends it", tour().count() == 0)
+    check("tutorial: no JavaScript errors", not errors, errors)
+    context.close()
 
 
 def ui_checks(page, context, name):

@@ -117,6 +117,9 @@ A "▶ Melody" button in the song's controls plays the melody (not the chords) w
 organ-like tone made in the browser (works offline), at quarter = 80 unless the melody sets
 `Q:`, in the key on screen, lighting each note; a psalm's button plays its chosen fórmula.
 
+On the first visit a short Spanish tutorial (4 steps) points at the main controls; "Ver tutorial"
+in Settings replays it. On the hosted site the offline popup comes right after it.
+
 The build warns about lines over 50 columns (the whole song gets small on phones; the editor
 marks them yellow) and chords written far past the end of their lyric; `cancionero.py`
 offers to move those chords next to the lyric (y/n). A song turns either warning off with
