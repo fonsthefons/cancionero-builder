@@ -940,6 +940,97 @@ body[data-columns="2"] .song:not([data-columns="1"]),
 }
 
 /* ============================= */
+/* TUTORIAL TOUR (tutorial.js)   */
+/* ============================= */
+
+.tour {
+    position: fixed;
+    inset: 0;
+    z-index: 300; /* above the menu */
+    font-family: var(--sans);
+}
+
+/* The box around the step's controls; its huge shadow dims everything else. */
+.tour-spot {
+    position: absolute;
+    border: 2px solid var(--surface);
+    border-radius: 8px;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+}
+
+/* Colors swap with the theme: ink on surface becomes surface on ink. */
+.tour-chip {
+    position: absolute;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.tour-chip::after {
+    content: "";
+    position: absolute;
+    left: var(--arrow-x);
+    margin-left: -6px;
+    border: 6px solid transparent;
+}
+
+.tour-chip[data-side="below"]::after {
+    bottom: 100%;
+    border-bottom-color: var(--ink);
+}
+
+.tour-chip[data-side="above"]::after {
+    top: 100%;
+    border-top-color: var(--ink);
+}
+
+.tour-card {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    max-width: 26rem;
+    margin: 0 auto;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 4px 16px var(--shadow);
+}
+
+.tour-card.top {
+    top: 12px;
+    bottom: auto;
+}
+
+.tour-card h3 {
+    margin: 0 0 0.5rem;
+}
+
+.tour-card p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* The menu is long; hide its song list so Session and Settings fit on one screen. */
+body.tour-on .drawer .nav {
+    display: none;
+}
+
+@media print {
+    .tour {
+        display: none;
+    }
+}
+
+/* ============================= */
 /* SESSION SLIDES (slides.js)    */
 /* ============================= */
 

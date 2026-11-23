@@ -1,5 +1,86 @@
 # Progress
 
+## Plan: tutorial (2026-11-23)
+Goal: on the first visit to a book, a short Spanish guided tour (4 numbered steps, several labelled arrows per
+step) shows the main features; it can be left at any moment and replayed from Settings.
+Out of scope: a book.yaml on/off setting, builder (Python) changes, translations other than Spanish,
+animations, any library.
+Branch: feature/tutorial
+
+Decisions (user, 2026-11-23): grouped steps with several arrows each; shown everywhere (hosted site and
+index.html opened as a file); on the hosted site the offline popup comes right after the tutorial ends or is
+skipped; "Ver tutorial" button in Settings; always on for every book.
+Defaults chosen here: the flag `tutorialSeen` (prefs, so per-book prefix) is set when the tour starts, so
+leaving mid-way counts as seen. Leave via "Saltar", Escape, or finishing. Overlay blocks clicks on the page
+while shown. Text is plain Spanish, ≤ 2 lines per step plus labels of 1-3 words.
+
+- [x] S1 tutorial.js + CSS + Settings button + offline-popup hand-off + checks
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: high
+  after: -
+  context: web/js/install-tip.js (whole, 23 lines); web/js/drawer.js (whole, 19 lines); web/template.html:20-99
+           (top bar, drawer, Settings); web/song-controls.html (whole); web/styles.css:151-160, 295-320, 870-920
+           (topbar z 100, backdrop z 200, drawer z 201, dialog styles to match); tests/browser/ui_check.py:46-63
+           (open_book), :106-166 (run loop, DEVICES), :603-606 (reload)
+  do: Facts: render.py:273 auto-includes every web/js/*.js (sorted, after core.js), so install-tip.js runs
+      BEFORE tutorial.js. Use `prefs.get/set` and `onAction` from core.js, `setDrawerOpen` from drawer.js.
+      (a) install-tip.js: wrap the show logic in `function showInstallTip()`; at load call it only if
+      `prefs.get("tutorialSeen")`. tutorial.js calls `showInstallTip()` when the tour closes (end or skip).
+      (b) New web/js/tutorial.js (~100 lines, no library). Steps = [{text, labels: [[selector, "label"]…],
+      before()}]; "Paso n/4" header, buttons "Saltar" / "Siguiente" ("Listo" on the last). One overlay
+      element built in JS (z-index 300, above the drawer): a spotlight box around the union rect of the
+      step's targets (`box-shadow: 0 0 0 100vmax rgba(0,0,0,.6)`), a label chip with a CSS-triangle arrow
+      next to each target (alternate above/below so neighbours don't collide; clamp inside the viewport),
+      and the card at the bottom, or at the top if the spotlight is in the lower half. Re-place on resize.
+      Steps: 1 Canciones — "Toca una canción del índice para abrirla, o búscala." labels: search input
+      "Buscar", first `#index a` "Canciones". 2 En cada canción — before(): scroll the first `.song` that
+      has `.chord-line` so its `.controls` are on screen (instant, not smooth). Labels on its controls:
+      toggle-chords "Ocultar acordes", transpose stepper "Tono", toggle-columns "2 columnas",
+      song-text stepper "Tamaño", session-toggle "Añadir a sesión". 3 Barra superior — open-drawer "Menú",
+      toggle-autoscroll "Autoscroll", autoscroll-faster "Velocidad". 4 Menú — before(): setDrawerOpen(true);
+      labels: #session summary "Sesión: tu lista", #settings h2 "Ajustes de todo el libro". On close:
+      setDrawerOpen(false) if it opened it, scroll back to the top, remove the overlay, showInstallTip().
+      Escape closes the tour (drawer.js already closes the drawer on Escape). First visit: if
+      !prefs.get("tutorialSeen") → set it, start. Export `startTutorial()`.
+      (c) template.html Settings: `<div class="setting"><span>Tutorial</span><button
+      data-action="start-tutorial">Ver tutorial</button></div>`; onAction closes the drawer and starts.
+      (d) styles.css: `.tour…` rules (match .print-dialog colors, light + dark); `@media print { .tour
+      { display: none } }`. Chips must stay readable at 390px wide.
+      (e) ui_check.py: in run(), `browser.new_context(...)` then `context.add_init_script(...)` that wraps
+      `Storage.prototype.getItem` to return "1" for keys ending "tutorialSeen" (keeps every existing check
+      and reload free of the tour; no test-only code in the page). New `tutorial_checks(browser, opts,
+      name)` per device in a fresh context WITHOUT that script: tour visible with "Paso 1/4"; each step every
+      label chip is inside the viewport and no two chips overlap; step 4 drawer is open; "Listo" removes
+      the overlay and closes the drawer; reload → no tour; "Ver tutorial" restarts it; "Saltar" on step 2
+      ends it; no page errors. `--shots` saves scratch/shots/<name>-tutorial-<n>.png.
+  done: `/Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/scratch/build_test_books.py` then `/Users/fons/Documents/programs/cancionero-builder/.venv/bin/python /Users/fons/Documents/programs/cancionero-builder/tests/browser/ui_check.py /Users/fons/Documents/programs/cancionero-builder/scratch/books/cancionero --shots` → 0 failed, tutorial checks listed as passing in Chromium and WebKit at phone, ipad, laptop
+  return: <= 10 lines: files changed, pass/fail counts, any label that needed special placement, surprises
+
+- [x] S2 Look at it, docs, ship
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: inline
+  model: sonnet    effort: low
+  after: S1
+  context: scratch/shots/*-tutorial-*.png (phone chromium + webkit only); README.md section listing Settings
+           (find "Print / PDF" or "Keep screen on")
+  do: View the phone shots; fix only clear overlaps/clipping (small CSS tweaks, re-run S1's done). Send the
+      phone shots to the user. One README line: first-visit tutorial (4 steps, Spanish), "Ver tutorial" in
+      Settings, offline popup follows it on the hosted site. PROGRESS.md entry; books need a rebuild to get
+      it. Commit, push, PR, merge, `git checkout main` + `git pull` per CLAUDE.md.
+  done: `gh pr view --json state` → MERGED
+  return: PR URL, shot paths
+
+Escalation: a failed step is retried once one level higher (low → medium → high, then sonnet → opus) with the
+failure in its brief; failing again, or no longer fitting the code, it goes under "Blocked" with the reason;
+continue with steps that don't depend on it.
+
+### Run log
+- S1 2026-11-23: work was already in the tree from an earlier run; done-check passed (ui_check 301 passed,
+  0 failed, tutorial shots for Chromium + WebKit at phone/ipad/laptop).
+- S2 2026-11-23: phone shots viewed; chips don't overlap or clip, no CSS change. README line added.
+  Books need a rebuild to get the tutorial.
+
 ## Plan: session-slides (2026-11-23)
 Goal: a "Create session PPT" button in the Session menu that opens the print dialog with one
 landscape-Letter page per slide holding the session's lyrics, without chords, as big as they fit, so

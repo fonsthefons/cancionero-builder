@@ -5,7 +5,7 @@
 // book.yaml `install_tip` picks the look: "popup" (a dialog, #install-tip),
 // "banner" (a note at the bottom, .install-banner) or "off" (neither is on the page).
 
-(() => {
+function showInstallTip() {
     const popup = document.getElementById("install-tip");
     const banner = document.querySelector(".install-banner");
     const installed = window.matchMedia("(display-mode: standalone)").matches
@@ -15,7 +15,10 @@
     prefs.set("installTipSeen", "1");
     if (popup?.showModal) popup.showModal();
     else banner.hidden = false;
-})();
+}
+
+// On the very first visit the tutorial (tutorial.js) runs first and calls this when it ends.
+if (prefs.get("tutorialSeen")) showInstallTip();
 
 onAction("close-install-tip", () => {
     const banner = document.querySelector(".install-banner");
