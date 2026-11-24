@@ -3,6 +3,7 @@
     .venv/bin/python -m pytest tests
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -128,6 +129,20 @@ def test_progress_setting(tmp_path):
     build_book(write_book(tmp_path / "on", settings="title: T\nprogress: true\n", songs=song))
     html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
     assert "doneSongs" in html and '"progress": true' in html
+
+
+def test_tag_pills(tmp_path):
+    songs = {"a": SONG.format(title="Uno", extra="song_tags:\n  misa: [entrada, comunion]\n  Adoración: []\n"),
+             "b": SONG.format(title="Dos", extra="")}
+    build_book(write_book(tmp_path / "on", songs=songs))
+    html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
+    pills = re.findall(r'<i class="(k\d+)">(\w+)</i>', html)
+    assert [text for _, text in pills] == ["Ado", "Mis", "Com", "Ent"]
+    assert len({cls for cls, _ in pills}) == 4 and html.count('<p class="pills">') == 1
+    colours = re.findall(r"\.k\d+\{background:(hsl\([^)]*\))\}", html)
+    assert len(colours) == len(set(colours)) == 4  # every pill of the song its own colour
+    build_book(write_book(tmp_path / "off", settings="title: T\ntag_pills: false\n", songs=songs))
+    assert 'class="pills"' not in (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
 
 
 MELODY = 'melody: |\n  K:D\n  "D"F8 "A"G A | "Em"F2 z E D\ntab: {tab}\n'

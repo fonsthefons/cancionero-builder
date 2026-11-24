@@ -161,6 +161,75 @@ def song_meta_html(song):
     return f'<p class="song-meta">{"".join(items)}</p>' if items else ""
 
 
+# Pastel colours: 15 hues in a light and a deeper shade, as (hue, lightness %).
+PILL_COLOURS = [(hue, light) for light in (87, 76) for hue in range(0, 360, 24)]
+
+
+def colour_gap(a, b):
+    """How different two pill colours look: hue distance, plus 45 for another shade."""
+    return min(abs(a[0] - b[0]), 360 - abs(a[0] - b[0])) + (45 if a[1] != b[1] else 0)
+
+
+def pill_colours(keys, together):
+    """A colour per pill, far from the colours of the pills it shares songs with
+    (`together`: key -> {other key: songs shared}); the more songs two pills share,
+    the more their colours are kept apart. Ties: the least used colour."""
+    colours, used = {}, {c: 0 for c in PILL_COLOURS}
+
+    def cost(key, colour):
+        clash = 0
+        for other, shared in together[key].items():
+            if other in colours:
+                gap = colour_gap(colour, colours[other])
+                # the same colour twice in one song: never (when avoidable)
+                clash += (shared + 3) * max(0, 100 - gap) ** 2 + (10**9 if gap == 0 else 0)
+        return clash, used[colour]
+
+    for _ in range(4):  # the first pass places each pill; later passes improve them
+        for key in keys:
+            if key in colours:
+                used[colours.pop(key)] -= 1
+            colours[key] = min(PILL_COLOURS, key=lambda colour: cost(key, colour))
+            used[colours[key]] += 1
+    return colours
+
+
+def tag_pills(groups):
+    """{(tag id, subtag id or None): (css class, text, colour)} in contents order. Every
+    tag and subtag has its own class and its label's first 3 letters; pills that
+    appear in the same song get clearly different pastel colours."""
+    labels, songs = {}, {}
+    for group in groups:
+        labels[(group.tag.id, None)] = group.tag.label
+        for song in group.songs:
+            songs.setdefault(id(song), set()).add((group.tag.id, None))
+        for sub_id, label, members in group.subgroups:
+            labels[(group.tag.id, sub_id)] = label
+            for song in members:
+                songs.setdefault(id(song), set()).update({(group.tag.id, None), (group.tag.id, sub_id)})
+    together = {key: {} for key in labels}
+    for keys in songs.values():
+        for key in keys:
+            for other in keys - {key}:
+                together[key][other] = together[key].get(other, 0) + 1
+    colours = pill_colours(labels, together)
+    return {key: (f"k{i}", label.strip()[:3], colours[key]) for i, (key, label) in enumerate(labels.items())}
+
+
+def pills_css(pills):
+    return "\n".join(f".{cls}{{background:hsl({hue} 70% {light}%)}}" for cls, _, (hue, light) in pills.values())
+
+
+def pills_html(song, pills):
+    """One <i> per tag and per subtag of the song (book.yaml tag_pills)."""
+    items = [
+        f'<i class="{cls}">{escape(text)}</i>'
+        for (tag_id, sub_id), (cls, text, _) in pills.items()
+        if tag_id in song.tags and (sub_id is None or sub_id in song.tags[tag_id])
+    ]
+    return f'<p class="pills">{"".join(items)}</p>\n' if items else ""
+
+
 def melody_html(song):
     """Staff and guitar tab, drawn by web/js/melody.js (abcjs)."""
     if not song.melody:
@@ -182,7 +251,7 @@ PSALM_HTML = ('<button class="formula-pick" data-action="formula-pick">Choose f�
               '<div class="psalm-formula"></div>\n')
 
 
-def song_html(song, controls, psalm=False):
+def song_html(song, controls, psalm=False, pills=None):
     # --chars (widest line) lets CSS size the lyrics so every line fits the screen.
     # data-title / data-autor: plain values for the session list and search.
     # psalm: a fórmula picker, and room for the chosen fórmula (web/js/formula.js).
@@ -195,6 +264,7 @@ def song_html(song, controls, psalm=False):
         f'style="--chars: {lyrics_columns(song.body)}">\n'
         f"<h3>{escape(song_label(song))}</h3>\n"
         f"{song_meta_html(song)}\n"
+        f"{pills_html(song, pills) if pills else ''}"
         f"{controls}\n"
         f"{PSALM_HTML if psalm else ''}"
         f"{melody_html(song)}"
@@ -277,6 +347,7 @@ def render_book(book, songs, groups, web_dir, horas=None):
     if melodies:
         scripts.insert(0, web / "vendor" / "abcjs-basic-min.js")
     controls = read("song-controls.html").strip()
+    pills = tag_pills(groups) if book.tag_pills else {}
     return fill_template(
         read("template.html"),
         {
@@ -288,7 +359,7 @@ def render_book(book, songs, groups, web_dir, horas=None):
             "notation_setting": read("parts/notation-setting.html").rstrip("\n") if book.notation_setting else "",
             "cover": cover_html(book),
             "book_json": book_json(book, formulas),
-            "css": read("styles.css"),
+            "css": read("styles.css") + pills_css(pills),
             "scripts": "\n".join(
                 f"<script>\n{p.read_text(encoding='utf-8')}</script>" for p in scripts
             ),
@@ -298,6 +369,6 @@ def render_book(book, songs, groups, web_dir, horas=None):
             + tag_index_html(groups, book.fold_tags, book.fold_subtags),
             "all_songs": collapsible("all-songs", "h2", "All Songs", song_list(songs), "tag-index",
                                      is_open=not book.fold_all_songs),
-            "songs": "\n".join(song_html(song, controls, id(song) in psalms) for song in songs),
+            "songs": "\n".join(song_html(song, controls, id(song) in psalms, pills) for song in songs),
         },
     )

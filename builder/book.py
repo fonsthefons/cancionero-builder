@@ -47,6 +47,9 @@ DEFAULTS = {
     # and one at the end of every song. Ticked songs show green in the contents, and a
     # tag or subtag turns green when all its songs are ticked. Saved on each device.
     "progress": False,
+    # Under each song's author: a small pastel pill per tag and subtag of the song,
+    # with the first 3 letters of its label (every tag/subtag has its own colour).
+    "tag_pills": True,
     # Settings menu offers chord names as Do Re Mi.
     "notation_setting": True,
     # The tutorial's last step says how to add the book to the home screen.
@@ -170,7 +173,7 @@ def validate(settings):
         errors.append("formula_parts must be a list of horas.yaml parts such as [Himno]")
     if not isinstance(settings.get("formula_tag", ""), (str, type(None))):
         errors.append("formula_tag must be a tag id such as formulas")
-    for name in ("fold_tags", "fold_subtags", "fold_all_songs", "progress", "notation_setting", "language_tags", "record_added", "strict_tags"):
+    for name in ("fold_tags", "fold_subtags", "fold_all_songs", "progress", "tag_pills","notation_setting", "language_tags", "record_added", "strict_tags"):
         if name in settings and not isinstance(settings[name], bool):
             errors.append(f"{name} must be true or false")
     return errors

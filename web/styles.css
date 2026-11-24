@@ -691,6 +691,24 @@ body.drawer-open {
     font-style: normal;
 }
 
+/* Tag pills (book.yaml tag_pills): each tag's colour is a .k<n> rule added by
+   the build. Dark text on a pastel works in both themes. */
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: -4px 0 10px;
+}
+
+.pills i {
+    font-style: normal;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    padding: 0 7px;
+    border-radius: 9px;
+    color: #333;
+}
+
 .controls {
     display: flex;
     flex-wrap: wrap; /* never run off the edge on narrow screens */
