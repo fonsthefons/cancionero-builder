@@ -172,7 +172,7 @@ def run(engine_name, engine):
 
 
 def tutorial_checks(browser, opts, name):
-    """First visit shows the 4-step tour; every label stays on screen and apart."""
+    """First visit shows the 7-step tour; every label stays on screen and apart."""
     context = browser.new_context(**opts)  # no init script: this is a first visit
     page = context.new_page()
     errors = []
@@ -181,28 +181,44 @@ def tutorial_checks(browser, opts, name):
     page.wait_for_timeout(500)
     tour = lambda: page.locator(".tour")  # noqa: E731
     header = lambda: page.inner_text(".tour-card h3")  # noqa: E731
-    check("tutorial shows on first visit (Paso 1/4)", tour().is_visible() and header().startswith("Paso 1/4"), header())
+    drawer_open = lambda: page.evaluate("document.body.classList.contains('drawer-open')")  # noqa: E731
+    session_items = lambda: page.locator(".session-list li").count()  # noqa: E731
+    check("tutorial shows on first visit (Tutorial · Paso 1/7)", tour().is_visible()
+          and header().lower().startswith("tutorial · paso 1/7"), header())
+    check("tutorial step 1: no Atrás", not page.is_visible('[data-action="tour-back"]'))
 
-    for n in range(1, 5):
+    vw, vh = opts["viewport"]["width"], opts["viewport"]["height"]
+    for n in range(1, 8):
         page.wait_for_timeout(450)  # the menu slides in
         if TAKE_SHOTS:
             page.screenshot(path=str(SHOTS / f"{name}-tutorial-{n}.png"))
-        chips = page.evaluate("""() => [...document.querySelectorAll('.tour-chip')].map(c => {
+        boxes = page.evaluate("""() => [...document.querySelectorAll('.tour-chip:not([hidden]), .tour-card')].map(c => {
             const r = c.getBoundingClientRect();
-            return { text: c.textContent, left: r.left, top: r.top, right: r.right, bottom: r.bottom };
+            return { text: c.classList.contains('tour-card') ? 'card' : c.textContent,
+                     left: r.left, top: r.top, right: r.right, bottom: r.bottom };
         })""")
-        vw, vh = opts["viewport"]["width"], opts["viewport"]["height"]
-        outside = [c["text"] for c in chips if c["left"] < 0 or c["top"] < 0 or c["right"] > vw or c["bottom"] > vh]
-        check(f"tutorial step {n}: {len(chips)} labels inside the screen", chips and not outside, outside)
-        touching = [(a["text"], b["text"]) for i, a in enumerate(chips) for b in chips[i + 1:]
+        chips = [b for b in boxes if b["text"] != "card"]
+        outside = [c["text"] for c in boxes if c["left"] < 0 or c["top"] < 0 or c["right"] > vw or c["bottom"] > vh]
+        check(f"tutorial step {n}: card and {len(chips)} labels inside the screen", chips and not outside, outside)
+        touching = [(a["text"], b["text"]) for i, a in enumerate(boxes) for b in boxes[i + 1:]
                     if a["left"] < b["right"] and b["left"] < a["right"] and a["top"] < b["bottom"] and b["top"] < a["bottom"]]
-        check(f"tutorial step {n}: labels don't overlap", not touching, touching)
+        check(f"tutorial step {n}: labels and card don't overlap", not touching, touching)
+        if n == 3:
+            check("tutorial step 3: menu open with 2 example songs", drawer_open() and session_items() == 2)
+            page.click('[data-action="tour-back"]')
+            check("Atrás goes back to step 2 and drops the example songs",
+                  header().lower().startswith("tutorial · paso 2/7") and session_items() == 0)
+            page.click('[data-action="tour-next"]')
+            page.wait_for_timeout(450)
         if n == 4:
-            check("tutorial step 4: menu is open", page.evaluate("document.body.classList.contains('drawer-open')"))
+            check("tutorial step 4: example songs gone, menu closed", session_items() == 0 and not drawer_open())
+        if n in (5, 6, 7):
+            check(f"tutorial step {n}: menu is open", drawer_open())
         page.click('[data-action="tour-next"]')
 
-    check("Listo ends the tutorial and closes the menu", tour().count() == 0
-          and not page.evaluate("document.body.classList.contains('drawer-open')"))
+    check("Terminar ends the tutorial and closes the menu", tour().count() == 0 and not drawer_open())
+    check("the example songs were never saved",
+          page.evaluate("JSON.parse(prefs.get('session', '[]')).length") == 0)
     page.reload()
     page.wait_for_timeout(300)
     check("tutorial does not come back after reload", tour().count() == 0)
@@ -210,8 +226,8 @@ def tutorial_checks(browser, opts, name):
     page.click('[data-action="open-drawer"]')
     page.click('[data-action="start-tutorial"]')
     page.wait_for_timeout(300)
-    check("Ver tutorial restarts it (menu closed)", tour().is_visible() and header().startswith("Paso 1/4")
-          and not page.evaluate("document.body.classList.contains('drawer-open')"))
+    check("Ver tutorial restarts it (menu closed)", tour().is_visible()
+          and header().lower().startswith("tutorial · paso 1/7") and not drawer_open())
     page.click('[data-action="tour-next"]')
     page.click('[data-action="tour-skip"]')
     check("Saltar on step 2 ends it", tour().count() == 0)

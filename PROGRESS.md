@@ -1,5 +1,25 @@
 # Progress
 
+## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
+User's feedback on the tour, all done:
+- Red (#e53935) labels, arrows, spotlight border and card border; header "Tutorial · Paso n/7".
+- Atrás button (hidden on step 1).
+- Steps: 1 Canciones, 2 En cada canción, 3 Sesión, 4 Barra superior, 5-6 Ajustes (1/2, 2/2), 7 ¡Listo!.
+  - Sesión: if the session is empty, 2 example songs are shown (only the `session` variable and
+    the list change, never prefs) and removed when the step is left (Siguiente, Atrás, Saltar, Esc).
+  - Ajustes is two steps because on a phone all settings fill the screen, leaving no room for the card.
+  - ¡Listo!: "Puedes volver a ver este tutorial abajo del todo en el menú" + the home-screen
+    instructions (hosted site, not inside the home-screen app, `install_tip` not "off").
+- The old offline popup/banner is gone (install-tip.js, parts/install-tip-*.html, their CSS);
+  `install_tip` stays valid in book.yaml ("popup"/"banner" both mean: shown in the tutorial).
+- Wide screens with the menu open: the card sits right of the menu.
+- Files: web/js/tutorial.js, web/styles.css, web/template.html, builder/render.py, builder/book.py,
+  tests/test_builder.py, tests/browser/ui_check.py, README.md.
+- Checked: pytest; ui_check.py on cancionero, Chromium + WebKit, phone/iPad/laptop: 379 passed.
+- Found: the published cancionero had lost "Create session PPT": the two songs added on 2026-11-24
+  from a claude.ai cloud session rebuilt index.html without it (probably an older builder copy there).
+  A local rebuild + publish fixes it.
+
 ## Plan: tutorial (2026-11-23)
 Goal: on the first visit to a book, a short Spanish guided tour (4 numbered steps, several labelled arrows per
 step) shows the main features; it can be left at any moment and replayed from Settings.

@@ -112,8 +112,8 @@ def test_book_settings(tmp_path):
         "a": SONG.format(title="Uno", extra="autor: Hakuna\nsong_tags:\n  t: []\n")})
     build_book(book)
     html = (tmp_path / "y" / "index.html").read_text(encoding="utf-8")
-    assert '<aside class="install-banner"' in html and 'id="install-tip"' not in html
-    assert 'data-action="cycle-notation"' not in html
+    assert '"installTip": true' in html and 'class="install-banner"' not in html  # the tutorial says it now
+    assert '<button data-action="cycle-notation"' not in html
     assert 'data-autor="Hakuna"' not in html  # the book's own artist isn't shown
     assert '<details class="tag-index" id="tag-t" open>' in html
     assert '"storagePrefix": "y."' in html

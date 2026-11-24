@@ -117,8 +117,10 @@ A "▶ Melody" button in the song's controls plays the melody (not the chords) w
 organ-like tone made in the browser (works offline), at quarter = 80 unless the melody sets
 `Q:`, in the key on screen, lighting each note; a psalm's button plays its chosen fórmula.
 
-On the first visit a short Spanish tutorial (4 steps) points at the main controls; "Ver tutorial"
-in Settings replays it. On the hosted site the offline popup comes right after it.
+On the first visit a short Spanish tutorial (7 steps, with Atrás) points at the main controls:
+songs, each song's controls, the session (shown with 2 example songs that are never saved), the
+top bar, the book-wide settings and, last, where to find "Ver tutorial" (Settings) and how to add
+the book to the home screen for offline use (hosted site only; `install_tip: "off"` drops it).
 
 The build warns about lines over 50 columns (the whole song gets small on phones; the editor
 marks them yellow) and chords written far past the end of their lyric; `cancionero.py`
