@@ -43,6 +43,10 @@ DEFAULTS = {
     "fold_subtags": True,
     # Contents page: the "All Songs" list starts folded too.
     "fold_all_songs": False,
+    # Progress checkboxes (e.g. for a course): one next to every song in the contents
+    # and one at the end of every song. Ticked songs show green in the contents, and a
+    # tag or subtag turns green when all its songs are ticked. Saved on each device.
+    "progress": False,
     # Settings menu offers chord names as Do Re Mi.
     "notation_setting": True,
     # The tutorial's last step says how to add the book to the home screen.
@@ -166,7 +170,7 @@ def validate(settings):
         errors.append("formula_parts must be a list of horas.yaml parts such as [Himno]")
     if not isinstance(settings.get("formula_tag", ""), (str, type(None))):
         errors.append("formula_tag must be a tag id such as formulas")
-    for name in ("fold_tags", "fold_subtags", "fold_all_songs", "notation_setting", "language_tags", "record_added", "strict_tags"):
+    for name in ("fold_tags", "fold_subtags", "fold_all_songs", "progress", "notation_setting", "language_tags", "record_added", "strict_tags"):
         if name in settings and not isinstance(settings[name], bool):
             errors.append(f"{name} must be true or false")
     return errors

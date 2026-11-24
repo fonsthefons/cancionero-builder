@@ -251,7 +251,7 @@ def formula_choices(book, groups, horas=None):
 def book_json(book, formulas=None):
     """Settings the page's scripts need (as `const BOOK = ...`)."""
     data = {"storagePrefix": book.storage_prefix, "notationSetting": book.notation_setting,
-            "installTip": book.install_tip != "off"}
+            "installTip": book.install_tip != "off", "progress": book.progress}
     if formulas:
         data["formulas"] = formulas
     # "</" can't appear inside a <script>; json.dumps never makes it but be safe
@@ -270,7 +270,9 @@ def render_book(book, songs, groups, web_dir, horas=None):
     # formula.js only in books with psalm fórmulas (book.yaml psalm_tags / formula_tag).
     melodies = any(song.melody for song in songs)
     psalms, formulas = formula_choices(book, groups, horas)
-    skip = {"core.js"} | (set() if melodies else {"melody.js"}) | (set() if formulas else {"formula.js"})
+    # progress.js only in books with book.yaml progress: true.
+    skip = ({"core.js"} | (set() if melodies else {"melody.js"}) | (set() if formulas else {"formula.js"})
+            | (set() if book.progress else {"progress.js"}))
     scripts = [web / "js" / "core.js"] + sorted(p for p in (web / "js").glob("*.js") if p.name not in skip)
     if melodies:
         scripts.insert(0, web / "vendor" / "abcjs-basic-min.js")

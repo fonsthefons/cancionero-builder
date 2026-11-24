@@ -119,6 +119,17 @@ def test_book_settings(tmp_path):
     assert '"storagePrefix": "y."' in html
 
 
+def test_progress_setting(tmp_path):
+    with pytest.raises(BookError, match="progress must be true or false"):
+        write_book(tmp_path / "x", settings="title: T\nprogress: yes please\n")
+    song = {"a": SONG.format(title="Uno", extra="")}
+    build_book(write_book(tmp_path / "off", songs=song))
+    assert "doneSongs" not in (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
+    build_book(write_book(tmp_path / "on", settings="title: T\nprogress: true\n", songs=song))
+    html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
+    assert "doneSongs" in html and '"progress": true' in html
+
+
 MELODY = 'melody: |\n  K:D\n  "D"F8 "A"G A | "Em"F2 z E D\ntab: {tab}\n'
 
 
