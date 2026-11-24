@@ -10,6 +10,7 @@ body {
     --muted: #666;
     --accent: #397380;
     --accent-light: #2f8ea4;
+    --done: #2e7d32;
     --chord: #1a8f8f;
     --button-bg: #fffaf1;
     --button-ink: #5f63a8;
@@ -39,6 +40,7 @@ body[data-theme="dark"] {
     --muted: #a3a3a3;
     --accent: #8cc4cf;
     --accent-light: #7fb8d0;
+    --done: #81c784;
     --chord: #5ed6cc;
     --button-bg: #2c2c31;
     --button-ink: #c3c5f0;
@@ -57,6 +59,7 @@ body[data-theme="dark"] {
         --muted: #a3a3a3;
         --accent: #8cc4cf;
         --accent-light: #7fb8d0;
+    --done: #81c784;
         --chord: #5ed6cc;
         --button-bg: #2c2c31;
         --button-ink: #c3c5f0;
@@ -606,6 +609,46 @@ body.drawer-open {
 .song-list a {
     display: block;
     padding: 5px 0;
+}
+
+/* Progress checkboxes (book.yaml progress: true, web/js/progress.js) */
+.song-list li:has(> .done-box) {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.song-list li:has(> .done-box) > a {
+    flex: 1;
+}
+
+.done-box {
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0;
+    accent-color: var(--done);
+}
+
+.index li.done > a,
+.index details.done > summary {
+    color: var(--done);
+}
+
+.done-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@media print {
+    .done-box,
+    .done-toggle {
+        display: none !important;
+    }
 }
 
 /* ============================= */
