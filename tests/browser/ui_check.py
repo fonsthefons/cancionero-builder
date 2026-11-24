@@ -371,12 +371,12 @@ def autoscroll_checks(page):
     top = lambda: page.evaluate(f"Math.round(scrollY + document.getElementById('{long_id}').getBoundingClientRect().top)")  # noqa: E731
     page.evaluate(f"scrollTo(0, {top()})")
     start_y = scroll_y()
-    check("autoscroll shows default speed 3 and ▶", speed() == "3" and page.inner_text(toggle) == "▶")
+    check("autoscroll shows default speed 6 and ▶", speed() == "6" and page.inner_text(toggle) == "▶")
 
     page.click(toggle)
     page.wait_for_timeout(1000)
     moved_slow = scroll_y() - start_y
-    check(f"autoscroll starts (moved {moved_slow:.0f}px in 1s at speed 3) and shows ⏸",
+    check(f"autoscroll starts (moved {moved_slow:.0f}px in 1s at speed 6) and shows ⏸",
           10 <= moved_slow <= 30 and page.inner_text(toggle) == "⏸")
 
     for _ in range(3):
@@ -384,7 +384,7 @@ def autoscroll_checks(page):
     y = scroll_y()
     page.wait_for_timeout(1000)
     moved_fast = scroll_y() - y
-    check(f"faster: speed 6 moves ~2x ({moved_fast:.0f}px/s)", speed() == "6" and moved_fast > moved_slow * 1.5)
+    check(f"faster: speed 9 moves ~1.5x ({moved_fast:.0f}px/s)", speed() == "9" and moved_fast > moved_slow * 1.3)
 
     for _ in range(12):
         page.click('[data-action="autoscroll-slower"]')

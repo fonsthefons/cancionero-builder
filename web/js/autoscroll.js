@@ -8,8 +8,8 @@
 const AUTOSCROLL = {
     minSpeed: 1,
     maxSpeed: 10,
-    defaultSpeed: 3,
-    pxPerSecondPerStep: 6, // speed 3 = 18px/s, about one line every second on a phone
+    defaultSpeed: 6,
+    pxPerSecondPerStep: 3, // speed 6 = 18px/s, about one line every second on a phone
     maxFrameGap: 0.1, // seconds; avoids a jump after the tab was in the background
 };
 
