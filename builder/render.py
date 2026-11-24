@@ -250,7 +250,8 @@ def formula_choices(book, groups, horas=None):
 
 def book_json(book, formulas=None):
     """Settings the page's scripts need (as `const BOOK = ...`)."""
-    data = {"storagePrefix": book.storage_prefix, "notationSetting": book.notation_setting}
+    data = {"storagePrefix": book.storage_prefix, "notationSetting": book.notation_setting,
+            "installTip": book.install_tip != "off"}
     if formulas:
         data["formulas"] = formulas
     # "</" can't appear inside a <script>; json.dumps never makes it but be safe
@@ -274,9 +275,6 @@ def render_book(book, songs, groups, web_dir, horas=None):
     if melodies:
         scripts.insert(0, web / "vendor" / "abcjs-basic-min.js")
     controls = read("song-controls.html").strip()
-    install_tip = {"popup": read("parts/install-tip-popup.html"),
-                   "banner": read("parts/install-tip-banner.html")}.get(book.install_tip, "")
-
     return fill_template(
         read("template.html"),
         {
@@ -287,7 +285,6 @@ def render_book(book, songs, groups, web_dir, horas=None):
             "logo": svg_html(book.file(book.logo), "logo-mark") if book.logo else "",
             "notation_setting": read("parts/notation-setting.html").rstrip("\n") if book.notation_setting else "",
             "cover": cover_html(book),
-            "install_tip": install_tip.rstrip("\n"),
             "book_json": book_json(book, formulas),
             "css": read("styles.css"),
             "scripts": "\n".join(

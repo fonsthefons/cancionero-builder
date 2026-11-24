@@ -45,8 +45,8 @@ DEFAULTS = {
     "fold_all_songs": False,
     # Settings menu offers chord names as Do Re Mi.
     "notation_setting": True,
-    # First visit on the website: how to add the book to the home screen.
-    # "popup", "banner" or "off".
+    # The tutorial's last step says how to add the book to the home screen.
+    # "popup" or "banner" (both: shown; kept for old book.yaml files) or "off".
     "install_tip": "popup",
     # SVG file (in the book folder) shown before the title in the top bar.
     "logo": None,

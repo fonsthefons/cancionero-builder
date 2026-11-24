@@ -881,19 +881,6 @@ body[data-columns="2"] .song:not([data-columns="1"]),
     margin: 0.75rem 0;
 }
 
-.install-tip {
-    max-width: min(26rem, calc(100vw - 32px));
-}
-
-.install-tip h3 {
-    margin-top: 0;
-}
-
-.install-tip p {
-    margin: 0.5rem 0;
-    line-height: 1.4;
-}
-
 .dialog-buttons {
     display: flex;
     gap: 8px;
@@ -902,48 +889,11 @@ body[data-columns="2"] .song:not([data-columns="1"]),
 }
 
 /* ============================= */
-/* INSTALL TIP AS A BANNER       */
-/* (book.yaml install_tip: banner) */
-/* ============================= */
-
-.install-banner {
-    position: fixed;
-    left: var(--gutter);
-    right: var(--gutter);
-    bottom: calc(var(--gutter) + env(safe-area-inset-bottom, 0px));
-    z-index: 150; /* above the songs and top bar, below the menu */
-    max-width: 30rem;
-    margin: 0 auto;
-    padding: 10px 44px 10px 14px;
-    background: var(--surface);
-    color: var(--ink);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 4px 16px var(--shadow);
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.install-banner[hidden] {
-    display: none;
-}
-
-.install-banner p {
-    margin: 0;
-}
-
-.install-banner .icon-button {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-}
-
-/* ============================= */
 /* TUTORIAL TOUR (tutorial.js)   */
 /* ============================= */
 
 .tour {
+    --tour-red: #e53935; /* vivid in both themes */
     position: fixed;
     inset: 0;
     z-index: 300; /* above the menu */
@@ -953,22 +903,25 @@ body[data-columns="2"] .song:not([data-columns="1"]),
 /* The box around the step's controls; its huge shadow dims everything else. */
 .tour-spot {
     position: absolute;
-    border: 2px solid var(--surface);
+    border: 3px solid var(--tour-red);
     border-radius: 8px;
     box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.6);
     pointer-events: none;
 }
 
-/* Colors swap with the theme: ink on surface becomes surface on ink. */
 .tour-chip {
     position: absolute;
     padding: 4px 8px;
     border-radius: 6px;
-    background: var(--ink);
-    color: var(--surface);
+    background: var(--tour-red);
+    color: white;
     font-size: 0.8rem;
     font-weight: 600;
     white-space: nowrap;
+}
+
+.tour-chip[hidden] {
+    display: none;
 }
 
 .tour-chip::after {
@@ -981,12 +934,12 @@ body[data-columns="2"] .song:not([data-columns="1"]),
 
 .tour-chip[data-side="below"]::after {
     bottom: 100%;
-    border-bottom-color: var(--ink);
+    border-bottom-color: var(--tour-red);
 }
 
 .tour-chip[data-side="above"]::after {
     top: 100%;
-    border-top-color: var(--ink);
+    border-top-color: var(--tour-red);
 }
 
 .tour-card {
@@ -996,27 +949,61 @@ body[data-columns="2"] .song:not([data-columns="1"]),
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
     max-width: 26rem;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
     margin: 0 auto;
-    padding: 16px;
-    border: 1px solid var(--border);
+    padding: 14px 16px;
+    border: 3px solid var(--tour-red);
     border-radius: 10px;
     background: var(--surface);
     color: var(--ink);
     box-shadow: 0 4px 16px var(--shadow);
+    font-size: 0.9rem;
 }
 
-.tour-card.top {
+.tour-card.top,
+.tour-card.beside {
     top: 12px;
     bottom: auto;
 }
 
-.tour-card h3 {
-    margin: 0 0 0.5rem;
+/* Wide screens with the menu open: right of the menu (320px wide there). */
+.tour-card.beside {
+    left: 344px;
+    right: auto;
+    width: 26rem;
+    margin: 0;
 }
 
-.tour-card p {
+.tour-card h3 {
     margin: 0;
-    line-height: 1.4;
+    color: var(--tour-red);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.tour-card h4 {
+    margin: 0.2rem 0 0.4rem;
+    font-size: 1.05rem;
+}
+
+.tour-card p,
+.tour-card ul {
+    margin: 0 0 0.4rem;
+    line-height: 1.35;
+}
+
+.tour-card ul {
+    padding-left: 1.1rem;
+}
+
+.tour-card li + li {
+    margin-top: 0.2rem;
+}
+
+.tour-card [hidden] {
+    display: none;
 }
 
 /* The menu is long; hide its song list so Session and Settings fit on one screen. */
@@ -1101,7 +1088,6 @@ body.tour-on .drawer .nav {
     .drawer,
     .controls,
     .formula-pick,
-    .install-banner,
     .print-dialog {
         display: none !important;
     }
