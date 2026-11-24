@@ -153,6 +153,8 @@ def song_meta_html(song):
         items.append(f'<span class="meta-item">Autor: {escape(song.autor)}</span>')
     if song.capo:
         items.append(f'<span class="meta-item">Capo: {escape(song.capo)}</span>')
+    if song.key:  # transpose.js rewrites it with the chords
+        items.append(f'<span class="meta-item song-key">Key: {escape(song.key)}</span>')
     if song.link:
         label = "Spotify link" if "spotify.com" in song.link else "YouTube link" if "youtu" in song.link else "Link"
         items.append(
@@ -257,6 +259,7 @@ def song_html(song, controls, psalm=False, pills=None):
     # psalm: a fórmula picker, and room for the chosen fórmula (web/js/formula.js).
     # A psalm's play button shows only with a fórmula (CSS .song:has(.melody)).
     autor = f' data-autor="{escape(song.autor)}"' if song.autor else ""
+    autor += f' data-key="{escape(song.key)}"' if song.key else ""
     if song.melody or psalm:
         controls = with_play(controls)
     return (

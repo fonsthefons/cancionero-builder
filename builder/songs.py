@@ -6,12 +6,13 @@ from pathlib import Path
 
 import yaml
 
+from .keys import KEY_RE
 from .text import spanish_sort_key
 
 # Frontmatter fields a song may use. Anything else is reported as an error,
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
-OPTIONAL_FIELDS = {"autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore"}
+OPTIONAL_FIELDS = {"key", "autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore"}
 # tab-melody-check: the tab covers only the first notes of the melody; long-lines-check and
 # far-chords-check: build warnings (builder/build.py) the song is fine without
 IGNORABLE_CHECKS = ("tab-melody-check", "long-lines-check", "far-chords-check")
@@ -29,6 +30,7 @@ class Song:
     tags: dict[str, list[str]]  # {tag: [subtags]}, flat tags have []
     autor: str | None = None
     capo: str | None = None
+    key: str | None = None  # key of the chords as written ("G", "Em"); filled in by the build
     link: str | None = None
     added: str | None = None  # day the song was added; not shown
     horas: list = field(default_factory=list)  # slot patterns in horas.yaml, as written
@@ -150,6 +152,9 @@ def load_song(path):
         raise SongError(f'link must be a web address starting with http:// or https:// (got "{link}")')
     melody, tab = optional_text(meta.get("melody")), optional_text(meta.get("tab"))
     ignore = parse_ignore(meta.get("ignore"))
+    key = optional_text(meta.get("key"))
+    if key and not KEY_RE.fullmatch(key):
+        raise SongError(f'key must be a key like G, Bb, F#m or Em (got "{key}")')
     if tab:  # a melody without a tab is allowed (staff only)
         check_tab(melody, tab, count_notes="tab-melody-check" not in ignore)
 
@@ -160,6 +165,7 @@ def load_song(path):
         tags=parse_tags(meta.get("song_tags")),
         autor=optional_text(meta.get("autor")),
         capo=optional_text(meta.get("capo")),
+        key=key,
         link=link,
         added=optional_text(meta.get("added")),
         horas=parse_horas(meta.get("horas")),

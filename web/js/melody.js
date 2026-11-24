@@ -28,8 +28,10 @@ function renderMelody(element, shift = 0, width = 380) {
     // Chord names like the song's chord lines (transpose.js: sharps or flats, Do Re Mi).
     if (typeof transposeChord === "function") {
         const chords = [...abc.matchAll(/"([^"]*)"/g)].map((m) => m[1]);
+        const songKey = element.closest(".song")?.dataset.key;
+        const key = songKey ? movedKey(songKey, shift) : null;
         svg.querySelectorAll(".abcjs-chord").forEach((text, i) => {
-            if (chords[i] !== undefined) text.textContent = transposeChord(chords[i], shift);
+            if (chords[i] !== undefined) text.textContent = transposeChord(chords[i], shift, key);
         });
     }
 

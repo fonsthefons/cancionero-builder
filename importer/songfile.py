@@ -39,9 +39,13 @@ def free_path(songs_dir, name):
 
 # ---------- the song file ----------
 
-def song_file(book, title, autor, capo, link, tags, body, added=None, horas=(), melody=None, tab=None, ignore=()):
-    """Text of a song file. The book's own artist isn't written (it's the default)."""
+def song_file(book, title, autor, capo, link, tags, body, added=None, horas=(), melody=None, tab=None, ignore=(),
+              key=None):
+    """Text of a song file. The book's own artist isn't written (it's the default).
+    key: kept as it was (the build adds one to songs without it)."""
     lines = ["---", f"title: {yaml_value(title)}"]
+    if key:
+        lines.append(f"key: {key}")
     if autor and not book.is_default_author(autor):
         lines.append(f"autor: {yaml_value(autor)}")
     # Quoted as JSON strings (valid YAML): capo "2" stays text, links keep their ":"
@@ -91,7 +95,7 @@ def checked_write(path, text, target=None):
 
 def write_song(book, title, autor, capo, link, tags, body, added=None, **more):
     """Write a new song file; returns its path. Raises SongError (and writes
-    nothing) if the file wouldn't be a valid song. more: horas, melody, tab, ignore."""
+    nothing) if the file wouldn't be a valid song. more: horas, melody, tab, ignore, key."""
     book.songs_dir.mkdir(parents=True, exist_ok=True)
     path = free_path(book.songs_dir, song_name(book, title, autor))
     checked_write(path, song_file(book, title, autor, capo, link, tags, body, added, **more))
