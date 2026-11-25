@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Semitono marks</title>
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; margin: 0 auto; max-width: 1100px; padding: 1rem 1rem 6rem; color: #222; }
+  header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ddd; padding: .5rem 0; z-index: 2; }
+  .help { font-size: 14px; color: #555; margin: .3rem 0; }
+  h2 { margin: 2rem 0 .5rem; }
+  .verse { border-left: 3px solid #eee; padding-left: .6rem; margin: .8rem 0 1.2rem; }
+  .line { padding: .3rem .4rem; margin: .15rem 0; border-radius: 6px; border: 1px solid transparent; }
+  .line.done { background: #f2fbf2; }
+  .line.bad { border-color: #e55; background: #fff4f4; }
+  .tools { display: flex; gap: .3rem; align-items: center; flex-wrap: wrap; font-size: 13px; }
+  .tools select, .tools input { font-size: 13px; }
+  .tools input.comment { flex: 1; min-width: 12rem; border: 1px solid #ddd; border-radius: 4px; padding: 1px 4px; }
+  button { font: inherit; font-size: 13px; border: 1px solid #bbb; background: #fff; border-radius: 4px; padding: 1px 7px; cursor: pointer; }
+  button.sel { outline: 3px solid #333; }
+  button.placed { opacity: .45; }
+  .chordbtn { font-weight: bold; }
+  .sylls { display: flex; flex-wrap: wrap; align-items: flex-end; margin-top: .2rem; }
+  .p { display: inline-flex; flex-direction: column; cursor: pointer; border-radius: 3px; }
+  .p:hover { background: #eef; }
+  .p .ch { height: 1.2em; font-weight: bold; color: #b00; font-size: 14px; }
+  .p .nt { height: 1.2em; font-size: 13px; font-weight: bold; }
+  .p .tx { white-space: pre; font-size: 18px; }
+  .p.start .tx { text-decoration: underline; text-decoration-thickness: 2px; }
+  .gap { width: 7px; align-self: stretch; cursor: col-resize; display: inline-flex; align-items: flex-end; justify-content: center; color: #c60; font-size: 18px; }
+  .gap:hover { background: #fe9; }
+  .n0 { color: #888; } .n1 { color: #1565c0; } .n2 { color: #2e7d32; } .n3 { color: #e65100; } .n4 { color: #6a1b9a; } .n5 { color: #00838f; }
+  button.n0 { border-color: #888; } button.n1 { border-color: #1565c0; } button.n2 { border-color: #2e7d32; }
+  button.n3 { border-color: #e65100; } button.n4 { border-color: #6a1b9a; } button.n5 { border-color: #00838f; }
+  .flexa-tag { color: #c00; font-weight: bold; }
+  textarea { width: 100%; height: 6rem; font: 12px monospace; }
+</style>
+</head>
+<body>
+<header>
+  <strong id="title"></strong> · <span id="progress"></span>
+  <button id="copy">Copy JSON</button> <button id="download">Download JSON</button>
+  <div class="help">
+    <b>Click a syllable</b> = the next note of that line starts there (the reciting note starts on the first syllable already).
+    Click a note button first to place or move a specific note. <b>Right-click</b> a syllable = remove the notes on it.
+    Chords follow their note; to move a chord, click its <b style="color:#b00">red button</b>, then the syllable.
+    <b>Click between two syllables</b> to join them (‿ = sung as one, sinalefa) or split them.
+    <b>Shift-click</b> a syllable to split it in two (san-tu-a-rio).
+    <b>Pre-filled lines</b> show the rule's guess: fix only what is wrong (that's the score).
+    Change the bar (1 / 2 / flexa) with the menu. Everything is saved in this browser as you go.
+  </div>
+  <div class="help" id="melody"></div>
+</header>
+<main id="main"></main>
+<script>
+const DATA = {"id": "Semitonos de 2: (16) Rodrigo|salmo-150|salmo-133|salmo-122", "semitono": "Semitonos de 2: (16) Rodrigo", "melody": {"bars": [[{"chord": "Dm", "pitch": "F", "len": 4}, {"chord": null, "pitch": "E", "len": 1}, {"chord": "Gm", "pitch": "D", "len": 2}], [{"chord": "Cm", "pitch": "E", "len": 4}, {"chord": null, "pitch": "F", "len": 1}, {"chord": null, "pitch": "G", "len": 1}, {"chord": null, "pitch": "E", "len": 1}, {"chord": "F", "pitch": "C", "len": 2}]], "flexa": [{"chord": "Dm", "pitch": "F", "len": 4}, {"chord": "Gm", "pitch": "D", "len": 2}]}, "lines": [{"key": "Salmo 150|0|0", "psalm": "Salmo 150", "verse": 0, "line": 0, "text": "Alabad al Señor en su templo,", "bar": 0, "pieces": [{"t": "A", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad ", "join": false, "stress": true}, {"t": "al ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor ", "join": false, "stress": true}, {"t": "en ", "join": false, "stress": false}, {"t": "su ", "join": false, "stress": false}, {"t": "tem", "join": false, "stress": true}, {"t": "plo,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 7, 8], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|0|1", "psalm": "Salmo 150", "verse": 0, "line": 1, "text": "alabadlo en su augusto firmamento.", "bar": 1, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": true, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "su ", "join": true, "stress": false}, {"t": "au", "join": false, "stress": false}, {"t": "gus", "join": false, "stress": true}, {"t": "to ", "join": false, "stress": false}, {"t": "fir", "join": false, "stress": false}, {"t": "ma", "join": false, "stress": false}, {"t": "men", "join": false, "stress": true}, {"t": "to.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, true, false, true, false, false, false, false, false, false, false], "notes": [0, 8, 9, 10, 11], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 150|1|0", "psalm": "Salmo 150", "verse": 1, "line": 0, "text": "Alabadlo por sus obras magníficas,", "bar": 0, "pieces": [{"t": "A", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "por ", "join": false, "stress": false}, {"t": "sus ", "join": false, "stress": false}, {"t": "o", "join": false, "stress": true}, {"t": "bras ", "join": false, "stress": false}, {"t": "mag", "join": false, "stress": false}, {"t": "ní", "join": false, "stress": true}, {"t": "fi", "join": false, "stress": false}, {"t": "cas,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 8, 9], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|1|1", "psalm": "Salmo 150", "verse": 1, "line": 1, "text": "alabadlo por su inmensa grandeza.", "bar": 1, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "por ", "join": false, "stress": false}, {"t": "su ", "join": true, "stress": false}, {"t": "in", "join": false, "stress": false}, {"t": "men", "join": false, "stress": true}, {"t": "sa ", "join": false, "stress": false}, {"t": "gran", "join": false, "stress": false}, {"t": "de", "join": false, "stress": true}, {"t": "za.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, true, false, false, false, false, false, false], "notes": [0, 7, 8, 9, 10], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 150|2|0", "psalm": "Salmo 150", "verse": 2, "line": 0, "text": "Alabadlo tocando trompetas,", "bar": 0, "pieces": [{"t": "A", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "to", "join": false, "stress": false}, {"t": "can", "join": false, "stress": true}, {"t": "do ", "join": false, "stress": false}, {"t": "trom", "join": false, "stress": false}, {"t": "pe", "join": false, "stress": true}, {"t": "tas,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 7, 8], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|2|1", "psalm": "Salmo 150", "verse": 2, "line": 1, "text": "alabadlo con arpas y cítaras,", "bar": 1, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "con ", "join": false, "stress": false}, {"t": "ar", "join": false, "stress": true}, {"t": "pas ", "join": false, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "cí", "join": false, "stress": true}, {"t": "ta", "join": false, "stress": false}, {"t": "ras,", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 5, 6, 7, 8], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 150|3|0", "psalm": "Salmo 150", "verse": 3, "line": 0, "text": "Alabadlo con tambores y danzas,", "bar": 0, "pieces": [{"t": "A", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "con ", "join": false, "stress": false}, {"t": "tam", "join": false, "stress": false}, {"t": "bo", "join": false, "stress": true}, {"t": "res ", "join": false, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "dan", "join": false, "stress": true}, {"t": "zas,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 8, 9], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|3|1", "psalm": "Salmo 150", "verse": 3, "line": 1, "text": "alabadlo con trompas y flautas,", "bar": 1, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "con ", "join": false, "stress": false}, {"t": "trom", "join": false, "stress": true}, {"t": "pas ", "join": false, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "flau", "join": false, "stress": true}, {"t": "tas,", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 5, 6, 7, 8], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 150|4|0", "psalm": "Salmo 150", "verse": 4, "line": 0, "text": "alabadlo con platillos sonoros,", "bar": 0, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "con ", "join": false, "stress": false}, {"t": "pla", "join": false, "stress": false}, {"t": "ti", "join": false, "stress": true}, {"t": "llos ", "join": false, "stress": false}, {"t": "so", "join": false, "stress": false}, {"t": "no", "join": false, "stress": true}, {"t": "ros,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 8, 9], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|4|1", "psalm": "Salmo 150", "verse": 4, "line": 1, "text": "alabadlo con platillos vibrantes.", "bar": 1, "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": false}, {"t": "bad", "join": false, "stress": true}, {"t": "lo ", "join": false, "stress": false}, {"t": "con ", "join": false, "stress": false}, {"t": "pla", "join": false, "stress": false}, {"t": "ti", "join": false, "stress": true}, {"t": "llos ", "join": false, "stress": false}, {"t": "vi", "join": false, "stress": false}, {"t": "bran", "join": false, "stress": true}, {"t": "tes.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 150|5|0", "psalm": "Salmo 150", "verse": 5, "line": 0, "text": "Todo ser que alienta, alabe al Señor.", "bar": 0, "pieces": [{"t": "To", "join": false, "stress": true}, {"t": "do ", "join": false, "stress": false}, {"t": "ser ", "join": false, "stress": true}, {"t": "que ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "lien", "join": false, "stress": true}, {"t": "ta, ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "la", "join": false, "stress": true}, {"t": "be ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor.", "join": false, "stress": true}], "pred": {"bar": 0, "joins": [false, false, false, true, false, false, true, false, false, true, false, false, false], "notes": [0, 11, 12], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|6|0", "psalm": "Salmo 150", "verse": 6, "line": 0, "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.", "bar": "flexa", "pieces": [{"t": "Glo", "join": false, "stress": true}, {"t": "ria ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Pa", "join": false, "stress": true}, {"t": "dre, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Hi", "join": false, "stress": true}, {"t": "jo, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Es", "join": false, "stress": false}, {"t": "pí", "join": false, "stress": true}, {"t": "ri", "join": false, "stress": false}, {"t": "tu ", "join": false, "stress": false}, {"t": "San", "join": false, "stress": true}, {"t": "to.", "join": false, "stress": false}], "pred": {"bar": "flexa", "joins": [false, true, false, false, true, true, false, false, true, true, false, false, false, false, false, false, false], "notes": [0, 15], "chords": [null, null], "comment": ""}}, {"key": "Salmo 150|6|1", "psalm": "Salmo 150", "verse": 6, "line": 1, "text": "Como era en el principio, ahora y siempre,", "bar": 0, "pieces": [{"t": "Co", "join": false, "stress": false}, {"t": "mo ", "join": false, "stress": false}, {"t": "e", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "prin", "join": false, "stress": false}, {"t": "ci", "join": false, "stress": true}, {"t": "pio, ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "ho", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "siem", "join": false, "stress": true}, {"t": "pre,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, true, false, false, false, false, true, false, false, true, false, false, false], "notes": [0, 11, 13], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 150|6|2", "psalm": "Salmo 150", "verse": 6, "line": 2, "text": "por los siglos de los siglos. Amén.", "bar": 1, "pieces": [{"t": "por ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos. ", "join": false, "stress": false}, {"t": "A", "join": false, "stress": false}, {"t": "mén.", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 133|0|0", "psalm": "Salmo 133", "verse": 0, "line": 0, "text": "Y ahora bendecid al Señor,", "bar": 0, "pieces": [{"t": "Y ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "ho", "join": false, "stress": true}, {"t": "ra ", "join": false, "stress": false}, {"t": "ben", "join": false, "stress": false}, {"t": "de", "join": false, "stress": false}, {"t": "cid ", "join": false, "stress": true}, {"t": "al ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor,", "join": false, "stress": true}], "pred": {"bar": 0, "joins": [true, false, false, false, false, false, false, false, false, false], "notes": [0, 8, 9], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 133|0|1", "psalm": "Salmo 133", "verse": 0, "line": 1, "text": "los siervos del Señor,", "bar": 1, "pieces": [{"t": "los ", "join": false, "stress": false}, {"t": "sier", "join": false, "stress": true}, {"t": "vos ", "join": false, "stress": false}, {"t": "del ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor,", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false], "notes": [0, 2, 3, 4, 5], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 133|0|2", "psalm": "Salmo 133", "verse": 0, "line": 2, "text": "los que pasáis la noche", "bar": 0, "pieces": [{"t": "los ", "join": false, "stress": false}, {"t": "que ", "join": false, "stress": false}, {"t": "pa", "join": false, "stress": false}, {"t": "sáis ", "join": false, "stress": true}, {"t": "la ", "join": false, "stress": false}, {"t": "no", "join": false, "stress": true}, {"t": "che", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false], "notes": [0, 4, 5], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 133|0|3", "psalm": "Salmo 133", "verse": 0, "line": 3, "text": "en la casa del Señor:", "bar": 1, "pieces": [{"t": "en ", "join": false, "stress": false}, {"t": "la ", "join": false, "stress": false}, {"t": "ca", "join": false, "stress": true}, {"t": "sa ", "join": false, "stress": false}, {"t": "del ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor:", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false], "notes": [0, 3, 4, 5, 6], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 133|1|0", "psalm": "Salmo 133", "verse": 1, "line": 0, "text": "Levantad las manos hacia el santuario,", "bar": 0, "pieces": [{"t": "Le", "join": false, "stress": false}, {"t": "van", "join": false, "stress": false}, {"t": "tad ", "join": false, "stress": true}, {"t": "las ", "join": false, "stress": false}, {"t": "ma", "join": false, "stress": true}, {"t": "nos ", "join": false, "stress": false}, {"t": "ha", "join": false, "stress": false}, {"t": "cia ", "join": true, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "san", "join": false, "stress": false}, {"t": "tua", "join": false, "stress": true}, {"t": "rio,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, true, false, false, false, false], "notes": [0, 9, 10], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 133|1|1", "psalm": "Salmo 133", "verse": 1, "line": 1, "text": "y bendecid al Señor.", "bar": 1, "pieces": [{"t": "y ", "join": false, "stress": false}, {"t": "ben", "join": false, "stress": false}, {"t": "de", "join": false, "stress": false}, {"t": "cid ", "join": false, "stress": true}, {"t": "al ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor.", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false], "notes": [0, 3, 4, 5, 6], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 133|2|0", "psalm": "Salmo 133", "verse": 2, "line": 0, "text": "El Señor te bendiga desde Sión:", "bar": 0, "pieces": [{"t": "El ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor ", "join": false, "stress": true}, {"t": "te ", "join": false, "stress": false}, {"t": "ben", "join": false, "stress": false}, {"t": "di", "join": false, "stress": true}, {"t": "ga ", "join": false, "stress": false}, {"t": "des", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "Sión:", "join": false, "stress": true}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 8, 9], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 133|2|1", "psalm": "Salmo 133", "verse": 2, "line": 1, "text": "el que hizo cielo y tierra.", "bar": 1, "pieces": [{"t": "el ", "join": false, "stress": false}, {"t": "que ", "join": false, "stress": false}, {"t": "hi", "join": false, "stress": true}, {"t": "zo ", "join": false, "stress": false}, {"t": "cie", "join": false, "stress": true}, {"t": "lo ", "join": true, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "tie", "join": false, "stress": true}, {"t": "rra.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, true, false, false, false], "notes": [0, 3, 4, 5, 7], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 133|3|0", "psalm": "Salmo 133", "verse": 3, "line": 0, "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.", "bar": "flexa", "pieces": [{"t": "Glo", "join": false, "stress": true}, {"t": "ria ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Pa", "join": false, "stress": true}, {"t": "dre, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Hi", "join": false, "stress": true}, {"t": "jo, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Es", "join": false, "stress": false}, {"t": "pí", "join": false, "stress": true}, {"t": "ri", "join": false, "stress": false}, {"t": "tu ", "join": false, "stress": false}, {"t": "San", "join": false, "stress": true}, {"t": "to.", "join": false, "stress": false}], "pred": {"bar": "flexa", "joins": [false, true, false, false, true, true, false, false, true, true, false, false, false, false, false, false, false], "notes": [0, 15], "chords": [null, null], "comment": ""}}, {"key": "Salmo 133|3|1", "psalm": "Salmo 133", "verse": 3, "line": 1, "text": "Como era en el principio, ahora y siempre,", "bar": 0, "pieces": [{"t": "Co", "join": false, "stress": false}, {"t": "mo ", "join": false, "stress": false}, {"t": "e", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "prin", "join": false, "stress": false}, {"t": "ci", "join": false, "stress": true}, {"t": "pio, ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "ho", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "siem", "join": false, "stress": true}, {"t": "pre,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, true, false, false, false, false, true, false, false, true, false, false, false], "notes": [0, 11, 13], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 133|3|2", "psalm": "Salmo 133", "verse": 3, "line": 2, "text": "por los siglos de los siglos. Amén.", "bar": 1, "pieces": [{"t": "por ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos. ", "join": false, "stress": false}, {"t": "A", "join": false, "stress": false}, {"t": "mén.", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|0|0", "psalm": "Salmo 122", "verse": 0, "line": 0, "text": "A ti levanto mis ojos,", "bar": 0, "pieces": [{"t": "A ", "join": false, "stress": false}, {"t": "ti ", "join": false, "stress": true}, {"t": "le", "join": false, "stress": false}, {"t": "van", "join": false, "stress": true}, {"t": "to ", "join": false, "stress": false}, {"t": "mis ", "join": false, "stress": false}, {"t": "o", "join": false, "stress": true}, {"t": "jos,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false], "notes": [0, 5, 6], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|0|1", "psalm": "Salmo 122", "verse": 0, "line": 1, "text": "a ti que habitas en el cielo.", "bar": 1, "pieces": [{"t": "a ", "join": false, "stress": false}, {"t": "ti ", "join": false, "stress": true}, {"t": "que ", "join": true, "stress": false}, {"t": "ha", "join": false, "stress": false}, {"t": "bi", "join": false, "stress": true}, {"t": "tas ", "join": false, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "cie", "join": false, "stress": true}, {"t": "lo.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, true, false, false, false, false, false, false, false], "notes": [0, 5, 6, 7, 8], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|0|2", "psalm": "Salmo 122", "verse": 0, "line": 2, "text": "Como están los ojos de los esclavos", "bar": 0, "pieces": [{"t": "Co", "join": false, "stress": false}, {"t": "mo ", "join": true, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "tán ", "join": false, "stress": true}, {"t": "los ", "join": false, "stress": false}, {"t": "o", "join": false, "stress": true}, {"t": "jos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "cla", "join": false, "stress": true}, {"t": "vos", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, true, false, false, false, false, false, false, false, false, false, false], "notes": [0, 9, 10], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|0|3", "psalm": "Salmo 122", "verse": 0, "line": 3, "text": "fijos en las manos de sus señores,", "bar": 1, "pieces": [{"t": "fi", "join": false, "stress": true}, {"t": "jos ", "join": false, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "las ", "join": false, "stress": false}, {"t": "ma", "join": false, "stress": true}, {"t": "nos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "sus ", "join": false, "stress": false}, {"t": "se", "join": false, "stress": false}, {"t": "ño", "join": false, "stress": true}, {"t": "res,", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|1|0", "psalm": "Salmo 122", "verse": 1, "line": 0, "text": "como están los ojos de la esclava", "bar": 0, "pieces": [{"t": "co", "join": false, "stress": false}, {"t": "mo ", "join": true, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "tán ", "join": false, "stress": true}, {"t": "los ", "join": false, "stress": false}, {"t": "o", "join": false, "stress": true}, {"t": "jos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "la ", "join": true, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "cla", "join": false, "stress": true}, {"t": "va", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, true, false, false, false, false, false, false, true, false, false, false], "notes": [0, 8, 10], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|1|1", "psalm": "Salmo 122", "verse": 1, "line": 1, "text": "fijos en las manos de su señora,", "bar": 1, "pieces": [{"t": "fi", "join": false, "stress": true}, {"t": "jos ", "join": false, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "las ", "join": false, "stress": false}, {"t": "ma", "join": false, "stress": true}, {"t": "nos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "su ", "join": false, "stress": false}, {"t": "se", "join": false, "stress": false}, {"t": "ño", "join": false, "stress": true}, {"t": "ra,", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|1|2", "psalm": "Salmo 122", "verse": 1, "line": 2, "text": "así están nuestros ojos", "bar": "flexa", "pieces": [{"t": "a", "join": false, "stress": false}, {"t": "sí ", "join": false, "stress": true}, {"t": "es", "join": false, "stress": false}, {"t": "tán ", "join": false, "stress": true}, {"t": "nues", "join": false, "stress": true}, {"t": "tros ", "join": false, "stress": false}, {"t": "o", "join": false, "stress": true}, {"t": "jos", "join": false, "stress": false}], "pred": {"bar": "flexa", "joins": [false, false, false, false, false, false, false, false], "notes": [0, 6], "chords": [null, null], "comment": ""}}, {"key": "Salmo 122|1|3", "psalm": "Salmo 122", "verse": 1, "line": 3, "text": "en el Señor, Dios nuestro,", "bar": 0, "pieces": [{"t": "en ", "join": false, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor, ", "join": false, "stress": true}, {"t": "Dios ", "join": false, "stress": true}, {"t": "nues", "join": false, "stress": true}, {"t": "tro,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false], "notes": [0, 4, 5], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|1|4", "psalm": "Salmo 122", "verse": 1, "line": 4, "text": "esperando su misericordia.", "bar": 1, "pieces": [{"t": "es", "join": false, "stress": false}, {"t": "pe", "join": false, "stress": false}, {"t": "ran", "join": false, "stress": true}, {"t": "do ", "join": false, "stress": false}, {"t": "su ", "join": false, "stress": false}, {"t": "mi", "join": false, "stress": false}, {"t": "se", "join": false, "stress": false}, {"t": "ri", "join": false, "stress": false}, {"t": "cor", "join": false, "stress": true}, {"t": "dia.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 5, 6, 7, 8], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|2|0", "psalm": "Salmo 122", "verse": 2, "line": 0, "text": "Misericordia, Señor, misericordia,", "bar": 0, "pieces": [{"t": "Mi", "join": false, "stress": false}, {"t": "se", "join": false, "stress": false}, {"t": "ri", "join": false, "stress": false}, {"t": "cor", "join": false, "stress": true}, {"t": "dia, ", "join": false, "stress": false}, {"t": "Se", "join": false, "stress": false}, {"t": "ñor, ", "join": false, "stress": true}, {"t": "mi", "join": false, "stress": false}, {"t": "se", "join": false, "stress": false}, {"t": "ri", "join": false, "stress": false}, {"t": "cor", "join": false, "stress": true}, {"t": "dia,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false, false, false], "notes": [0, 9, 10], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|2|1", "psalm": "Salmo 122", "verse": 2, "line": 1, "text": "que estamos saciados de desprecios;", "bar": 1, "pieces": [{"t": "que ", "join": true, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "ta", "join": false, "stress": true}, {"t": "mos ", "join": false, "stress": false}, {"t": "sa", "join": false, "stress": false}, {"t": "cia", "join": false, "stress": true}, {"t": "dos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "des", "join": false, "stress": false}, {"t": "pre", "join": false, "stress": true}, {"t": "cios;", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [true, false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|2|2", "psalm": "Salmo 122", "verse": 2, "line": 2, "text": "nuestra alma está saciada", "bar": "flexa", "pieces": [{"t": "nues", "join": false, "stress": true}, {"t": "tra ", "join": false, "stress": false}, {"t": "al", "join": false, "stress": true}, {"t": "ma ", "join": true, "stress": false}, {"t": "es", "join": false, "stress": false}, {"t": "tá ", "join": false, "stress": true}, {"t": "sa", "join": false, "stress": false}, {"t": "cia", "join": false, "stress": true}, {"t": "da", "join": false, "stress": false}], "pred": {"bar": "flexa", "joins": [false, false, false, true, false, false, false, false, false], "notes": [0, 7], "chords": [null, null], "comment": ""}}, {"key": "Salmo 122|2|3", "psalm": "Salmo 122", "verse": 2, "line": 3, "text": "del sarcasmo de los satisfechos,", "bar": 0, "pieces": [{"t": "del ", "join": false, "stress": false}, {"t": "sar", "join": false, "stress": false}, {"t": "cas", "join": false, "stress": true}, {"t": "mo ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "sa", "join": false, "stress": false}, {"t": "tis", "join": false, "stress": false}, {"t": "fe", "join": false, "stress": true}, {"t": "chos,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 7, 8], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|2|4", "psalm": "Salmo 122", "verse": 2, "line": 4, "text": "del desprecio de los orgullosos.", "bar": 1, "pieces": [{"t": "del ", "join": false, "stress": false}, {"t": "des", "join": false, "stress": false}, {"t": "pre", "join": false, "stress": true}, {"t": "cio ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "or", "join": false, "stress": false}, {"t": "gu", "join": false, "stress": false}, {"t": "llo", "join": false, "stress": true}, {"t": "sos.", "join": false, "stress": false}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 5, 6, 7, 8], "chords": [null, null, null, null, null], "comment": ""}}, {"key": "Salmo 122|3|0", "psalm": "Salmo 122", "verse": 3, "line": 0, "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.", "bar": "flexa", "pieces": [{"t": "Glo", "join": false, "stress": true}, {"t": "ria ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Pa", "join": false, "stress": true}, {"t": "dre, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Hi", "join": false, "stress": true}, {"t": "jo, ", "join": true, "stress": false}, {"t": "y ", "join": true, "stress": false}, {"t": "al ", "join": false, "stress": false}, {"t": "Es", "join": false, "stress": false}, {"t": "pí", "join": false, "stress": true}, {"t": "ri", "join": false, "stress": false}, {"t": "tu ", "join": false, "stress": false}, {"t": "San", "join": false, "stress": true}, {"t": "to.", "join": false, "stress": false}], "pred": {"bar": "flexa", "joins": [false, true, false, false, true, true, false, false, true, true, false, false, false, false, false, false, false], "notes": [0, 15], "chords": [null, null], "comment": ""}}, {"key": "Salmo 122|3|1", "psalm": "Salmo 122", "verse": 3, "line": 1, "text": "Como era en el principio, ahora y siempre,", "bar": 0, "pieces": [{"t": "Co", "join": false, "stress": false}, {"t": "mo ", "join": false, "stress": false}, {"t": "e", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "en ", "join": false, "stress": false}, {"t": "el ", "join": false, "stress": false}, {"t": "prin", "join": false, "stress": false}, {"t": "ci", "join": false, "stress": true}, {"t": "pio, ", "join": true, "stress": false}, {"t": "a", "join": false, "stress": false}, {"t": "ho", "join": false, "stress": true}, {"t": "ra ", "join": true, "stress": false}, {"t": "y ", "join": false, "stress": false}, {"t": "siem", "join": false, "stress": true}, {"t": "pre,", "join": false, "stress": false}], "pred": {"bar": 0, "joins": [false, false, false, true, false, false, false, false, true, false, false, true, false, false, false], "notes": [0, 11, 13], "chords": [null, null, null], "comment": ""}}, {"key": "Salmo 122|3|2", "psalm": "Salmo 122", "verse": 3, "line": 2, "text": "por los siglos de los siglos. Amén.", "bar": 1, "pieces": [{"t": "por ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos ", "join": false, "stress": false}, {"t": "de ", "join": false, "stress": false}, {"t": "los ", "join": false, "stress": false}, {"t": "si", "join": false, "stress": true}, {"t": "glos. ", "join": false, "stress": false}, {"t": "A", "join": false, "stress": false}, {"t": "mén.", "join": false, "stress": true}], "pred": {"bar": 1, "joins": [false, false, false, false, false, false, false, false, false, false], "notes": [0, 6, 7, 8, 9], "chords": [null, null, null, null, null], "comment": ""}}]};
+const STORE = "semimarks:" + DATA.id;
+const saved = JSON.parse(localStorage.getItem(STORE) || "{}");
+let sel = null; // {key, kind: "note" | "chord", k}
+
+const barNotes = (bar) => (bar === "flexa" ? DATA.melody.flexa : DATA.melody.bars[bar]) || [];
+const noteLabel = (n) => n.pitch + (n.len >= 4 ? "·" : "");
+
+function fresh(line, bar) {
+    const notes = barNotes(bar).map((n, k) => (k === 0 ? 0 : null));
+    return { bar, joins: line.pieces.map((p) => p.join), notes, chords: notes.map(() => null), comment: "" };
+}
+const state = Object.fromEntries(DATA.lines.map((l) => [l.key, saved[l.key] || (l.pred ? structuredClone(l.pred) : fresh(l, l.bar))]));
+const save = () => localStorage.setItem(STORE, JSON.stringify(state));
+
+function unitStart(s, i) { while (i > 0 && s.joins[i - 1]) i--; return i; }
+function normalize(s) {
+    s.notes = s.notes.map((i) => (i === null ? null : unitStart(s, i)));
+    s.chords = s.chords.map((i) => (i === null ? null : unitStart(s, i)));
+}
+function status(s) {
+    if (s.notes.some((i) => i === null)) return "";
+    return s.notes.every((i, k) => k === 0 || i >= s.notes[k - 1]) ? "done" : "bad";
+}
+
+const texts = (line) => state[line.key].pieces || line.pieces.map((p) => p.t);
+
+// Split one syllable in two (a hiatus spelling hides, e.g. san-tu-a-rio).
+function split(line, i) {
+    const s = state[line.key];
+    const t = texts(line)[i];
+    const cut = prompt("Split in two: put a hyphen where", t.trim());
+    const pos = cut ? cut.indexOf("-") : -1;
+    if (pos <= 0 || pos >= t.trim().length) return;
+    s.pieces = [...texts(line).slice(0, i), t.slice(0, pos), t.slice(pos), ...texts(line).slice(i + 1)];
+    s.joins.splice(i, 0, false);
+    const shift = (j) => (j !== null && j > i ? j + 1 : j);
+    s.notes = s.notes.map(shift);
+    s.chords = s.chords.map(shift);
+}
+
+function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+}
+
+function renderLine(line, box) {
+    const s = state[line.key];
+    box.className = "line " + status(s);
+    box.replaceChildren();
+    const notes = barNotes(s.bar);
+    const tools = el("div", "tools");
+    const pick = el("select");
+    for (const [v, t] of [["0", "bar 1"], ["1", "bar 2"], ["flexa", "flexa"]]) {
+        const o = el("option", "", t); o.value = v; o.selected = String(s.bar) === v; pick.append(o);
+    }
+    pick.onchange = () => {
+        state[line.key] = { ...fresh(line, pick.value === "flexa" ? "flexa" : Number(pick.value)), joins: s.joins, pieces: s.pieces, comment: s.comment };
+        changed(line, box);
+    };
+    tools.append(pick);
+    if (s.bar === "flexa") tools.append(el("span", "flexa-tag", "FLEXA"));
+    notes.forEach((n, k) => {
+        const b = el("button", "n" + k + (s.notes[k] !== null ? " placed" : ""), noteLabel(n));
+        if (sel && sel.key === line.key && sel.kind === "note" && sel.k === k) b.classList.add("sel");
+        b.title = "note " + (k + 1);
+        b.onclick = () => { sel = { key: line.key, kind: "note", k }; changed(line, box); };
+        tools.append(b);
+    });
+    tools.append(el("span", "", " "));
+    notes.forEach((n, k) => {
+        if (!n.chord) return;
+        const b = el("button", "chordbtn", n.chord + (s.chords[k] !== null ? "*" : ""));
+        b.style.color = "#b00";
+        b.title = "move chord " + n.chord + " (* = moved by hand; double-click = follow its note again)";
+        if (sel && sel.key === line.key && sel.kind === "chord" && sel.k === k) b.classList.add("sel");
+        b.onclick = () => { sel = { key: line.key, kind: "chord", k }; changed(line, box); };
+        b.ondblclick = () => { s.chords[k] = null; sel = null; changed(line, box); };
+        tools.append(b);
+    });
+    const reset = el("button", "", "reset");
+    reset.onclick = () => { state[line.key] = { ...fresh(line, s.bar), comment: s.comment }; sel = null; changed(line, box); };
+    const comment = el("input", "comment");
+    comment.placeholder = "comment (optional)";
+    comment.value = s.comment || "";
+    comment.oninput = () => { s.comment = comment.value; save(); };
+    tools.append(reset, comment);
+
+    const row = el("div", "sylls");
+    const ts = texts(line);
+    ts.forEach((t, i) => {
+        const cell = el("span", "p");
+        const here = notes.map((n, k) => k).filter((k) => s.notes[k] === i);
+        const chordsHere = notes.map((n, k) => k).filter((k) => notes[k].chord && (s.chords[k] ?? s.notes[k]) === i);
+        const ch = el("span", "ch", chordsHere.map((k) => notes[k].chord).join(" "));
+        const nt = el("span", "nt");
+        here.forEach((k) => nt.append(el("span", "n" + k, noteLabel(notes[k]) + " ")));
+        if (here.some((k) => k > 0)) cell.classList.add("start");
+        cell.append(ch, nt, el("span", "tx", t));
+        cell.onclick = (e) => {
+            if (e.shiftKey) { split(line, i); changed(line, box); } else place(line, box, unitStart(s, i));
+        };
+        cell.oncontextmenu = (e) => {
+            e.preventDefault();
+            s.notes = s.notes.map((j, k) => (j === unitStart(s, i) && k > 0 ? null : j));
+            changed(line, box);
+        };
+        row.append(cell);
+        if (i < ts.length - 1) {
+            const gap = el("span", "gap", s.joins[i] ? "‿" : "");
+            gap.title = s.joins[i] ? "split" : "join (sung as one syllable)";
+            gap.onclick = () => { s.joins[i] = !s.joins[i]; normalize(s); changed(line, box); };
+            row.append(gap);
+        }
+    });
+    box.append(tools, row);
+}
+
+function place(line, box, i) {
+    const s = state[line.key];
+    if (sel && sel.key === line.key && sel.kind === "chord") {
+        s.chords[sel.k] = i;
+        sel = null;
+    } else {
+        const k = sel && sel.key === line.key ? sel.k : s.notes.findIndex((j) => j === null);
+        if (k < 0) return;
+        s.notes[k] = i;
+        const next = s.notes.findIndex((j) => j === null);
+        sel = next < 0 ? null : { key: line.key, kind: "note", k: next };
+    }
+    changed(line, box);
+}
+
+const boxes = new Map();
+function changed(line, box) {
+    save();
+    for (const [key, [l, b]] of boxes) if (key === line.key || (sel && key === sel.key) || b.querySelector(".sel")) renderLine(l, b);
+    progress();
+}
+
+function progress() {
+    const done = DATA.lines.filter((l) => status(state[l.key]) === "done").length;
+    document.getElementById("progress").textContent = `${done} / ${DATA.lines.length} lines done`;
+}
+
+function exportJson() {
+    return JSON.stringify({
+        semitono: DATA.semitono, melody: DATA.melody, exported: new Date().toISOString(),
+        lines: DATA.lines.map((l) => {
+            const s = state[l.key];
+            const units = [];
+            const ts = texts(l);
+            ts.forEach((t, i) => (i > 0 && s.joins[i - 1] ? (units[units.length - 1] += t) : units.push(t)));
+            const unitOf = (i) => ts.slice(0, i).filter((_, j) => !s.joins[j]).length;
+            const notes = barNotes(s.bar);
+            return {
+                key: l.key, text: l.text, bar: s.bar, units, comment: s.comment || undefined,
+                notes: notes.map((n, k) => ({ pitch: n.pitch, len: n.len, unit: s.notes[k] === null ? null : unitOf(s.notes[k]) })),
+                chords: notes.flatMap((n, k) => (n.chord ? [{ chord: n.chord, unit: (s.chords[k] ?? s.notes[k]) === null ? null : unitOf(s.chords[k] ?? s.notes[k]), moved: s.chords[k] !== null }] : [])),
+                state: s,
+            };
+        }),
+    }, null, 1);
+}
+
+document.getElementById("title").textContent = DATA.semitono;
+document.getElementById("melody").textContent = [
+    ...DATA.melody.bars.map((b, i) => `Bar ${i + 1}: ` + b.map((n) => (n.chord ? `[${n.chord}]` : "") + noteLabel(n)).join(" ")),
+    DATA.melody.flexa ? "Flexa: " + DATA.melody.flexa.map((n) => (n.chord ? `[${n.chord}]` : "") + noteLabel(n)).join(" ") : "",
+].filter(Boolean).join("   ·   ") + "   (· = reciting note)";
+document.getElementById("copy").onclick = async () => { await navigator.clipboard.writeText(exportJson()); alert("Copied"); };
+document.getElementById("download").onclick = () => {
+    const a = el("a");
+    a.href = URL.createObjectURL(new Blob([exportJson()], { type: "application/json" }));
+    a.download = "marks.json";
+    a.click();
+};
+
+const main = document.getElementById("main");
+let psalm = null, verse = null, vbox = null;
+for (const line of DATA.lines) {
+    if (line.psalm !== psalm) { psalm = line.psalm; verse = null; main.append(el("h2", "", psalm)); }
+    if (line.verse !== verse) { verse = line.verse; vbox = el("div", "verse"); main.append(vbox); }
+    const box = el("div");
+    vbox.append(box);
+    boxes.set(line.key, [line, box]);
+    renderLine(line, box);
+}
+progress();
+</script>
+</body>
+</html>

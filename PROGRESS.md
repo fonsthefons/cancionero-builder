@@ -25,8 +25,14 @@ Loop: user marks → Claude writes rules → page pre-filled with predictions (`
   (replace "chord over the last word" + add the syllable marking).
 - Round 3 (branch experiment/semitono-marks-2), other shapes, pre-filled by the same rule:
   Narrativo breve (05; 1 and 0 passing notes) on Salmo 130, 125, 112: 50/51 exact, the miss is
-  "Si-ón" sung as a hiatus (like santuario) → 51/51 counting it. René (15) page made
-  (rene-round3.html: Salmo 150, 133, 122), marks not received yet.
+  "Si-ón" sung as a hiatus (like santuario) → 51/51 counting it. René (15) dropped (user finds it
+  hard to sing); replaced by Rodrigo (16; bar 2 has 3 passing notes): rodrigo-round3.html
+  (Salmo 150, 133, 122; 42 lines, pre-filled).
+- PAUSED 2026-11-25. To resume: user marks rodrigo-round3.html → Download JSON → copy it to
+  docs/experiments/semitono-marks/rodrigo-round3-marks.json → `rules.py <that file>` → record
+  score → merge branch experiment/semitono-marks-2 → suggest
+  `/plan-feature adopt semitono accent rule in formula.js`. Open: semitonos whose chords don't
+  fall only on the first/last note (e.g. Narrativo 21, Solemne 26) not studied yet.
 - Known limit: diphthongs sung as hiatus (santuario, Sión) need a hand split; 2 of 199 lines.
 
 ## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
