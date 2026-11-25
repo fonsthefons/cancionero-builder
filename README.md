@@ -129,6 +129,16 @@ offers to move those chords next to the lyric (y/n). A song turns either warning
 
 Songs are numbered in title order; numbers in titles count as numbers ("2 ..." before "10 ...").
 
+**Song keys**: the build works out the key of every song with chords and no `key:` line,
+writes it in the file (`key: G`, `key: Em`: the key of the chords as written, capo aside) and
+spells the song's chords for it (Bb, not A#, in F). Keys it isn't sure of (C or Am?) are
+listed in the build's report and their chords are left as written: fix `key:` by hand if
+wrong; a written key is never changed. The key shows next to the capo and transposes with
+the chords, which keep their spelling relative to the key (`song_keys: false` turns it off).
+
+**Tag pills**: under the author, each song shows a small pastel pill per tag and subtag
+(first 3 letters of its label); `tag_pills: false` turns them off.
+
 **Tags are free**: any tag written in a song appears in the book, as an id (`pasion`) or a
 label (`Pasión`). `tags.yaml` only sets labels and order; the build lists tags it doesn't
 know. With `strict_tags: true` every tag must be in `tags.yaml`.

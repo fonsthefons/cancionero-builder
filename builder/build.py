@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .horas import fill, load_horas
+from .keys import key_song_file
 from .lyrics import LONG_LINE, long_lines, pack_far_chords
 from .render import fill_template, render_book
 from .songs import SongError, load_songs, split_frontmatter
@@ -26,6 +27,7 @@ class BuildResult:
     new_tags: list = field(default_factory=list)  # tags found only in songs
     long_lines: dict = field(default_factory=dict)  # song id -> [(line number, columns)]
     far_chords: dict = field(default_factory=dict)  # song id -> [line numbers] pack_far_chords would change
+    keys_added: list = field(default_factory=list)  # (song id, key, runner-up key or None when sure)
 
     def report(self, book):
         lines = [f"Built {book.name}/index.html: {len(self.songs)} songs, {self.size / 1e6:.2f} MB"]
@@ -34,6 +36,12 @@ class BuildResult:
         if self.new_tags:
             lines.append("Tags not in tags.yaml (shown with these labels; add them to tags.yaml "
                          "to change label or order): " + ", ".join(self.new_tags))
+        if self.keys_added:
+            unsure = [(i, k, other) for i, k, other in self.keys_added if other]
+            lines.append(f"Song keys added (key: in the song file): {len(self.keys_added)}")
+            if unsure:
+                lines.append("Check these keys (it could also be the second one; fix `key:` by hand if wrong):\n"
+                             + "\n".join(f"  {i}.md: {k} (or {other})" for i, k, other in unsure))
         if self.long_lines:
             lines.append(f"Warning: lines over {LONG_LINE} columns (the whole song gets small on phones; split them,"
                          " e.g. with Enter in the editor, or add ignore: [long-lines-check]):\n" + "\n".join(
@@ -58,6 +66,25 @@ def fix_far_chords(book, song_ids):
             path.write_text(text[: len(text) - len(body)] + packed, encoding="utf-8")
             count += len(changed)
     return count
+
+
+def add_song_keys(book, songs):
+    """Songs with chords and no `key:` get one in their file (book.yaml song_keys),
+    and their chords spelled for it. Returns [(song id, key, runner-up or None)]."""
+    added = []
+    for song in songs:
+        if song.key or not book.song_keys:
+            continue
+        path = book.songs_dir / f"{song.id}.md"
+        text = path.read_text(encoding="utf-8")
+        body = split_frontmatter(text)[1]
+        keyed = key_song_file(text, body)
+        if keyed:
+            new_text, song.key, other = keyed
+            path.write_text(new_text, encoding="utf-8")
+            song.body = split_frontmatter(new_text)[1]
+            added.append((song.id, song.key, other))
+    return added
 
 
 def load_book_songs(book):
@@ -96,6 +123,7 @@ def write_if_changed(path, text):
 def build_book(book, web_dir=WEB_DIR):
     """Write the book's index.html, sw.js and manifest. Raises SongError."""
     songs, taxonomy = load_book_songs(book)
+    keys_added = add_song_keys(book, songs)
     horas = load_horas(book.horas_file)
     html = render_book(book, songs, taxonomy.group(songs), web_dir, horas and fill(horas, songs))
     write_if_changed(book.root / "index.html", html)  # must stay at the root for GitHub Pages
@@ -123,6 +151,7 @@ def build_book(book, web_dir=WEB_DIR):
                     if "long-lines-check" not in s.ignore and (found := long_lines(s.body))},
         far_chords={s.id: [n + body_start(book, s) for n in found] for s in songs
                     if "far-chords-check" not in s.ignore and (found := pack_far_chords(s.body)[1])},
+        keys_added=keys_added,
     )
 
 

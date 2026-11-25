@@ -218,8 +218,9 @@ def api_save(book, data):
 
     if data.get("id"):
         path = song_path(book, str(data["id"]))
-        added = load_song(path).added
-        update_song(book, path, {**fields, "tags": save_tags(book, taxonomy, picked), "added": added})
+        old = load_song(path)
+        update_song(book, path, {**fields, "tags": save_tags(book, taxonomy, picked), "added": old.added,
+                                 "key": old.key})
     else:
         found = existing_song(book, title)
         if found and not data.get("force"):

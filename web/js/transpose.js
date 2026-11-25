@@ -16,13 +16,52 @@ function transposeNote(note, shift) {
     return scale[(((index + shift) % 12) + 12) % 12];
 }
 
+// Songs with a key (data-key, builder/keys.py) move each note by interval within
+// the key: it keeps its letter distance from the tonic (E in C -> F# in D), so the
+// spelling chosen in the song file carries over (Bb, not A#, in F; G#7 before C#m).
+// Notes that would need E#, B#, Cb, Fb or a double accidental take the new key's
+// sharps or flats instead.
+const LETTERS = "CDEFGAB";
+const NATURAL = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+const MAJOR_KEYS = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
+const MINOR_KEYS = ["Cm", "C#m", "Dm", "Ebm", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "Bbm", "Bm"];
+const FLAT_KEYS = new Set(["F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb", "Dm", "Gm", "Cm", "Fm", "Bbm", "Ebm", "Abm"]);
+
+function pitchOf(note) {
+    return (NATURAL[note[0]] + (note[1] === "#" ? 1 : note[1] === "b" ? -1 : 0) + 12) % 12;
+}
+
+// The song's key moved `shift` semitones: { name, from, to, flats } (from/to: tonics).
+function movedKey(key, shift) {
+    const minor = key.endsWith("m");
+    const tonic = minor ? key.slice(0, -1) : key;
+    const name = shift ? (minor ? MINOR_KEYS : MAJOR_KEYS)[(pitchOf(tonic) + shift + 120) % 12] : key;
+    return { name, from: tonic, to: minor ? name.slice(0, -1) : name, flats: FLAT_KEYS.has(name) };
+}
+
+function moveNote(note, shift, key) {
+    const steps = (LETTERS.indexOf(note[0]) - LETTERS.indexOf(key.from[0]) + 7) % 7;
+    const letter = LETTERS[(LETTERS.indexOf(key.to[0]) + steps) % 7];
+    const pc = (pitchOf(note) + shift + 120) % 12;
+    const accidental = ((pc - NATURAL[letter] + 18) % 12) - 6;
+    const name = letter + ({ 1: "#", "-1": "b", 0: "" }[accidental] ?? "?");
+    if (!name.includes("?") && !["E#", "B#", "Cb", "Fb"].includes(name)) return name;
+    return (key.flats ? NOTES_FLAT : NOTES_SHARP)[pc];
+}
+
 // Chord names: letters (C D E) or solfège (Do Re Mi), a book-wide setting.
 const NOTATIONS = { letters: "C D E", solfege: "Do Re Mi" };
 const SOLFEGE = { C: "Do", D: "Re", E: "Mi", F: "Fa", G: "Sol", A: "La", B: "Si" };
 
-// Transposes the root and the bass note: D/F# +2 -> E/G# (or Mi/Sol#)
-function transposeChord(chord, shift) {
-    const name = chord.replace(NOTE_RE, (note) => transposeNote(note, shift));
+// Transposes the root and the bass note: D/F# +2 -> E/G# (or Mi/Sol#).
+// key: movedKey(...) for songs with a key, else null (sharps stay sharps).
+function transposeChord(chord, shift, key = null) {
+    const name = !shift ? chord
+        : chord.replace(NOTE_RE, (note) => (key ? moveNote(note, shift, key) : transposeNote(note, shift)));
+    return inNotation(name);
+}
+
+function inNotation(name) {
     if (document.body.dataset.notation !== "solfege") return name;
     return name.replace(/[A-G]/g, (letter) => SOLFEGE[letter]); // Am7 -> Lam7
 }
@@ -98,12 +137,12 @@ function setChordLine(line, parts) {
     line.replaceChildren(...nodes);
 }
 
-function transposeChordLine(line, shift) {
+function transposeChordLine(line, shift, key) {
     const parts = chordLineParts(line);
     let drift = 0; // columns the next chord would move right (or left if < 0)
     setChordLine(line, parts.map((part, i) => {
         if (i % 2) {
-            const chord = transposeChord(part, shift);
+            const chord = transposeChord(part, shift, key);
             drift += chord.length - part.length;
             return chord;
         }
@@ -114,14 +153,14 @@ function transposeChordLine(line, shift) {
 }
 
 // "Intro: G Em ..." lines mix chords and words, so their chords keep a span each.
-function transposeInlineChords(line, shift) {
+function transposeInlineChords(line, shift, key) {
     const nodes = [...line.childNodes];
     let drift = 0; // columns the next chord would move right (or left if < 0)
 
     nodes.forEach((node, i) => {
         if (node.nodeType === Node.ELEMENT_NODE) {
             node.dataset.original ??= node.textContent;
-            const chord = transposeChord(node.dataset.original, shift);
+            const chord = transposeChord(node.dataset.original, shift, key);
             drift += chord.length - node.dataset.original.length;
             node.textContent = chord;
             return;
@@ -139,11 +178,14 @@ const builtChars = new WeakMap();
 // grows with it and the lyrics still fit the screen.
 function renderChords(song) {
     const shift = Number(song.dataset.transpose || 0);
+    const key = song.dataset.key ? movedKey(song.dataset.key, shift) : null;
+    const keyLabel = song.querySelector(".song-key");
+    if (keyLabel) keyLabel.textContent = `Key: ${inNotation(key.name)}`;
     if (!builtChars.has(song)) builtChars.set(song, Number(song.style.getPropertyValue("--chars")));
     let widest = builtChars.get(song);
     song.querySelectorAll(".chord-line, .chord-inline").forEach((line) => {
-        if (line.classList.contains("chord-line")) transposeChordLine(line, shift);
-        else transposeInlineChords(line, shift);
+        if (line.classList.contains("chord-line")) transposeChordLine(line, shift, key);
+        else transposeInlineChords(line, shift, key);
         widest = Math.max(widest, line.textContent.length);
     });
     song.style.setProperty("--chars", widest);

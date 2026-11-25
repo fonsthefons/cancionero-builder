@@ -3,6 +3,7 @@
     .venv/bin/python -m pytest tests
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -13,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 from builder.book import BookError, load_book, settings_yaml  # noqa: E402
 from builder.build import build_book, fix_far_chords  # noqa: E402
+from builder.keys import detect_key, respell_chords, respell_line, transpose_key  # noqa: E402
 from builder.lyrics import chord_line_html, is_chord_line, pack_far_chords, verse_html  # noqa: E402
 from builder.songs import SongError  # noqa: E402
 from builder.tags import Taxonomy, add_to_tags_file  # noqa: E402
@@ -130,6 +132,59 @@ def test_progress_setting(tmp_path):
     assert "doneSongs" in html and '"progress": true' in html
 
 
+def test_tag_pills(tmp_path):
+    songs = {"a": SONG.format(title="Uno", extra="song_tags:\n  misa: [entrada, comunion]\n  Adoración: []\n"),
+             "b": SONG.format(title="Dos", extra="")}
+    build_book(write_book(tmp_path / "on", songs=songs))
+    html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
+    pills = re.findall(r'<i class="(k\d+)">(\w+)</i>', html)
+    assert [text for _, text in pills] == ["Ado", "Mis", "Com", "Ent"]
+    assert len({cls for cls, _ in pills}) == 4 and html.count('<p class="pills">') == 1
+    colours = re.findall(r"\.k\d+\{background:(hsl\([^)]*\))\}", html)
+    assert len(colours) == len(set(colours)) == 4  # every pill of the song its own colour
+    build_book(write_book(tmp_path / "off", settings="title: T\ntag_pills: false\n", songs=songs))
+    assert 'class="pills"' not in (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
+
+
+def test_detect_key():
+    assert detect_key("C G Am F\nC F G C\n")[0] == "C"
+    assert detect_key("Am Dm G C\nF Dm E Am\n")[0] == "Am"
+    assert detect_key("A E F#m D\nA E D A\n")[0] == "A"
+    assert detect_key("G C D G\nEm C D G\n")[0] == "G"
+    assert detect_key("Gb Db Ebm Cb\nGb Db Gb\n")[0] == "Gb"  # the song's own spelling of its tonic
+    assert detect_key("just words\n") is None
+
+
+def test_spell_chords():
+    assert respell_chords(["F", "A#", "C7", "F"], "F") == ["F", "Bb", "C7", "F"]
+    assert respell_chords(["C", "G/G#", "Am"], "C") == ["C", "G/G#", "Am"]  # ambiguous: as written
+    assert respell_chords(["D", "F#/Bb", "Bm"], "D") == ["D", "F#/A#", "Bm"]  # the bass is the chord's 3rd
+    assert respell_chords(["Am", "G#7", "C#m"], "Am") == ["Am", "G#7", "C#m"]  # V of C#m stays G#
+    assert respell_chords(["Dm", "Bbm", "F"], "Dm") == ["Dm", "Bbm", "F"]
+    assert respell_chords(["C", "Abdim", "Am"], "C") == ["C", "G#dim", "Am"]  # leads up to A
+    assert respell_line("A#   C  A#-C", ["Bb", "C", "Bb", "C"]) == "Bb   C  Bb-C"
+    assert respell_line("C#  F", ["Db", "F"]) == "Db  F"
+    assert respell_line("E#m F", ["Fm", "F"]) == "Fm  F"  # shorter: the next chord stays in its column
+    assert transpose_key("F", 2) == "G" and transpose_key("Em", 1) == "Fm" and transpose_key("Bb", 0) == "Bb"
+
+
+def test_song_keys(tmp_path):
+    songs = {"a": SONG.format(title="Uno", extra="").replace("---\n\n", "---\n\nF   A#   C7   F\nla la la\n", 1)}
+    book = write_book(tmp_path / "on", songs=songs)
+    result = build_book(book)
+    text = (tmp_path / "on" / "songs" / "a.md").read_text(encoding="utf-8")
+    assert text.startswith("---\ntitle: Uno\nkey: F\n") and "F   Bb   C7   F" in text
+    assert result.keys_added == [("a", "F", None)] and "Song keys added" in result.report(book)
+    html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
+    assert 'data-key="F"' in html and 'class="meta-item song-key">Key: F<' in html
+    assert build_book(book).keys_added == []  # once written, the key is kept (fix it by hand if wrong)
+    with pytest.raises(SongError, match="key must be"):
+        build_book(write_book(tmp_path / "bad", songs={"a": SONG.format(title="Uno", extra="key: H\n")}))
+    book = write_book(tmp_path / "off", settings="title: T\nsong_keys: false\n", songs=songs)
+    build_book(book)
+    assert "key:" not in (tmp_path / "off" / "songs" / "a.md").read_text(encoding="utf-8")
+
+
 MELODY = 'melody: |\n  K:D\n  "D"F8 "A"G A | "Em"F2 z E D\ntab: {tab}\n'
 
 
@@ -231,7 +286,7 @@ def test_pack_far_chords():
 
 def test_line_warnings_and_fix(tmp_path):
     long = "x" * 51
-    book = write_book(tmp_path, songs={
+    book = write_book(tmp_path, settings="title: Test\nsong_keys: false\n", songs={
         "a": "---\ntitle: A\n---\n\n" + FAR + long + "\n",
         "b": "---\ntitle: B\nignore: [long-lines-check, far-chords-check]\n---\n\n" + FAR + long + "\n",
     })
