@@ -138,10 +138,28 @@ def test_tag_pills(tmp_path):
     build_book(write_book(tmp_path / "on", songs=songs))
     html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
     pills = re.findall(r'<i class="(k\d+)">(\w+)</i>', html)
-    assert [text for _, text in pills] == ["Ado", "Mis", "Com", "Ent"]
+    assert [text for _, text in pills] == ["Adoración", "Misa", "Comunion", "Entrada"]
     assert len({cls for cls, _ in pills}) == 4 and html.count('<p class="pills">') == 1
-    colours = re.findall(r"\.k\d+\{background:(hsl\([^)]*\))\}", html)
+    # a column per tag, its subtags under it; a lone tag needs no <span>
+    assert re.search(r'<p class="pills"><i class="k\d+">Adoración</i><span><i class="k\d+">Misa</i>'
+                     r'<i class="k\d+">Comunion</i><i class="k\d+">Entrada</i></span></p>', html)
+    colours = re.findall(r"\.k\d+\{background:hsl\((\d+) 70% (\d+)%\)\}", html)
     assert len(colours) == len(set(colours)) == 4  # every pill of the song its own colour
+    hue = dict(zip([text for _, text in pills], (int(h) for h, _ in colours)))
+    # subtags: tones of their tag's hue
+    assert all(min(abs(hue[s] - hue["Misa"]), 360 - abs(hue[s] - hue["Misa"])) <= 15 for s in ("Comunion", "Entrada"))
+    # tags.yaml pill: sets the text, "" hides the pill, and to_yaml keeps both
+    tags = ("misa:\n  label: Misa\n  subtags:\n    entrada: {label: Entrada, pill: III}\n    comunion: Comunion\n"
+            "adoracion:\n  label: Adoración\n  pill: ''\n")
+    build_book(write_book(tmp_path / "set", songs=songs, tags=tags))
+    html = (tmp_path / "set" / "index.html").read_text(encoding="utf-8")
+    assert re.search(r'<p class="pills"><span><i class="k\d+">Misa</i><i class="k\d+">III</i>'
+                     r'<i class="k\d+">Comunion</i></span></p>', html)
+    taxonomy = Taxonomy.load(tmp_path / "set" / "tags.yaml")
+    (tmp_path / "again.yaml").write_text(taxonomy.to_yaml(), encoding="utf-8")
+    again = Taxonomy.load(tmp_path / "again.yaml")
+    assert again.tags["misa"].pill("entrada") == "III" and again.tags["adoracion"].pill() == ""
+    assert again.tags["misa"].subtags["entrada"] == "Entrada" and again.tags["misa"].pill("comunion") == "Comunion"
     build_book(write_book(tmp_path / "off", settings="title: T\ntag_pills: false\n", songs=songs))
     assert 'class="pills"' not in (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
 

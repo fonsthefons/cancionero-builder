@@ -1124,6 +1124,14 @@ read as images; the text layer is OCR noise).
   or page errors. Created with create_book(github=True), then `publish`.
 - Live: https://fonsthefons.github.io/cancionero-learn-harmony/
 
+## Tag pills as columns (2026-11-25)
+
+- Pills show full labels; each tag is a column with its subtags under it (`<span>` only for
+  columns of 2+, so no extra elements for lone tags). Subtags get lighter tones of the tag hue.
+- tags.yaml `pill:` sets the text (`""` hides it); subtags take `{label: ..., pill: ...}`.
+  `to_yaml` keeps it. Files: builder/tags.py, builder/render.py, web/styles.css, README, test.
+- cancionero/tags.yaml: ciclos → I/II/III/IV (not committed in the book). All 6 books rebuilt.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

@@ -136,8 +136,10 @@ listed in the build's report and their chords are left as written: fix `key:` by
 wrong; a written key is never changed. The key shows next to the capo and transposes with
 the chords, which keep their spelling relative to the key (`song_keys: false` turns it off).
 
-**Tag pills**: under the author, each song shows a small pastel pill per tag and subtag
-(first 3 letters of its label); `tag_pills: false` turns them off.
+**Tag pills**: under the author, each song shows a small pastel pill per tag, with its
+subtags under it in lighter tones of the tag's colour. The text is the label; `pill:` in
+`tags.yaml` changes it (`pill: ""` hides it), for a subtag as
+`tercer_ciclo: {label: Tercer ciclo, pill: III}`. `tag_pills: false` turns them off.
 
 **Tags are free**: any tag written in a song appears in the book, as an id (`pasion`) or a
 label (`Pasión`). `tags.yaml` only sets labels and order; the build lists tags it doesn't

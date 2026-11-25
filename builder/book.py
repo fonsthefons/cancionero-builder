@@ -47,8 +47,8 @@ DEFAULTS = {
     # and one at the end of every song. Ticked songs show green in the contents, and a
     # tag or subtag turns green when all its songs are ticked. Saved on each device.
     "progress": False,
-    # Under each song's author: a small pastel pill per tag and subtag of the song,
-    # with the first 3 letters of its label (every tag/subtag has its own colour).
+    # Under each song's author: a small pastel pill per tag of the song, its subtags
+    # under it in lighter tones of its colour. Text: the label, or tags.yaml `pill:`.
     "tag_pills": True,
     # Song keys: the build works out the key of songs with chords and no `key:`, writes
     # it in their file (and spells their chords for it: Bb, not A#, in F). Shown under
