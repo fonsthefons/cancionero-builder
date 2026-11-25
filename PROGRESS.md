@@ -17,7 +17,12 @@ Loop: user marks → Claude writes rules → page pre-filled with predictions (`
 - Score (rules.py, automatic syllables): rule v1 76/85 → stress-aware sinalefa 80/85 → with the
   user's answers 85/85 (2 slip/taste, 1 short-line rule, 1 sinalefa taste, santuario hiatus).
 - Round 2 (held-out): alegre5-round2.html, pre-filled by the rule (`--pred`): Salmo 148, 121,
-  116, 63 lines. Page now splits a syllable (shift-click). Waiting for the user's corrections.
+  116, 63 lines. Page now splits a syllable (shift-click).
+- Round 2 result (alegre5-round2-marks.json): 63/63 held-out lines right, user changed nothing
+  (no comments, no splits). Target ≥90% met for Alegre 5.
+- Conclusion: rule v2 places chords and note changes for Alegre 5. Next: try it on other 2-chord
+  semitonos de 2 (same page, `--pred`), then `/plan-feature` to adopt it in web/js/formula.js
+  (replace "chord over the last word" + add the syllable marking).
 
 ## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
 User's feedback on the tour, all done:

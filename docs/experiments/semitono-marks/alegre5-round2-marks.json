@@ -1,0 +1,5005 @@
+{
+ "semitono": "Semitonos de 2: (11) Alegre 5",
+ "melody": {
+  "bars": [
+   [
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 4
+    },
+    {
+     "chord": null,
+     "pitch": "G",
+     "len": 1
+    },
+    {
+     "chord": null,
+     "pitch": "A",
+     "len": 1
+    },
+    {
+     "chord": "G",
+     "pitch": "B",
+     "len": 2
+    }
+   ],
+   [
+    {
+     "chord": "A",
+     "pitch": "E",
+     "len": 4
+    },
+    {
+     "chord": null,
+     "pitch": "A",
+     "len": 1
+    },
+    {
+     "chord": null,
+     "pitch": "G",
+     "len": 1
+    },
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 2
+    }
+   ]
+  ],
+  "flexa": [
+   {
+    "chord": "D",
+    "pitch": "F",
+    "len": 4
+   },
+   {
+    "chord": "A",
+    "pitch": "E",
+    "len": 1
+   }
+  ]
+ },
+ "exported": "2026-11-25T10:53:35.054Z",
+ "lines": [
+  {
+   "key": "Salmo 148|0|0",
+   "text": "Alabad al Señor en el cielo,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad ",
+    "al ",
+    "Se",
+    "ñor ",
+    "en ",
+    "el ",
+    "cie",
+    "lo,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|0|1",
+   "text": "alabad al Señor en lo alto.",
+   "bar": 1,
+   "units": [
+    "a",
+    "la",
+    "bad ",
+    "al ",
+    "Se",
+    "ñor ",
+    "en ",
+    "lo ",
+    "al",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|1|0",
+   "text": "Alabadlo todos sus ángeles,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad",
+    "lo ",
+    "to",
+    "dos ",
+    "sus ",
+    "án",
+    "ge",
+    "les,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|1|1",
+   "text": "alabadlo todos sus ejércitos.",
+   "bar": 1,
+   "units": [
+    "a",
+    "la",
+    "bad",
+    "lo ",
+    "to",
+    "dos ",
+    "sus ",
+    "e",
+    "jér",
+    "ci",
+    "tos."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|2|0",
+   "text": "Alabadlo, sol y luna;",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad",
+    "lo, ",
+    "sol ",
+    "y ",
+    "lu",
+    "na;"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|2|1",
+   "text": "alabadlo, estrellas lucientes.",
+   "bar": 1,
+   "units": [
+    "a",
+    "la",
+    "bad",
+    "lo, es",
+    "tre",
+    "llas ",
+    "lu",
+    "cien",
+    "tes."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|3|0",
+   "text": "Alabadlo, espacios celestes,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad",
+    "lo, es",
+    "pa",
+    "cios ",
+    "ce",
+    "les",
+    "tes,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|3|1",
+   "text": "y aguas que cuelgan en el cielo.",
+   "bar": 1,
+   "units": [
+    "y ",
+    "a",
+    "guas ",
+    "que ",
+    "cuel",
+    "gan ",
+    "en ",
+    "el ",
+    "cie",
+    "lo."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|4|0",
+   "text": "Alaben el nombre del Señor,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "ben ",
+    "el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|4|1",
+   "text": "porque él lo mandó, y existieron.",
+   "bar": 1,
+   "units": [
+    "por",
+    "que ",
+    "él ",
+    "lo ",
+    "man",
+    "dó, ",
+    "y e",
+    "xis",
+    "tie",
+    "ron."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|5|0",
+   "text": "Les dio consistencia perpetua",
+   "bar": 0,
+   "units": [
+    "Les ",
+    "dio ",
+    "con",
+    "sis",
+    "ten",
+    "cia ",
+    "per",
+    "pe",
+    "tua"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|5|1",
+   "text": "y una ley que no pasará.",
+   "bar": 1,
+   "units": [
+    "y u",
+    "na ",
+    "ley ",
+    "que ",
+    "no ",
+    "pa",
+    "sa",
+    "rá."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|6|0",
+   "text": "Alabad al Señor en la tierra,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad ",
+    "al ",
+    "Se",
+    "ñor ",
+    "en ",
+    "la ",
+    "tie",
+    "rra,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|6|1",
+   "text": "cetáceos y abismos del mar.",
+   "bar": 1,
+   "units": [
+    "ce",
+    "tá",
+    "ce",
+    "os ",
+    "y a",
+    "bis",
+    "mos ",
+    "del ",
+    "mar."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|7|0",
+   "text": "Rayos, granizo, nieve y bruma,",
+   "bar": 0,
+   "units": [
+    "Ra",
+    "yos, ",
+    "gra",
+    "ni",
+    "zo, ",
+    "nie",
+    "ve y ",
+    "bru",
+    "ma,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|7|1",
+   "text": "viento huracanado que cumple sus órdenes.",
+   "bar": 1,
+   "units": [
+    "vien",
+    "to hu",
+    "ra",
+    "ca",
+    "na",
+    "do ",
+    "que ",
+    "cum",
+    "ple ",
+    "sus ",
+    "ór",
+    "de",
+    "nes."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|8|0",
+   "text": "Montes y todas las sierras,",
+   "bar": 0,
+   "units": [
+    "Mon",
+    "tes ",
+    "y ",
+    "to",
+    "das ",
+    "las ",
+    "sie",
+    "rras,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|8|1",
+   "text": "árboles frutales y cedros.",
+   "bar": 1,
+   "units": [
+    "ár",
+    "bo",
+    "les ",
+    "fru",
+    "ta",
+    "les ",
+    "y ",
+    "ce",
+    "dros."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|9|0",
+   "text": "Fieras y animales domésticos,",
+   "bar": 0,
+   "units": [
+    "Fie",
+    "ras ",
+    "y a",
+    "ni",
+    "ma",
+    "les ",
+    "do",
+    "més",
+    "ti",
+    "cos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|9|1",
+   "text": "reptiles y pájaros que vuelan.",
+   "bar": 1,
+   "units": [
+    "rep",
+    "ti",
+    "les ",
+    "y ",
+    "pá",
+    "ja",
+    "ros ",
+    "que ",
+    "vue",
+    "lan."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|10|0",
+   "text": "Reyes y pueblos del orbe,",
+   "bar": 0,
+   "units": [
+    "Re",
+    "yes ",
+    "y ",
+    "pue",
+    "blos ",
+    "del ",
+    "or",
+    "be,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|10|1",
+   "text": "príncipes y jefes del mundo.",
+   "bar": 1,
+   "units": [
+    "prín",
+    "ci",
+    "pes ",
+    "y ",
+    "je",
+    "fes ",
+    "del ",
+    "mun",
+    "do."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|11|0",
+   "text": "Los jóvenes y también las doncellas,",
+   "bar": 0,
+   "units": [
+    "Los ",
+    "jó",
+    "ve",
+    "nes ",
+    "y ",
+    "tam",
+    "bién ",
+    "las ",
+    "don",
+    "ce",
+    "llas,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|11|1",
+   "text": "los viejos junto con los niños.",
+   "bar": 1,
+   "units": [
+    "los ",
+    "vie",
+    "jos ",
+    "jun",
+    "to ",
+    "con ",
+    "los ",
+    "ni",
+    "ños."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|12|0",
+   "text": "Alaben el nombre del Señor,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "ben ",
+    "el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|12|1",
+   "text": "el único nombre sublime.",
+   "bar": 1,
+   "units": [
+    "el ",
+    "ú",
+    "ni",
+    "co ",
+    "nom",
+    "bre ",
+    "su",
+    "bli",
+    "me."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|13|0",
+   "text": "Su majestad sobre el cielo y la tierra;",
+   "bar": 0,
+   "units": [
+    "Su ",
+    "ma",
+    "jes",
+    "tad ",
+    "so",
+    "bre el ",
+    "cie",
+    "lo y ",
+    "la ",
+    "tie",
+    "rra;"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|13|1",
+   "text": "él acrece el vigor de su pueblo.",
+   "bar": 1,
+   "units": [
+    "él ",
+    "a",
+    "cre",
+    "ce el ",
+    "vi",
+    "gor ",
+    "de ",
+    "su ",
+    "pue",
+    "blo."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|14|0",
+   "text": "Alabanza de todos sus fieles,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "ban",
+    "za ",
+    "de ",
+    "to",
+    "dos ",
+    "sus ",
+    "fie",
+    "les,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|14|1",
+   "text": "de Israel, su pueblo escogido.",
+   "bar": 1,
+   "units": [
+    "de Is",
+    "ra",
+    "el, ",
+    "su ",
+    "pue",
+    "blo es",
+    "co",
+    "gi",
+    "do."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|15|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|15|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 148|15|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|0|0",
+   "text": "¡Qué alegría cuando me dijeron:",
+   "bar": 0,
+   "units": [
+    "¡Qué ",
+    "a",
+    "le",
+    "grí",
+    "a ",
+    "cuan",
+    "do ",
+    "me ",
+    "di",
+    "je",
+    "ron:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|0|1",
+   "text": "«Vamos a la casa del Señor»!",
+   "bar": 1,
+   "units": [
+    "«Va",
+    "mos ",
+    "a ",
+    "la ",
+    "ca",
+    "sa ",
+    "del ",
+    "Se",
+    "ñor»!"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|0|2",
+   "text": "Ya están pisando nuestros pies",
+   "bar": 0,
+   "units": [
+    "Ya ",
+    "es",
+    "tán ",
+    "pi",
+    "san",
+    "do ",
+    "nues",
+    "tros ",
+    "pies"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|0|3",
+   "text": "tus umbrales, Jerusalén.",
+   "bar": 1,
+   "units": [
+    "tus ",
+    "um",
+    "bra",
+    "les, ",
+    "Je",
+    "ru",
+    "sa",
+    "lén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|1|0",
+   "text": "Jerusalén está fundada",
+   "bar": 0,
+   "units": [
+    "Je",
+    "ru",
+    "sa",
+    "lén ",
+    "es",
+    "tá ",
+    "fun",
+    "da",
+    "da"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|1|1",
+   "text": "como ciudad bien compacta.",
+   "bar": 1,
+   "units": [
+    "co",
+    "mo ",
+    "ciu",
+    "dad ",
+    "bien ",
+    "com",
+    "pac",
+    "ta."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|1|2",
+   "text": "Allá suben las tribus,",
+   "bar": 0,
+   "units": [
+    "A",
+    "llá ",
+    "su",
+    "ben ",
+    "las ",
+    "tri",
+    "bus,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|1|3",
+   "text": "las tribus del Señor,",
+   "bar": 1,
+   "units": [
+    "las ",
+    "tri",
+    "bus ",
+    "del ",
+    "Se",
+    "ñor,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|2|0",
+   "text": "según la costumbre de Israel,",
+   "bar": 0,
+   "units": [
+    "se",
+    "gún ",
+    "la ",
+    "cos",
+    "tum",
+    "bre ",
+    "de Is",
+    "ra",
+    "el,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|2|1",
+   "text": "a celebrar el nombre del Señor;",
+   "bar": 1,
+   "units": [
+    "a ",
+    "ce",
+    "le",
+    "brar ",
+    "el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor;"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|2|2",
+   "text": "en ella están los tribunales de justicia",
+   "bar": 0,
+   "units": [
+    "en ",
+    "e",
+    "lla es",
+    "tán ",
+    "los ",
+    "tri",
+    "bu",
+    "na",
+    "les ",
+    "de ",
+    "jus",
+    "ti",
+    "cia"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|2|3",
+   "text": "en el palacio de David.",
+   "bar": 1,
+   "units": [
+    "en ",
+    "el ",
+    "pa",
+    "la",
+    "cio ",
+    "de ",
+    "Da",
+    "vid."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|3|0",
+   "text": "Desead la paz a Jerusalén:",
+   "bar": 0,
+   "units": [
+    "De",
+    "se",
+    "ad ",
+    "la ",
+    "paz ",
+    "a ",
+    "Je",
+    "ru",
+    "sa",
+    "lén:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|3|1",
+   "text": "«Vivan seguros los que te aman,",
+   "bar": 1,
+   "units": [
+    "«Vi",
+    "van ",
+    "se",
+    "gu",
+    "ros ",
+    "los ",
+    "que ",
+    "te ",
+    "a",
+    "man,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|3|2",
+   "text": "haya paz dentro de tus muros,",
+   "bar": 0,
+   "units": [
+    "ha",
+    "ya ",
+    "paz ",
+    "den",
+    "tro ",
+    "de ",
+    "tus ",
+    "mu",
+    "ros,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|3|3",
+   "text": "seguridad en tus palacios.»",
+   "bar": 1,
+   "units": [
+    "se",
+    "gu",
+    "ri",
+    "dad ",
+    "en ",
+    "tus ",
+    "pa",
+    "la",
+    "cios.»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|4|0",
+   "text": "Por mis hermanos y compañeros,",
+   "bar": 0,
+   "units": [
+    "Por ",
+    "mis ",
+    "her",
+    "ma",
+    "nos ",
+    "y ",
+    "com",
+    "pa",
+    "ñe",
+    "ros,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|4|1",
+   "text": "voy a decir: «La paz contigo.»",
+   "bar": 1,
+   "units": [
+    "voy ",
+    "a ",
+    "de",
+    "cir: ",
+    "«La ",
+    "paz ",
+    "con",
+    "ti",
+    "go.»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|4|2",
+   "text": "Por la casa del Señor, nuestro Dios,",
+   "bar": 0,
+   "units": [
+    "Por ",
+    "la ",
+    "ca",
+    "sa ",
+    "del ",
+    "Se",
+    "ñor, ",
+    "nues",
+    "tro ",
+    "Dios,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|4|3",
+   "text": "te deseo todo bien.",
+   "bar": 1,
+   "units": [
+    "te ",
+    "de",
+    "se",
+    "o ",
+    "to",
+    "do ",
+    "bien."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|5|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|5|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 121|5|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|0|0",
+   "text": "Alabad al Señor, todas las naciones,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad ",
+    "al ",
+    "Se",
+    "ñor, ",
+    "to",
+    "das ",
+    "las ",
+    "na",
+    "cio",
+    "nes,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|0|1",
+   "text": "aclamadlo, todos los pueblos:",
+   "bar": 1,
+   "units": [
+    "a",
+    "cla",
+    "mad",
+    "lo, ",
+    "to",
+    "dos ",
+    "los ",
+    "pue",
+    "blos:"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|1|0",
+   "text": "Firme es su misericordia con nosotros,",
+   "bar": 0,
+   "units": [
+    "Fir",
+    "me es ",
+    "su ",
+    "mi",
+    "se",
+    "ri",
+    "cor",
+    "dia ",
+    "con ",
+    "no",
+    "so",
+    "tros,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|1|1",
+   "text": "su fidelidad dura por siempre.",
+   "bar": 1,
+   "units": [
+    "su ",
+    "fi",
+    "de",
+    "li",
+    "dad ",
+    "du",
+    "ra ",
+    "por ",
+    "siem",
+    "pre."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|2|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|2|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 116|2|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  }
+ ]
+}
