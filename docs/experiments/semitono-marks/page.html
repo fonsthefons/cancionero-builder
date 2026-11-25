@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Semitono marks</title>
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; margin: 0 auto; max-width: 1100px; padding: 1rem 1rem 6rem; color: #222; }
+  header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ddd; padding: .5rem 0; z-index: 2; }
+  .help { font-size: 14px; color: #555; margin: .3rem 0; }
+  h2 { margin: 2rem 0 .5rem; }
+  .verse { border-left: 3px solid #eee; padding-left: .6rem; margin: .8rem 0 1.2rem; }
+  .line { padding: .3rem .4rem; margin: .15rem 0; border-radius: 6px; border: 1px solid transparent; }
+  .line.done { background: #f2fbf2; }
+  .line.bad { border-color: #e55; background: #fff4f4; }
+  .tools { display: flex; gap: .3rem; align-items: center; flex-wrap: wrap; font-size: 13px; }
+  .tools select, .tools input { font-size: 13px; }
+  .tools input.comment { flex: 1; min-width: 12rem; border: 1px solid #ddd; border-radius: 4px; padding: 1px 4px; }
+  button { font: inherit; font-size: 13px; border: 1px solid #bbb; background: #fff; border-radius: 4px; padding: 1px 7px; cursor: pointer; }
+  button.sel { outline: 3px solid #333; }
+  button.placed { opacity: .45; }
+  .chordbtn { font-weight: bold; }
+  .sylls { display: flex; flex-wrap: wrap; align-items: flex-end; margin-top: .2rem; }
+  .p { display: inline-flex; flex-direction: column; cursor: pointer; border-radius: 3px; }
+  .p:hover { background: #eef; }
+  .p .ch { height: 1.2em; font-weight: bold; color: #b00; font-size: 14px; }
+  .p .nt { height: 1.2em; font-size: 13px; font-weight: bold; }
+  .p .tx { white-space: pre; font-size: 18px; }
+  .p.start .tx { text-decoration: underline; text-decoration-thickness: 2px; }
+  .gap { width: 7px; align-self: stretch; cursor: col-resize; display: inline-flex; align-items: flex-end; justify-content: center; color: #c60; font-size: 18px; }
+  .gap:hover { background: #fe9; }
+  .n0 { color: #888; } .n1 { color: #1565c0; } .n2 { color: #2e7d32; } .n3 { color: #e65100; } .n4 { color: #6a1b9a; } .n5 { color: #00838f; }
+  button.n0 { border-color: #888; } button.n1 { border-color: #1565c0; } button.n2 { border-color: #2e7d32; }
+  button.n3 { border-color: #e65100; } button.n4 { border-color: #6a1b9a; } button.n5 { border-color: #00838f; }
+  .flexa-tag { color: #c00; font-weight: bold; }
+  textarea { width: 100%; height: 6rem; font: 12px monospace; }
+</style>
+</head>
+<body>
+<header>
+  <strong id="title"></strong> · <span id="progress"></span>
+  <button id="copy">Copy JSON</button> <button id="download">Download JSON</button>
+  <div class="help">
+    <b>Click a syllable</b> = the next note of that line starts there (the reciting note starts on the first syllable already).
+    Click a note button first to place or move a specific note. <b>Right-click</b> a syllable = remove the notes on it.
+    Chords follow their note; to move a chord, click its <b style="color:#b00">red button</b>, then the syllable.
+    <b>Click between two syllables</b> to join them (‿ = sung as one, sinalefa) or split them.
+    <b>Shift-click</b> a syllable to split it in two (san-tu-a-rio).
+    <b>Pre-filled lines</b> show the rule's guess: fix only what is wrong (that's the score).
+    Change the bar (1 / 2 / flexa) with the menu. Everything is saved in this browser as you go.
+  </div>
+  <div class="help" id="melody"></div>
+</header>
+<main id="main"></main>
+<script>
+const DATA = /*DATA*/null;
+const STORE = "semimarks:" + DATA.id;
+const saved = JSON.parse(localStorage.getItem(STORE) || "{}");
+let sel = null; // {key, kind: "note" | "chord", k}
+
+const barNotes = (bar) => (bar === "flexa" ? DATA.melody.flexa : DATA.melody.bars[bar]) || [];
+const noteLabel = (n) => n.pitch + (n.len >= 4 ? "·" : "");
+
+function fresh(line, bar) {
+    const notes = barNotes(bar).map((n, k) => (k === 0 ? 0 : null));
+    return { bar, joins: line.pieces.map((p) => p.join), notes, chords: notes.map(() => null), comment: "" };
+}
+const state = Object.fromEntries(DATA.lines.map((l) => [l.key, saved[l.key] || (l.pred ? structuredClone(l.pred) : fresh(l, l.bar))]));
+const save = () => localStorage.setItem(STORE, JSON.stringify(state));
+
+function unitStart(s, i) { while (i > 0 && s.joins[i - 1]) i--; return i; }
+function normalize(s) {
+    s.notes = s.notes.map((i) => (i === null ? null : unitStart(s, i)));
+    s.chords = s.chords.map((i) => (i === null ? null : unitStart(s, i)));
+}
+function status(s) {
+    if (s.notes.some((i) => i === null)) return "";
+    return s.notes.every((i, k) => k === 0 || i >= s.notes[k - 1]) ? "done" : "bad";
+}
+
+const texts = (line) => state[line.key].pieces || line.pieces.map((p) => p.t);
+
+// Split one syllable in two (a hiatus spelling hides, e.g. san-tu-a-rio).
+function split(line, i) {
+    const s = state[line.key];
+    const t = texts(line)[i];
+    const cut = prompt("Split in two: put a hyphen where", t.trim());
+    const pos = cut ? cut.indexOf("-") : -1;
+    if (pos <= 0 || pos >= t.trim().length) return;
+    s.pieces = [...texts(line).slice(0, i), t.slice(0, pos), t.slice(pos), ...texts(line).slice(i + 1)];
+    s.joins.splice(i, 0, false);
+    const shift = (j) => (j !== null && j > i ? j + 1 : j);
+    s.notes = s.notes.map(shift);
+    s.chords = s.chords.map(shift);
+}
+
+function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+}
+
+function renderLine(line, box) {
+    const s = state[line.key];
+    box.className = "line " + status(s);
+    box.replaceChildren();
+    const notes = barNotes(s.bar);
+    const tools = el("div", "tools");
+    const pick = el("select");
+    for (const [v, t] of [["0", "bar 1"], ["1", "bar 2"], ["flexa", "flexa"]]) {
+        const o = el("option", "", t); o.value = v; o.selected = String(s.bar) === v; pick.append(o);
+    }
+    pick.onchange = () => {
+        state[line.key] = { ...fresh(line, pick.value === "flexa" ? "flexa" : Number(pick.value)), joins: s.joins, pieces: s.pieces, comment: s.comment };
+        changed(line, box);
+    };
+    tools.append(pick);
+    if (s.bar === "flexa") tools.append(el("span", "flexa-tag", "FLEXA"));
+    notes.forEach((n, k) => {
+        const b = el("button", "n" + k + (s.notes[k] !== null ? " placed" : ""), noteLabel(n));
+        if (sel && sel.key === line.key && sel.kind === "note" && sel.k === k) b.classList.add("sel");
+        b.title = "note " + (k + 1);
+        b.onclick = () => { sel = { key: line.key, kind: "note", k }; changed(line, box); };
+        tools.append(b);
+    });
+    tools.append(el("span", "", " "));
+    notes.forEach((n, k) => {
+        if (!n.chord) return;
+        const b = el("button", "chordbtn", n.chord + (s.chords[k] !== null ? "*" : ""));
+        b.style.color = "#b00";
+        b.title = "move chord " + n.chord + " (* = moved by hand; double-click = follow its note again)";
+        if (sel && sel.key === line.key && sel.kind === "chord" && sel.k === k) b.classList.add("sel");
+        b.onclick = () => { sel = { key: line.key, kind: "chord", k }; changed(line, box); };
+        b.ondblclick = () => { s.chords[k] = null; sel = null; changed(line, box); };
+        tools.append(b);
+    });
+    const reset = el("button", "", "reset");
+    reset.onclick = () => { state[line.key] = { ...fresh(line, s.bar), comment: s.comment }; sel = null; changed(line, box); };
+    const comment = el("input", "comment");
+    comment.placeholder = "comment (optional)";
+    comment.value = s.comment || "";
+    comment.oninput = () => { s.comment = comment.value; save(); };
+    tools.append(reset, comment);
+
+    const row = el("div", "sylls");
+    const ts = texts(line);
+    ts.forEach((t, i) => {
+        const cell = el("span", "p");
+        const here = notes.map((n, k) => k).filter((k) => s.notes[k] === i);
+        const chordsHere = notes.map((n, k) => k).filter((k) => notes[k].chord && (s.chords[k] ?? s.notes[k]) === i);
+        const ch = el("span", "ch", chordsHere.map((k) => notes[k].chord).join(" "));
+        const nt = el("span", "nt");
+        here.forEach((k) => nt.append(el("span", "n" + k, noteLabel(notes[k]) + " ")));
+        if (here.some((k) => k > 0)) cell.classList.add("start");
+        cell.append(ch, nt, el("span", "tx", t));
+        cell.onclick = (e) => {
+            if (e.shiftKey) { split(line, i); changed(line, box); } else place(line, box, unitStart(s, i));
+        };
+        cell.oncontextmenu = (e) => {
+            e.preventDefault();
+            s.notes = s.notes.map((j, k) => (j === unitStart(s, i) && k > 0 ? null : j));
+            changed(line, box);
+        };
+        row.append(cell);
+        if (i < ts.length - 1) {
+            const gap = el("span", "gap", s.joins[i] ? "‿" : "");
+            gap.title = s.joins[i] ? "split" : "join (sung as one syllable)";
+            gap.onclick = () => { s.joins[i] = !s.joins[i]; normalize(s); changed(line, box); };
+            row.append(gap);
+        }
+    });
+    box.append(tools, row);
+}
+
+function place(line, box, i) {
+    const s = state[line.key];
+    if (sel && sel.key === line.key && sel.kind === "chord") {
+        s.chords[sel.k] = i;
+        sel = null;
+    } else {
+        const k = sel && sel.key === line.key ? sel.k : s.notes.findIndex((j) => j === null);
+        if (k < 0) return;
+        s.notes[k] = i;
+        const next = s.notes.findIndex((j) => j === null);
+        sel = next < 0 ? null : { key: line.key, kind: "note", k: next };
+    }
+    changed(line, box);
+}
+
+const boxes = new Map();
+function changed(line, box) {
+    save();
+    for (const [key, [l, b]] of boxes) if (key === line.key || (sel && key === sel.key) || b.querySelector(".sel")) renderLine(l, b);
+    progress();
+}
+
+function progress() {
+    const done = DATA.lines.filter((l) => status(state[l.key]) === "done").length;
+    document.getElementById("progress").textContent = `${done} / ${DATA.lines.length} lines done`;
+}
+
+function exportJson() {
+    return JSON.stringify({
+        semitono: DATA.semitono, melody: DATA.melody, exported: new Date().toISOString(),
+        lines: DATA.lines.map((l) => {
+            const s = state[l.key];
+            const units = [];
+            const ts = texts(l);
+            ts.forEach((t, i) => (i > 0 && s.joins[i - 1] ? (units[units.length - 1] += t) : units.push(t)));
+            const unitOf = (i) => ts.slice(0, i).filter((_, j) => !s.joins[j]).length;
+            const notes = barNotes(s.bar);
+            return {
+                key: l.key, text: l.text, bar: s.bar, units, comment: s.comment || undefined,
+                notes: notes.map((n, k) => ({ pitch: n.pitch, len: n.len, unit: s.notes[k] === null ? null : unitOf(s.notes[k]) })),
+                chords: notes.flatMap((n, k) => (n.chord ? [{ chord: n.chord, unit: (s.chords[k] ?? s.notes[k]) === null ? null : unitOf(s.chords[k] ?? s.notes[k]), moved: s.chords[k] !== null }] : [])),
+                state: s,
+            };
+        }),
+    }, null, 1);
+}
+
+document.getElementById("title").textContent = DATA.semitono;
+document.getElementById("melody").textContent = [
+    ...DATA.melody.bars.map((b, i) => `Bar ${i + 1}: ` + b.map((n) => (n.chord ? `[${n.chord}]` : "") + noteLabel(n)).join(" ")),
+    DATA.melody.flexa ? "Flexa: " + DATA.melody.flexa.map((n) => (n.chord ? `[${n.chord}]` : "") + noteLabel(n)).join(" ") : "",
+].filter(Boolean).join("   ·   ") + "   (· = reciting note)";
+document.getElementById("copy").onclick = async () => { await navigator.clipboard.writeText(exportJson()); alert("Copied"); };
+document.getElementById("download").onclick = () => {
+    const a = el("a");
+    a.href = URL.createObjectURL(new Blob([exportJson()], { type: "application/json" }));
+    a.download = "marks.json";
+    a.click();
+};
+
+const main = document.getElementById("main");
+let psalm = null, verse = null, vbox = null;
+for (const line of DATA.lines) {
+    if (line.psalm !== psalm) { psalm = line.psalm; verse = null; main.append(el("h2", "", psalm)); }
+    if (line.verse !== verse) { verse = line.verse; vbox = el("div", "verse"); main.append(vbox); }
+    const box = el("div");
+    vbox.append(box);
+    boxes.set(line.key, [line, box]);
+    renderLine(line, box);
+}
+progress();
+</script>
+</body>
+</html>

@@ -1,0 +1,6532 @@
+{
+ "semitono": "Semitonos de 2: (11) Alegre 5",
+ "melody": {
+  "bars": [
+   [
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 4
+    },
+    {
+     "chord": null,
+     "pitch": "G",
+     "len": 1
+    },
+    {
+     "chord": null,
+     "pitch": "A",
+     "len": 1
+    },
+    {
+     "chord": "G",
+     "pitch": "B",
+     "len": 2
+    }
+   ],
+   [
+    {
+     "chord": "A",
+     "pitch": "E",
+     "len": 4
+    },
+    {
+     "chord": null,
+     "pitch": "A",
+     "len": 1
+    },
+    {
+     "chord": null,
+     "pitch": "G",
+     "len": 1
+    },
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 2
+    }
+   ]
+  ],
+  "flexa": [
+   {
+    "chord": "D",
+    "pitch": "F",
+    "len": 4
+   },
+   {
+    "chord": "A",
+    "pitch": "E",
+    "len": 1
+   }
+  ]
+ },
+ "exported": "2026-11-25T09:40:11.538Z",
+ "lines": [
+  {
+   "key": "Salmo 41|0|0",
+   "text": "Como busca la cierva",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "bus",
+    "ca ",
+    "la ",
+    "cier",
+    "va"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": true
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     5
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|0|1",
+   "text": "corrientes de agua,",
+   "bar": 1,
+   "units": [
+    "co",
+    "rrien",
+    "tes ",
+    "de ",
+    "a",
+    "gua,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|0|2",
+   "text": "así mi alma te busca",
+   "bar": 0,
+   "units": [
+    "a",
+    "sí ",
+    "mi ",
+    "al",
+    "ma ",
+    "te ",
+    "bus",
+    "ca"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|0|3",
+   "text": "a ti, Dios mío;",
+   "bar": 1,
+   "units": [
+    "a ",
+    "ti, ",
+    "Dios ",
+    "mí",
+    "o;"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 3
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 3,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|1|0",
+   "text": "tiene sed de Dios,",
+   "bar": 0,
+   "units": [
+    "tie",
+    "ne ",
+    "sed ",
+    "de ",
+    "Dios,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|1|1",
+   "text": "del Dios vivo:",
+   "bar": 1,
+   "units": [
+    "del ",
+    "Dios ",
+    "vi",
+    "vo:"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 2
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 2,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     1,
+     1,
+     2
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|1|2",
+   "text": "¿cuándo entraré a ver",
+   "bar": 0,
+   "units": [
+    "¿cuán",
+    "do en",
+    "tra",
+    "ré ",
+    "a ",
+    "ver"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|1|3",
+   "text": "el rostro de Dios?",
+   "bar": 1,
+   "units": [
+    "el ",
+    "ros",
+    "tro ",
+    "de ",
+    "Dios?"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|2|0",
+   "text": "Las lágrimas son mi pan",
+   "bar": 0,
+   "units": [
+    "Las ",
+    "lá",
+    "gri",
+    "mas ",
+    "son ",
+    "mi ",
+    "pan"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|2|1",
+   "text": "noche y día,",
+   "bar": 1,
+   "units": [
+    "no",
+    "che ",
+    "y ",
+    "dí",
+    "a,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 3
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 3,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|2|2",
+   "text": "mientras todo el día me repiten:",
+   "bar": 0,
+   "units": [
+    "mien",
+    "tras ",
+    "to",
+    "do el ",
+    "dí",
+    "a ",
+    "me ",
+    "re",
+    "pi",
+    "ten:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|2|3",
+   "text": "«¿Dónde está tu Dios?»",
+   "bar": 1,
+   "units": [
+    "«¿Dón",
+    "de es",
+    "tá ",
+    "tu ",
+    "Dios?»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|0",
+   "text": "Recuerdo otros tiempos,",
+   "bar": 0,
+   "units": [
+    "Re",
+    "cuer",
+    "do ",
+    "o",
+    "tros ",
+    "tiem",
+    "pos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|1",
+   "text": "y mi alma desfallece de tristeza:",
+   "bar": 1,
+   "units": [
+    "y ",
+    "mi ",
+    "al",
+    "ma ",
+    "des",
+    "fa",
+    "lle",
+    "ce ",
+    "de ",
+    "tris",
+    "te",
+    "za:"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|2",
+   "text": "cómo marchaba a la cabeza del grupo,",
+   "bar": 0,
+   "units": [
+    "có",
+    "mo ",
+    "mar",
+    "cha",
+    "ba a ",
+    "la ",
+    "ca",
+    "be",
+    "za ",
+    "del ",
+    "gru",
+    "po,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|3",
+   "text": "hacia la casa de Dios,",
+   "bar": 1,
+   "units": [
+    "ha",
+    "cia ",
+    "la ",
+    "ca",
+    "sa ",
+    "de ",
+    "Dios,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|4",
+   "text": "entre cantos de júbilo y alabanza,",
+   "bar": 0,
+   "units": [
+    "en",
+    "tre ",
+    "can",
+    "tos ",
+    "de ",
+    "jú",
+    "bi",
+    "lo ",
+    "y a",
+    "la",
+    "ban",
+    "za,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|3|5",
+   "text": "en el bullicio de la fiesta.",
+   "bar": 1,
+   "units": [
+    "en ",
+    "el ",
+    "bu",
+    "lli",
+    "cio ",
+    "de ",
+    "la ",
+    "fies",
+    "ta."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|4|0",
+   "text": "¿Por qué te acongojas, alma mía,",
+   "bar": 0,
+   "units": [
+    "¿Por ",
+    "qué ",
+    "te a",
+    "con",
+    "go",
+    "jas, ",
+    "al",
+    "ma ",
+    "mí",
+    "a,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|4|1",
+   "text": "por qué te me turbas?",
+   "bar": 1,
+   "units": [
+    "por ",
+    "qué ",
+    "te ",
+    "me ",
+    "tur",
+    "bas?"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|4|2",
+   "text": "Espera en Dios, que volverás a alabarlo:",
+   "bar": 0,
+   "units": [
+    "Es",
+    "pe",
+    "ra en ",
+    "Dios, ",
+    "que ",
+    "vol",
+    "ve",
+    "rás ",
+    "a a",
+    "la",
+    "bar",
+    "lo:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|4|3",
+   "text": "«Salud de mi rostro, Dios mío.»",
+   "bar": 1,
+   "units": [
+    "«Sa",
+    "lud ",
+    "de ",
+    "mi ",
+    "ros",
+    "tro, ",
+    "Dios ",
+    "mí",
+    "o.»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|5|0",
+   "text": "Cuando mi alma se acongoja,",
+   "bar": 0,
+   "units": [
+    "Cuan",
+    "do ",
+    "mi ",
+    "al",
+    "ma ",
+    "se a",
+    "con",
+    "go",
+    "ja,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|5|1",
+   "text": "te recuerdo,",
+   "bar": 1,
+   "units": [
+    "te ",
+    "re",
+    "cuer",
+    "do,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 2
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 2,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     0,
+     1,
+     2
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|5|2",
+   "text": "desde el Jordán y el Hermón",
+   "bar": 0,
+   "units": [
+    "des",
+    "de el ",
+    "Jor",
+    "dán ",
+    "y el ",
+    "Her",
+    "món"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|5|3",
+   "text": "y el Monte Menor.",
+   "bar": 1,
+   "units": [
+    "y el ",
+    "Mon",
+    "te ",
+    "Me",
+    "nor."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|6|0",
+   "text": "Una sima grita a otra sima",
+   "bar": 0,
+   "units": [
+    "U",
+    "na ",
+    "si",
+    "ma ",
+    "gri",
+    "ta ",
+    "a ",
+    "o",
+    "tra ",
+    "si",
+    "ma"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|6|1",
+   "text": "con voz de cascadas:",
+   "bar": 1,
+   "units": [
+    "con ",
+    "voz ",
+    "de ",
+    "cas",
+    "ca",
+    "das:"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|6|2",
+   "text": "tus torrentes y tus olas",
+   "bar": 0,
+   "units": [
+    "tus ",
+    "to",
+    "rren",
+    "tes ",
+    "y ",
+    "tus ",
+    "o",
+    "las"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|6|3",
+   "text": "me han arrollado.",
+   "bar": 1,
+   "units": [
+    "me han ",
+    "a",
+    "rro",
+    "lla",
+    "do."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 3
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 3,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|7|0",
+   "text": "De día el Señor",
+   "bar": 0,
+   "units": [
+    "De ",
+    "dí",
+    "a el ",
+    "Se",
+    "ñor"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|7|1",
+   "text": "me hará misericordia,",
+   "bar": 1,
+   "units": [
+    "me ha",
+    "rá ",
+    "mi",
+    "se",
+    "ri",
+    "cor",
+    "dia,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|7|2",
+   "text": "de noche cantaré la alabanza",
+   "bar": 0,
+   "units": [
+    "de ",
+    "no",
+    "che ",
+    "can",
+    "ta",
+    "ré ",
+    "la a",
+    "la",
+    "ban",
+    "za"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|7|3",
+   "text": "del Dios de mi vida.",
+   "bar": 1,
+   "units": [
+    "del ",
+    "Dios ",
+    "de ",
+    "mi ",
+    "vi",
+    "da."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|8|0",
+   "text": "Diré a Dios: Roca mía,",
+   "bar": 0,
+   "units": [
+    "Di",
+    "ré a ",
+    "Dios: ",
+    "Ro",
+    "ca ",
+    "mí",
+    "a,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|8|1",
+   "text": "¿por qué me olvidas?",
+   "bar": 1,
+   "units": [
+    "¿por ",
+    "qué ",
+    "me ol",
+    "vi",
+    "das?"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 1
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 3
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 3,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     1,
+     2,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|8|2",
+   "text": "¿Por qué voy andando sombrío,",
+   "bar": 0,
+   "units": [
+    "¿Por ",
+    "qué ",
+    "voy an",
+    "dan",
+    "do ",
+    "som",
+    "brí",
+    "o,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|8|3",
+   "text": "hostigado por mi enemigo?",
+   "bar": 1,
+   "units": [
+    "hos",
+    "ti",
+    "ga",
+    "do ",
+    "por ",
+    "mi e",
+    "ne",
+    "mi",
+    "go?"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|9|0",
+   "text": "Se me rompen los huesos",
+   "bar": 0,
+   "units": [
+    "Se ",
+    "me ",
+    "rom",
+    "pen ",
+    "los ",
+    "hue",
+    "sos"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|9|1",
+   "text": "por las burlas del adversario;",
+   "bar": 1,
+   "units": [
+    "por ",
+    "las ",
+    "bur",
+    "las ",
+    "del ",
+    "ad",
+    "ver",
+    "sa",
+    "rio;"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|9|2",
+   "text": "todo el día me preguntan:",
+   "bar": 0,
+   "units": [
+    "to",
+    "do el ",
+    "dí",
+    "a ",
+    "me ",
+    "pre",
+    "gun",
+    "tan:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|9|3",
+   "text": "«¿Dónde está tu Dios?»",
+   "bar": 1,
+   "units": [
+    "«¿Dón",
+    "de es",
+    "tá ",
+    "tu ",
+    "Dios?»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|10|0",
+   "text": "¿Por qué te acongojas, alma mía,",
+   "bar": 0,
+   "units": [
+    "¿Por ",
+    "qué ",
+    "te a",
+    "con",
+    "go",
+    "jas, ",
+    "al",
+    "ma ",
+    "mí",
+    "a,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|10|1",
+   "text": "por qué te me turbas?",
+   "bar": 1,
+   "units": [
+    "por ",
+    "qué ",
+    "te ",
+    "me ",
+    "tur",
+    "bas?"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 2
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     2,
+     3,
+     4
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|10|2",
+   "text": "Espera en Dios, que volverás a alabarlo:",
+   "bar": 0,
+   "units": [
+    "Es",
+    "pe",
+    "ra en ",
+    "Dios, ",
+    "que ",
+    "vol",
+    "ve",
+    "rás ",
+    "a a",
+    "la",
+    "bar",
+    "lo:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|10|3",
+   "text": "«Salud de mi rostro, Dios mío.»",
+   "bar": 1,
+   "units": [
+    "«Sa",
+    "lud ",
+    "de ",
+    "mi ",
+    "ros",
+    "tro, ",
+    "Dios ",
+    "mí",
+    "o.»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|11|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|11|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 41|11|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|0|0",
+   "text": "Aclama al Señor, tierra entera,",
+   "bar": "flexa",
+   "units": [
+    "A",
+    "cla",
+    "ma al ",
+    "Se",
+    "ñor, ",
+    "tie",
+    "rra en",
+    "te",
+    "ra,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|0|1",
+   "text": "servid al Señor con alegría,",
+   "bar": 0,
+   "units": [
+    "ser",
+    "vid ",
+    "al ",
+    "Se",
+    "ñor ",
+    "con ",
+    "a",
+    "le",
+    "grí",
+    "a,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|0|2",
+   "text": "entrad en su presencia con aclamaciones.",
+   "bar": 1,
+   "units": [
+    "en",
+    "trad ",
+    "en ",
+    "su ",
+    "pre",
+    "sen",
+    "cia ",
+    "con ",
+    "a",
+    "cla",
+    "ma",
+    "cio",
+    "nes."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|1|0",
+   "text": "Sabed que el Señor es Dios:",
+   "bar": "flexa",
+   "units": [
+    "Sa",
+    "bed ",
+    "que el ",
+    "Se",
+    "ñor ",
+    "es ",
+    "Dios:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|1|1",
+   "text": "que él nos hizo y somos suyos,",
+   "bar": 0,
+   "units": [
+    "que él ",
+    "nos ",
+    "hi",
+    "zo y ",
+    "so",
+    "mos ",
+    "su",
+    "yos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|1|2",
+   "text": "su pueblo y ovejas de su rebaño.",
+   "bar": 1,
+   "units": [
+    "su ",
+    "pue",
+    "blo y o",
+    "ve",
+    "jas ",
+    "de ",
+    "su ",
+    "re",
+    "ba",
+    "ño."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|2|0",
+   "text": "Entrad por sus puertas con acción de gracias,",
+   "bar": "flexa",
+   "units": [
+    "En",
+    "trad ",
+    "por ",
+    "sus ",
+    "puer",
+    "tas ",
+    "con ",
+    "ac",
+    "ción ",
+    "de ",
+    "gra",
+    "cias,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|2|1",
+   "text": "por sus atrios con himnos,",
+   "bar": 0,
+   "units": [
+    "por ",
+    "sus ",
+    "a",
+    "trios ",
+    "con ",
+    "him",
+    "nos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|2|2",
+   "text": "dándole gracias y bendiciendo su nombre:",
+   "bar": 1,
+   "units": [
+    "dán",
+    "do",
+    "le ",
+    "gra",
+    "cias ",
+    "y ",
+    "ben",
+    "di",
+    "cien",
+    "do ",
+    "su ",
+    "nom",
+    "bre:"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|3|0",
+   "text": "«El Señor es bueno,",
+   "bar": "flexa",
+   "units": [
+    "«El ",
+    "Se",
+    "ñor ",
+    "es ",
+    "bue",
+    "no,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|3|1",
+   "text": "su misericordia es eterna,",
+   "bar": 0,
+   "units": [
+    "su ",
+    "mi",
+    "se",
+    "ri",
+    "cor",
+    "dia es ",
+    "e",
+    "ter",
+    "na,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|3|2",
+   "text": "su fidelidad por todas las edades.»",
+   "bar": 1,
+   "units": [
+    "su ",
+    "fi",
+    "de",
+    "li",
+    "dad ",
+    "por ",
+    "to",
+    "das ",
+    "las ",
+    "e",
+    "da",
+    "des.»"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|4|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|4|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 99|4|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|0|0",
+   "text": "¡Oh Dios!, tú eres mi Dios, por ti madrugo,",
+   "bar": 0,
+   "units": [
+    "¡Oh ",
+    "Dios!, ",
+    "tú e",
+    "res ",
+    "mi ",
+    "Dios, ",
+    "por ",
+    "ti ",
+    "ma",
+    "dru",
+    "go,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|0|1",
+   "text": "mi alma está sedienta de ti;",
+   "bar": 1,
+   "units": [
+    "mi al",
+    "ma es",
+    "tá ",
+    "se",
+    "dien",
+    "ta ",
+    "de ",
+    "ti;"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|0|2",
+   "text": "mi carne tiene ansia de ti,",
+   "bar": 0,
+   "units": [
+    "mi ",
+    "car",
+    "ne ",
+    "tie",
+    "ne an",
+    "sia ",
+    "de ",
+    "ti,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|0|3",
+   "text": "como tierra reseca, agostada, sin agua.",
+   "bar": 1,
+   "units": [
+    "co",
+    "mo ",
+    "tie",
+    "rra ",
+    "re",
+    "se",
+    "ca, a",
+    "gos",
+    "ta",
+    "da, ",
+    "sin ",
+    "a",
+    "gua."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|1|0",
+   "text": "¡Cómo te contemplaba en el santuario",
+   "bar": 0,
+   "units": [
+    "¡Có",
+    "mo ",
+    "te ",
+    "con",
+    "tem",
+    "pla",
+    "ba en ",
+    "el ",
+    "san",
+    "tua",
+    "rio"
+   ],
+   "comment": "The G chord goes above the B note. \"tu\" corresponds to the A note and \"a\" corresponds to the B note. The G chord is also in the \"a\"",
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": "The G chord goes above the B note. \"tu\" corresponds to the A note and \"a\" corresponds to the B note. The G chord is also in the \"a\""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|1|1",
+   "text": "viendo tu fuerza y tu gloria!",
+   "bar": 1,
+   "units": [
+    "vien",
+    "do ",
+    "tu ",
+    "fuer",
+    "za y ",
+    "tu ",
+    "glo",
+    "ria!"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|1|2",
+   "text": "Tu gracia vale más que la vida,",
+   "bar": 0,
+   "units": [
+    "Tu ",
+    "gra",
+    "cia ",
+    "va",
+    "le ",
+    "más ",
+    "que ",
+    "la ",
+    "vi",
+    "da,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|1|3",
+   "text": "te alabarán mis labios.",
+   "bar": 1,
+   "units": [
+    "te a",
+    "la",
+    "ba",
+    "rán ",
+    "mis ",
+    "la",
+    "bios."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|2|0",
+   "text": "Toda mi vida te bendeciré",
+   "bar": 0,
+   "units": [
+    "To",
+    "da ",
+    "mi ",
+    "vi",
+    "da ",
+    "te ",
+    "ben",
+    "de",
+    "ci",
+    "ré"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|2|1",
+   "text": "y alzaré las manos invocándote.",
+   "bar": 1,
+   "units": [
+    "y al",
+    "za",
+    "ré ",
+    "las ",
+    "ma",
+    "nos ",
+    "in",
+    "vo",
+    "cán",
+    "do",
+    "te."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|2|2",
+   "text": "Me saciaré de manjares exquisitos,",
+   "bar": 0,
+   "units": [
+    "Me ",
+    "sa",
+    "cia",
+    "ré ",
+    "de ",
+    "man",
+    "ja",
+    "res ",
+    "ex",
+    "qui",
+    "si",
+    "tos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|2|3",
+   "text": "y mis labios te alabarán jubilosos.",
+   "bar": 1,
+   "units": [
+    "y ",
+    "mis ",
+    "la",
+    "bios ",
+    "te a",
+    "la",
+    "ba",
+    "rán ",
+    "ju",
+    "bi",
+    "lo",
+    "sos."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|0",
+   "text": "En el lecho me acuerdo de ti",
+   "bar": 0,
+   "units": [
+    "En ",
+    "el ",
+    "le",
+    "cho ",
+    "me a",
+    "cuer",
+    "do ",
+    "de ",
+    "ti"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|1",
+   "text": "y velando medito en ti,",
+   "bar": 1,
+   "units": [
+    "y ",
+    "ve",
+    "lan",
+    "do ",
+    "me",
+    "di",
+    "to en ",
+    "ti,"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|2",
+   "text": "porque fuiste mi auxilio,",
+   "bar": 0,
+   "units": [
+    "por",
+    "que ",
+    "fuis",
+    "te ",
+    "mi au",
+    "xi",
+    "lio,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     3,
+     4,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|3",
+   "text": "y a la sombra de tus alas canto con júbilo;",
+   "bar": 1,
+   "units": [
+    "y a ",
+    "la ",
+    "som",
+    "bra ",
+    "de ",
+    "tus ",
+    "a",
+    "las ",
+    "can",
+    "to ",
+    "con ",
+    "jú",
+    "bi",
+    "lo;"
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|4",
+   "text": "mi alma está unida a ti,",
+   "bar": 0,
+   "units": [
+    "mi al",
+    "ma es",
+    "tá u",
+    "ni",
+    "da a ",
+    "ti,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 3
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     true,
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|3|5",
+   "text": "y tu diestra me sostiene.",
+   "bar": 1,
+   "units": [
+    "y ",
+    "tu ",
+    "dies",
+    "tra ",
+    "me ",
+    "sos",
+    "tie",
+    "ne."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|4|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|4|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "B",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "G",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 62, 2-9|4|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "E",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "A",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "G",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "A",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  }
+ ]
+}
