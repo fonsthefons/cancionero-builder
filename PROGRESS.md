@@ -9,7 +9,15 @@ Loop: user marks → Claude writes rules → page pre-filled with predictions (`
   port of formula.js `semitono2Plan`, ABC bar parser; builds the page from page.html.
 - Round 1 page: alegre5-round1.html (Salmo 41, 99, 62; 85 lines). Smoke test
   scratch/semimarks_smoke.py (WebKit; chromium headless shell is not installed).
-- Waiting for the user's marks (marks.json).
+- Round 1 marks: alegre5-round1-marks.json (85 lines). show_marks.py prints them against stress.
+- Rule v2 (marks.py `predict`): last note + its chord on the line's last stressed syllable
+  (aguda/llana/esdrújula); passing notes one per syllable just before it; reciting note from the
+  first syllable, sharing it on short lines ("[E][A]te [G]re[F]cuerdo"). Sinalefa unless one of
+  the two vowels is stressed. Chords always follow their note (user moved none).
+- Score (rules.py, automatic syllables): rule v1 76/85 → stress-aware sinalefa 80/85 → with the
+  user's answers 85/85 (2 slip/taste, 1 short-line rule, 1 sinalefa taste, santuario hiatus).
+- Round 2 (held-out): alegre5-round2.html, pre-filled by the rule (`--pred`): Salmo 148, 121,
+  116, 63 lines. Page now splits a syllable (shift-click). Waiting for the user's corrections.
 
 ## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
 User's feedback on the tour, all done:

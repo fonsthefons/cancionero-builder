@@ -1,7 +1,8 @@
 """Build the semitono marking page: psalm lines split into syllables, with the bar
 (1, 2 or flexa) each line is sung to.
 
-Usage: marks.py <semitono.md> <psalm.md>... -o <page.html> [--pred <pred.json>]
+Usage: marks.py <semitono.md> <psalm.md>... -o <page.html> [--pred]
+  --pred: lines start filled in by the rule (predict), for the user to correct.
        marks.py --test
 """
 import json
@@ -63,6 +64,24 @@ def syllabify(word):
     return [word[a:b] for a, b in zip(bounds, bounds[1:])]
 
 
+ATONIC = set("el la los las lo le les de del a al y e o u ni en con por para sin que se me te nos os "
+             "mi mis tu tus su sus un una unos unas pero si cuando como donde mientras hacia desde "
+             "entre hasta según tan es".split())
+
+
+def stress(word):
+    """Index of the stressed syllable of a word, or None for an atonic word."""
+    sylls = syllabify(word)
+    if word.lower() in ATONIC:
+        return None
+    for i, s in enumerate(sylls):
+        if set(s.lower()) & set("áéíóú"):
+            return i
+    if len(sylls) == 1:
+        return 0
+    return len(sylls) - 2 if word.lower()[-1] in "aeiouns" else len(sylls) - 1
+
+
 def pieces(line):
     """The line as syllable pieces [{t, join}], join = sung together with the next
     piece (sinalefa). Punctuation and spaces stay on the piece before them; leading
@@ -83,16 +102,36 @@ def pieces(line):
             core = re.sub(r"\W+$", "", prev)
             trail = prev[len(core):] + lead
             w = tok.lower()[1:] if tok.lower().startswith("h") else tok.lower()
+            # no sinalefa onto or from a stressed vowel (user's marks, round 1)
             out[-1]["join"] = (" " in trail and not set(trail) & HARD_STOP
+                               and not out[-1]["stress"] and stress(tok) != 0
                                and core[-1:].lower() in VOWELS | {"y"}
                                and (w[:1] in VOWELS or w == "y"))
         sylls = syllabify(tok)
         sylls[0] = lead + sylls[0]
         lead = ""
-        out.extend({"t": s, "join": False} for s in sylls)
+        st = stress(tok)
+        out.extend({"t": s, "join": False, "stress": i == st} for i, s in enumerate(sylls))
     if lead and out:
         out[-1]["t"] += lead
     return out
+
+
+def predict(stressed, n_notes):
+    """Rule v2: unit where each note starts, from the units' stress flags. Last note on
+    the last stressed unit, passing notes one per unit just before it, reciting note
+    from unit 0 (sharing it with a passing note on short lines)."""
+    accent = max((i for i, s in enumerate(stressed) if s), default=len(stressed) - 1)
+    return [0] + [max(accent - k, 0) for k in range(n_notes - 2, 0, -1)] + [accent][: n_notes - 1]
+
+
+def predict_state(ps, bar, n_notes):
+    """The page's state for a line, filled in by the rule."""
+    joins = [p["join"] for p in ps]
+    firsts = [i for i in range(len(ps)) if i == 0 or not joins[i - 1]]
+    stressed = [any(p["stress"] for p in ps[a:b]) for a, b in zip(firsts, firsts[1:] + [len(ps)])]
+    notes = [firsts[u] for u in predict(stressed, n_notes)]
+    return {"bar": bar, "joins": joins, "notes": notes, "chords": [None] * n_notes, "comment": ""}
 
 
 def parse_bar(text):
@@ -152,9 +191,12 @@ def build(semitono, psalms, pred=None):
             plan = plan2(verse, mel["flexa"] is not None) or [0] * len(verse)
             for li, text in enumerate(verse):
                 key = f"{pmeta['title']}|{vi}|{li}"
+                ps = pieces(text)
+                bar = plan[li]
+                n = len(mel["flexa"] if bar == "flexa" else mel["bars"][bar])
                 lines.append({"key": key, "psalm": pmeta["title"], "verse": vi, "line": li,
-                              "text": text, "bar": plan[li], "pieces": pieces(text),
-                              "pred": (pred or {}).get(key)})
+                              "text": text, "bar": bar, "pieces": ps,
+                              "pred": predict_state(ps, bar, n) if pred else None})
     return {"id": f"{meta['title']}|{'|'.join(Path(p).stem for p in psalms)}",
             "semitono": meta["title"], "melody": mel, "lines": lines}
 
@@ -171,10 +213,14 @@ def test():
     assert [x["t"] for x in p] == ["Co", "mo ", "bus", "ca ", "la ", "cier", "va"], p
     assert not any(x["join"] for x in p)
     p = pieces("corrientes de agua,")
-    assert [x["t"] for x in p] == ["co", "rrien", "tes ", "de ", "a", "gua,"] and p[3]["join"]
+    assert [x["t"] for x in p] == ["co", "rrien", "tes ", "de ", "a", "gua,"] and not p[3]["join"]
+    assert pieces("se acongoja")[0]["join"]  # neither vowel stressed: sinalefa
     p = pieces("¿cuándo entraré a ver")
-    assert p[0]["t"] == "¿cuán" and p[1]["join"] and p[4]["join"], p
+    assert p[0]["t"] == "¿cuán" and p[1]["join"] and not p[4]["join"], p  # entraré|a
     assert not pieces("Dios. Amén")[0]["join"]
+    assert predict([False, True, False, False, True, False], 4) == [0, 2, 3, 4]  # llana
+    assert predict([False, False, True, False], 4) == [0, 0, 1, 2]  # te re-CUER-do
+    assert predict([True, False], 2) == [0, 0]  # flexa on a short line
     assert plan2(["a,", "b.", "c,", "d."], True) == [0, 1, 0, 1]
     assert plan2(["a", "b,", "c."], True) == ["flexa", 0, 1]
     assert parse_bar('"D"F4 G A "G"B2') == [
@@ -187,9 +233,8 @@ def main(argv):
     if argv == ["--test"]:
         return test()
     out = Path(argv[argv.index("-o") + 1])
-    pred = json.loads(Path(argv[argv.index("--pred") + 1]).read_text()) if "--pred" in argv else None
-    files = [a for i, a in enumerate(argv) if a.endswith(".md") and argv[i - 1] not in ("-o", "--pred")]
-    data = build(files[0], files[1:], pred)
+    files = [a for a in argv if a.endswith(".md")]
+    data = build(files[0], files[1:], pred="--pred" in argv)
     page = (HERE / "page.html").read_text().replace("/*DATA*/null", json.dumps(data, ensure_ascii=False))
     out.write_text(page)
     print(f"{out}: {len(data['lines'])} lines")

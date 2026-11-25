@@ -44,6 +44,8 @@
     Click a note button first to place or move a specific note. <b>Right-click</b> a syllable = remove the notes on it.
     Chords follow their note; to move a chord, click its <b style="color:#b00">red button</b>, then the syllable.
     <b>Click between two syllables</b> to join them (‿ = sung as one, sinalefa) or split them.
+    <b>Shift-click</b> a syllable to split it in two (san-tu-a-rio).
+    <b>Pre-filled lines</b> show the rule's guess: fix only what is wrong (that's the score).
     Change the bar (1 / 2 / flexa) with the menu. Everything is saved in this browser as you go.
   </div>
   <div class="help" id="melody"></div>
@@ -75,6 +77,22 @@ function status(s) {
     return s.notes.every((i, k) => k === 0 || i >= s.notes[k - 1]) ? "done" : "bad";
 }
 
+const texts = (line) => state[line.key].pieces || line.pieces.map((p) => p.t);
+
+// Split one syllable in two (a hiatus spelling hides, e.g. san-tu-a-rio).
+function split(line, i) {
+    const s = state[line.key];
+    const t = texts(line)[i];
+    const cut = prompt("Split in two: put a hyphen where", t.trim());
+    const pos = cut ? cut.indexOf("-") : -1;
+    if (pos <= 0 || pos >= t.trim().length) return;
+    s.pieces = [...texts(line).slice(0, i), t.slice(0, pos), t.slice(pos), ...texts(line).slice(i + 1)];
+    s.joins.splice(i, 0, false);
+    const shift = (j) => (j !== null && j > i ? j + 1 : j);
+    s.notes = s.notes.map(shift);
+    s.chords = s.chords.map(shift);
+}
+
 function el(tag, cls, text) {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -93,7 +111,7 @@ function renderLine(line, box) {
         const o = el("option", "", t); o.value = v; o.selected = String(s.bar) === v; pick.append(o);
     }
     pick.onchange = () => {
-        state[line.key] = { ...fresh(line, pick.value === "flexa" ? "flexa" : Number(pick.value)), joins: s.joins, comment: s.comment };
+        state[line.key] = { ...fresh(line, pick.value === "flexa" ? "flexa" : Number(pick.value)), joins: s.joins, pieces: s.pieces, comment: s.comment };
         changed(line, box);
     };
     tools.append(pick);
@@ -125,7 +143,8 @@ function renderLine(line, box) {
     tools.append(reset, comment);
 
     const row = el("div", "sylls");
-    line.pieces.forEach((p, i) => {
+    const ts = texts(line);
+    ts.forEach((t, i) => {
         const cell = el("span", "p");
         const here = notes.map((n, k) => k).filter((k) => s.notes[k] === i);
         const chordsHere = notes.map((n, k) => k).filter((k) => notes[k].chord && (s.chords[k] ?? s.notes[k]) === i);
@@ -133,15 +152,17 @@ function renderLine(line, box) {
         const nt = el("span", "nt");
         here.forEach((k) => nt.append(el("span", "n" + k, noteLabel(notes[k]) + " ")));
         if (here.some((k) => k > 0)) cell.classList.add("start");
-        cell.append(ch, nt, el("span", "tx", p.t));
-        cell.onclick = () => place(line, box, unitStart(s, i));
+        cell.append(ch, nt, el("span", "tx", t));
+        cell.onclick = (e) => {
+            if (e.shiftKey) { split(line, i); changed(line, box); } else place(line, box, unitStart(s, i));
+        };
         cell.oncontextmenu = (e) => {
             e.preventDefault();
             s.notes = s.notes.map((j, k) => (j === unitStart(s, i) && k > 0 ? null : j));
             changed(line, box);
         };
         row.append(cell);
-        if (i < line.pieces.length - 1) {
+        if (i < ts.length - 1) {
             const gap = el("span", "gap", s.joins[i] ? "‿" : "");
             gap.title = s.joins[i] ? "split" : "join (sung as one syllable)";
             gap.onclick = () => { s.joins[i] = !s.joins[i]; normalize(s); changed(line, box); };
@@ -184,8 +205,9 @@ function exportJson() {
         lines: DATA.lines.map((l) => {
             const s = state[l.key];
             const units = [];
-            l.pieces.forEach((p, i) => (i > 0 && s.joins[i - 1] ? (units[units.length - 1] += p.t) : units.push(p.t)));
-            const unitOf = (i) => l.pieces.slice(0, i).filter((_, j) => !s.joins[j]).length;
+            const ts = texts(l);
+            ts.forEach((t, i) => (i > 0 && s.joins[i - 1] ? (units[units.length - 1] += t) : units.push(t)));
+            const unitOf = (i) => ts.slice(0, i).filter((_, j) => !s.joins[j]).length;
             const notes = barNotes(s.bar);
             return {
                 key: l.key, text: l.text, bar: s.bar, units, comment: s.comment || undefined,
