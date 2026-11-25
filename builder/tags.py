@@ -10,6 +10,8 @@ tags.yaml (optional) gives labels and order:
       label: Text shown in the book
       subtags:            # optional
         <subtag_id>: Text shown in the book
+      pill: III           # optional: the song's tag pill text ("" hides it; default: the label);
+                          # a subtag takes it as  <subtag_id>: {label: Tercer ciclo, pill: III}
 
 Tags in tags.yaml come first, in its order; tags found only in songs follow,
 alphabetically, labelled as the song wrote them ('primer_ciclo' -> 'Primer ciclo').
@@ -34,10 +36,16 @@ class Tag:
     subtags: dict[str, str] = field(default_factory=dict)  # id -> label, in order
     in_file: bool = True  # defined in tags.yaml (False: found in a song)
     subtags_in_file: set = field(default_factory=set)
+    # pill text set in tags.yaml (`pill:`), by subtag id (None: the tag itself);
+    # "" hides the pill, missing means the label
+    pills: dict = field(default_factory=dict)
 
     @property
     def is_flat(self):
         return not self.subtags
+
+    def pill(self, sub_id=None):
+        return self.pills.get(sub_id, self.subtags[sub_id] if sub_id else self.label)
 
 
 @dataclass
@@ -71,9 +79,17 @@ class Taxonomy:
         tags = []
         for tag_id, spec in raw.items():
             spec = spec or {}
-            subtags = {str(k): str(v) for k, v in (spec.get("subtags") or {}).items()}
+            subtags, pills = {}, {}
+            if "pill" in spec:
+                pills[None] = str(spec["pill"] or "")
+            for k, v in (spec.get("subtags") or {}).items():
+                if isinstance(v, dict):  # long form: {label: ..., pill: ...}
+                    if "pill" in v:
+                        pills[str(k)] = str(v["pill"] or "")
+                    v = v.get("label") or humanize(str(k))
+                subtags[str(k)] = str(v)
             tags.append(Tag(id=str(tag_id), label=str(spec.get("label") or humanize(str(tag_id))),
-                            subtags=subtags, subtags_in_file=set(subtags)))
+                            subtags=subtags, subtags_in_file=set(subtags), pills=pills))
         return cls(tags, strict=strict)
 
     def resolve(self, written):
@@ -170,14 +186,23 @@ class Taxonomy:
             "#     label: Text shown in the book",
             "#     subtags:            # optional",
             "#       <subtag_id>: Text shown in the book",
+            "#   pill: short text for the song's tag pill (\"\" hides it); a subtag takes",
+            "#   it as   <subtag_id>: {label: Tercer ciclo, pill: III}",
             "",
         ]
         for tag in self.tags.values():
             lines.append(f"{tag.id}:")
             lines.append(f"  label: {yaml_text(tag.label)}")
+            if None in tag.pills:
+                lines.append(f"  pill: {yaml_text(tag.pills[None])}")
             if tag.subtags:
                 lines.append("  subtags:")
-                lines.extend(f"    {sid}: {yaml_text(label)}" for sid, label in tag.subtags.items())
+                for sid, label in tag.subtags.items():
+                    if sid in tag.pills:
+                        lines += [f"    {sid}:", f"      label: {yaml_text(label)}",
+                                  f"      pill: {yaml_text(tag.pills[sid])}"]
+                    else:
+                        lines.append(f"    {sid}: {yaml_text(label)}")
             lines.append("")
         return "\n".join(lines)
 

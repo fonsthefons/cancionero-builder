@@ -6,6 +6,7 @@ The page layout lives in web/template.html; this module only fills its
 
 import json
 import re
+from collections import Counter
 from html import escape
 from pathlib import Path
 
@@ -163,8 +164,13 @@ def song_meta_html(song):
     return f'<p class="song-meta">{"".join(items)}</p>' if items else ""
 
 
-# Pastel colours: 15 hues in a light and a deeper shade, as (hue, lightness %).
-PILL_COLOURS = [(hue, light) for light in (87, 76) for hue in range(0, 360, 24)]
+# Pastel colours as (hue, lightness %): a tag takes one of 12 hues; its subtags
+# take lighter tones of it, a little to either side of its hue.
+TAG_COLOURS = [(hue, 70) for hue in range(0, 360, 30)]
+
+
+def subtag_colours(tag_colour):
+    return [((tag_colour[0] + shift) % 360, light) for light in (80, 87, 93) for shift in (0, -15, 15)]
 
 
 def colour_gap(a, b):
@@ -173,10 +179,14 @@ def colour_gap(a, b):
 
 
 def pill_colours(keys, together):
-    """A colour per pill, far from the colours of the pills it shares songs with
-    (`together`: key -> {other key: songs shared}); the more songs two pills share,
-    the more their colours are kept apart. Ties: the least used colour."""
-    colours, used = {}, {c: 0 for c in PILL_COLOURS}
+    """A colour per pill ((tag id, subtag id or None) keys, tags before their subtags),
+    far from the colours of the pills it shares songs with (`together`: key ->
+    {other key: songs shared}); the more songs two pills share, the more their
+    colours are kept apart. Ties: the least used colour."""
+    colours, used = {}, Counter()
+
+    def choices(key):
+        return TAG_COLOURS if key[1] is None else subtag_colours(colours[(key[0], None)])
 
     def cost(key, colour):
         clash = 0
@@ -191,22 +201,22 @@ def pill_colours(keys, together):
         for key in keys:
             if key in colours:
                 used[colours.pop(key)] -= 1
-            colours[key] = min(PILL_COLOURS, key=lambda colour: cost(key, colour))
+            colours[key] = min(choices(key), key=lambda colour: cost(key, colour))
             used[colours[key]] += 1
     return colours
 
 
 def tag_pills(groups):
     """{(tag id, subtag id or None): (css class, text, colour)} in contents order. Every
-    tag and subtag has its own class and its label's first 3 letters; pills that
-    appear in the same song get clearly different pastel colours."""
+    tag and subtag has its own class and its tags.yaml pill text (default: the label);
+    pills that appear in the same song get clearly different pastel colours."""
     labels, songs = {}, {}
     for group in groups:
-        labels[(group.tag.id, None)] = group.tag.label
+        labels[(group.tag.id, None)] = group.tag.pill()
         for song in group.songs:
             songs.setdefault(id(song), set()).add((group.tag.id, None))
-        for sub_id, label, members in group.subgroups:
-            labels[(group.tag.id, sub_id)] = label
+        for sub_id, _, members in group.subgroups:
+            labels[(group.tag.id, sub_id)] = group.tag.pill(sub_id)
             for song in members:
                 songs.setdefault(id(song), set()).update({(group.tag.id, None), (group.tag.id, sub_id)})
     together = {key: {} for key in labels}
@@ -215,7 +225,7 @@ def tag_pills(groups):
             for other in keys - {key}:
                 together[key][other] = together[key].get(other, 0) + 1
     colours = pill_colours(labels, together)
-    return {key: (f"k{i}", label.strip()[:3], colours[key]) for i, (key, label) in enumerate(labels.items())}
+    return {key: (f"k{i}", label.strip(), colours[key]) for i, (key, label) in enumerate(labels.items())}
 
 
 def pills_css(pills):
@@ -223,12 +233,13 @@ def pills_css(pills):
 
 
 def pills_html(song, pills):
-    """One <i> per tag and per subtag of the song (book.yaml tag_pills)."""
-    items = [
-        f'<i class="{cls}">{escape(text)}</i>'
-        for (tag_id, sub_id), (cls, text, _) in pills.items()
-        if tag_id in song.tags and (sub_id is None or sub_id in song.tags[tag_id])
-    ]
+    """One <i> per tag and per subtag of the song (book.yaml tag_pills), a column per
+    tag: its subtags under it. Only a column of two or more needs a <span>."""
+    columns = {}
+    for (tag_id, sub_id), (cls, text, _) in pills.items():
+        if text and tag_id in song.tags and (sub_id is None or sub_id in song.tags[tag_id]):
+            columns.setdefault(tag_id, []).append(f'<i class="{cls}">{escape(text)}</i>')
+    items = [col[0] if len(col) == 1 else f'<span>{"".join(col)}</span>' for col in columns.values()]
     return f'<p class="pills">{"".join(items)}</p>\n' if items else ""
 
 
