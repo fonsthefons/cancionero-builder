@@ -1,5 +1,16 @@
 # Progress
 
+## 2026-11-25 — Experiment: semitono marks (branch experiment/semitono-marks)
+Goal: learn rules from the user's marks for (1) where chords go over a psalm line and (2) which
+syllables start a melody note (to underline/italicize later). Start: Semitono de 2 (11) Alegre 5.
+Loop: user marks → Claude writes rules → page pre-filled with predictions (`--pred`) → user fixes
+→ final rules. Score = share of held-out lines the rules place right (target ≥90%).
+- docs/experiments/semitono-marks/marks.py: Spanish syllables + sinalefa (`--test` self-check),
+  port of formula.js `semitono2Plan`, ABC bar parser; builds the page from page.html.
+- Round 1 page: alegre5-round1.html (Salmo 41, 99, 62; 85 lines). Smoke test
+  scratch/semimarks_smoke.py (WebKit; chromium headless shell is not installed).
+- Waiting for the user's marks (marks.json).
+
 ## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
 User's feedback on the tour, all done:
 - Red (#e53935) labels, arrows, spotlight border and card border; header "Tutorial · Paso n/7".
