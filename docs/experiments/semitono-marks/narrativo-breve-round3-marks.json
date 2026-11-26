@@ -1,0 +1,3521 @@
+{
+ "semitono": "Semitonos de 2: (5) Narrativo (breve)",
+ "melody": {
+  "bars": [
+   [
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 4
+    },
+    {
+     "chord": null,
+     "pitch": "D",
+     "len": 1
+    },
+    {
+     "chord": "A",
+     "pitch": "E",
+     "len": 2
+    }
+   ],
+   [
+    {
+     "chord": "Em",
+     "pitch": "G",
+     "len": 4
+    },
+    {
+     "chord": "D",
+     "pitch": "F",
+     "len": 2
+    }
+   ]
+  ],
+  "flexa": [
+   {
+    "chord": "D",
+    "pitch": "F",
+    "len": 4
+   },
+   {
+    "chord": "Em",
+    "pitch": "E",
+    "len": 1
+   }
+  ]
+ },
+ "exported": "2026-11-25T11:24:40.791Z",
+ "lines": [
+  {
+   "key": "Salmo 130|0|0",
+   "text": "Señor, mi corazón no es ambicioso,",
+   "bar": 0,
+   "units": [
+    "Se",
+    "ñor, ",
+    "mi ",
+    "co",
+    "ra",
+    "zón ",
+    "no ",
+    "es ",
+    "am",
+    "bi",
+    "cio",
+    "so,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|0|1",
+   "text": "ni mis ojos altaneros;",
+   "bar": 1,
+   "units": [
+    "ni ",
+    "mis ",
+    "o",
+    "jos ",
+    "al",
+    "ta",
+    "ne",
+    "ros;"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|0|2",
+   "text": "no pretendo grandezas",
+   "bar": 0,
+   "units": [
+    "no ",
+    "pre",
+    "ten",
+    "do ",
+    "gran",
+    "de",
+    "zas"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|0|3",
+   "text": "que superan mi capacidad;",
+   "bar": 1,
+   "units": [
+    "que ",
+    "su",
+    "pe",
+    "ran ",
+    "mi ",
+    "ca",
+    "pa",
+    "ci",
+    "dad;"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|0|4",
+   "text": "sino que acallo y modero mis deseos,",
+   "bar": 0,
+   "units": [
+    "si",
+    "no ",
+    "que a",
+    "ca",
+    "llo y ",
+    "mo",
+    "de",
+    "ro ",
+    "mis ",
+    "de",
+    "se",
+    "os,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|0|5",
+   "text": "como un niño en brazos de su madre.",
+   "bar": 1,
+   "units": [
+    "co",
+    "mo un ",
+    "ni",
+    "ño en ",
+    "bra",
+    "zos ",
+    "de ",
+    "su ",
+    "ma",
+    "dre."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|1|0",
+   "text": "Espere Israel en el Señor",
+   "bar": 0,
+   "units": [
+    "Es",
+    "pe",
+    "re Is",
+    "ra",
+    "el ",
+    "en ",
+    "el ",
+    "Se",
+    "ñor"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|1|1",
+   "text": "ahora y por siempre.",
+   "bar": 1,
+   "units": [
+    "a",
+    "ho",
+    "ra y ",
+    "por ",
+    "siem",
+    "pre."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|2|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "Em",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|2|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 130|2|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|0|0",
+   "text": "Cuando el Señor cambió la suerte de Sión,",
+   "bar": 0,
+   "units": [
+    "Cuan",
+    "do el ",
+    "Se",
+    "ñor ",
+    "cam",
+    "bió ",
+    "la ",
+    "suer",
+    "te ",
+    "de ",
+    "Sión,"
+   ],
+   "comment": "Here it would be split Si-ón. [D]Si-Eón",
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": "Here it would be split Si-ón. [D]Si-Eón"
+   }
+  },
+  {
+   "key": "Salmo 125|0|1",
+   "text": "nos parecía soñar:",
+   "bar": 1,
+   "units": [
+    "nos ",
+    "pa",
+    "re",
+    "cí",
+    "a ",
+    "so",
+    "ñar:"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|0|2",
+   "text": "la boca se nos llenaba de risas,",
+   "bar": 0,
+   "units": [
+    "la ",
+    "bo",
+    "ca ",
+    "se ",
+    "nos ",
+    "lle",
+    "na",
+    "ba ",
+    "de ",
+    "ri",
+    "sas,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|0|3",
+   "text": "la lengua de cantares.",
+   "bar": 1,
+   "units": [
+    "la ",
+    "len",
+    "gua ",
+    "de ",
+    "can",
+    "ta",
+    "res."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|1|0",
+   "text": "Hasta los gentiles decían:",
+   "bar": 0,
+   "units": [
+    "Has",
+    "ta ",
+    "los ",
+    "gen",
+    "ti",
+    "les ",
+    "de",
+    "cí",
+    "an:"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|1|1",
+   "text": "«El Señor ha estado grande con ellos.»",
+   "bar": 1,
+   "units": [
+    "«El ",
+    "Se",
+    "ñor ",
+    "ha ",
+    "es",
+    "ta",
+    "do ",
+    "gran",
+    "de ",
+    "con ",
+    "e",
+    "llos.»"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|1|2",
+   "text": "El Señor ha estado grande con nosotros,",
+   "bar": 0,
+   "units": [
+    "El ",
+    "Se",
+    "ñor ",
+    "ha ",
+    "es",
+    "ta",
+    "do ",
+    "gran",
+    "de ",
+    "con ",
+    "no",
+    "so",
+    "tros,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     10,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|1|3",
+   "text": "y estamos alegres.",
+   "bar": 1,
+   "units": [
+    "y es",
+    "ta",
+    "mos ",
+    "a",
+    "le",
+    "gres."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|2|0",
+   "text": "Que el Señor cambie nuestra suerte",
+   "bar": 0,
+   "units": [
+    "Que el ",
+    "Se",
+    "ñor ",
+    "cam",
+    "bie ",
+    "nues",
+    "tra ",
+    "suer",
+    "te"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|2|1",
+   "text": "como los torrentes del Negueb.",
+   "bar": 1,
+   "units": [
+    "co",
+    "mo ",
+    "los ",
+    "to",
+    "rren",
+    "tes ",
+    "del ",
+    "Ne",
+    "gueb."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|2|2",
+   "text": "Los que sembraban con lágrimas",
+   "bar": 0,
+   "units": [
+    "Los ",
+    "que ",
+    "sem",
+    "bra",
+    "ban ",
+    "con ",
+    "lá",
+    "gri",
+    "mas"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|2|3",
+   "text": "cosechan entre cantares.",
+   "bar": 1,
+   "units": [
+    "co",
+    "se",
+    "chan ",
+    "en",
+    "tre ",
+    "can",
+    "ta",
+    "res."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|3|0",
+   "text": "Al ir, iban llorando,",
+   "bar": 0,
+   "units": [
+    "Al ",
+    "ir, ",
+    "i",
+    "ban ",
+    "llo",
+    "ran",
+    "do,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 4
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     4,
+     5
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|3|1",
+   "text": "llevando la semilla;",
+   "bar": 1,
+   "units": [
+    "lle",
+    "van",
+    "do ",
+    "la ",
+    "se",
+    "mi",
+    "lla;"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|3|2",
+   "text": "al volver, vuelven cantando,",
+   "bar": 0,
+   "units": [
+    "al ",
+    "vol",
+    "ver, ",
+    "vuel",
+    "ven ",
+    "can",
+    "tan",
+    "do,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5,
+     6
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|3|3",
+   "text": "trayendo sus gavillas.",
+   "bar": 1,
+   "units": [
+    "tra",
+    "yen",
+    "do ",
+    "sus ",
+    "ga",
+    "vi",
+    "llas."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|4|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "Em",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|4|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 125|4|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|0",
+   "text": "Alabad, siervos del Señor,",
+   "bar": 0,
+   "units": [
+    "A",
+    "la",
+    "bad, ",
+    "sier",
+    "vos ",
+    "del ",
+    "Se",
+    "ñor,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|1",
+   "text": "alabad el nombre del Señor.",
+   "bar": 1,
+   "units": [
+    "a",
+    "la",
+    "bad ",
+    "el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|2",
+   "text": "Bendito sea el nombre del Señor,",
+   "bar": 0,
+   "units": [
+    "Ben",
+    "di",
+    "to ",
+    "se",
+    "a el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 8
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     10
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|3",
+   "text": "ahora y por siempre:",
+   "bar": 1,
+   "units": [
+    "a",
+    "ho",
+    "ra y ",
+    "por ",
+    "siem",
+    "pre:"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     5
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|4",
+   "text": "de la salida del sol hasta su ocaso,",
+   "bar": 0,
+   "units": [
+    "de ",
+    "la ",
+    "sa",
+    "li",
+    "da ",
+    "del ",
+    "sol ",
+    "has",
+    "ta ",
+    "su o",
+    "ca",
+    "so,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9,
+     11
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|0|5",
+   "text": "alabado sea el nombre del Señor.",
+   "bar": 1,
+   "units": [
+    "a",
+    "la",
+    "ba",
+    "do ",
+    "se",
+    "a el ",
+    "nom",
+    "bre ",
+    "del ",
+    "Se",
+    "ñor."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|0",
+   "text": "El Señor se eleva sobre todos los pueblos,",
+   "bar": 0,
+   "units": [
+    "El ",
+    "Se",
+    "ñor ",
+    "se e",
+    "le",
+    "va ",
+    "so",
+    "bre ",
+    "to",
+    "dos ",
+    "los ",
+    "pue",
+    "blos,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 10
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 11
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 11,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|1",
+   "text": "su gloria sobre los cielos.",
+   "bar": 1,
+   "units": [
+    "su ",
+    "glo",
+    "ria ",
+    "so",
+    "bre ",
+    "los ",
+    "cie",
+    "los."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|2",
+   "text": "¿Quién como el Señor Dios nuestro,",
+   "bar": 0,
+   "units": [
+    "¿Quién ",
+    "co",
+    "mo el ",
+    "Se",
+    "ñor ",
+    "Dios ",
+    "nues",
+    "tro,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 5
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|3",
+   "text": "que se eleva en su trono",
+   "bar": 1,
+   "units": [
+    "que ",
+    "se e",
+    "le",
+    "va en ",
+    "su ",
+    "tro",
+    "no"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 5
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 5,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|4",
+   "text": "y se abaja para mirar",
+   "bar": 0,
+   "units": [
+    "y ",
+    "se a",
+    "ba",
+    "ja ",
+    "pa",
+    "ra ",
+    "mi",
+    "rar"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7,
+     8
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|1|5",
+   "text": "al cielo y a la tierra?",
+   "bar": 1,
+   "units": [
+    "al ",
+    "cie",
+    "lo y a ",
+    "la ",
+    "tie",
+    "rra?"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 4
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 4,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|0",
+   "text": "Levanta del polvo al desvalido,",
+   "bar": 0,
+   "units": [
+    "Le",
+    "van",
+    "ta ",
+    "del ",
+    "pol",
+    "vo al ",
+    "des",
+    "va",
+    "li",
+    "do,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 7
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 8
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 8,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8,
+     9
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|1",
+   "text": "alza de la basura al pobre,",
+   "bar": 1,
+   "units": [
+    "al",
+    "za ",
+    "de ",
+    "la ",
+    "ba",
+    "su",
+    "ra al ",
+    "po",
+    "bre,"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     8
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|2",
+   "text": "para sentarlo con los príncipes,",
+   "bar": 0,
+   "units": [
+    "pa",
+    "ra ",
+    "sen",
+    "tar",
+    "lo ",
+    "con ",
+    "los ",
+    "prín",
+    "ci",
+    "pes,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 6
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6,
+     7
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|3",
+   "text": "los príncipes de su pueblo;",
+   "bar": 1,
+   "units": [
+    "los ",
+    "prín",
+    "ci",
+    "pes ",
+    "de ",
+    "su ",
+    "pue",
+    "blo;"
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 6
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 6,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     6
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|4",
+   "text": "a la estéril le da un puesto en la casa,",
+   "bar": 0,
+   "units": [
+    "a ",
+    "la es",
+    "té",
+    "ril ",
+    "le ",
+    "da ",
+    "un ",
+    "pues",
+    "to en ",
+    "la ",
+    "ca",
+    "sa,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     12
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|2|5",
+   "text": "como madre feliz de hijos.",
+   "bar": 1,
+   "units": [
+    "co",
+    "mo ",
+    "ma",
+    "dre ",
+    "fe",
+    "liz ",
+    "de ",
+    "hi",
+    "jos."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 7
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 7,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     7
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|3|0",
+   "text": "Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+   "bar": "flexa",
+   "units": [
+    "Glo",
+    "ria al ",
+    "Pa",
+    "dre, y al ",
+    "Hi",
+    "jo, y al ",
+    "Es",
+    "pí",
+    "ri",
+    "tu ",
+    "San",
+    "to."
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "E",
+     "len": 1,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "Em",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": "flexa",
+    "joins": [
+     false,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     15
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|3|1",
+   "text": "Como era en el principio, ahora y siempre,",
+   "bar": 0,
+   "units": [
+    "Co",
+    "mo ",
+    "e",
+    "ra en ",
+    "el ",
+    "prin",
+    "ci",
+    "pio, a",
+    "ho",
+    "ra y ",
+    "siem",
+    "pre,"
+   ],
+   "notes": [
+    {
+     "pitch": "F",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "D",
+     "len": 1,
+     "unit": 9
+    },
+    {
+     "pitch": "E",
+     "len": 2,
+     "unit": 10
+    }
+   ],
+   "chords": [
+    {
+     "chord": "D",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "A",
+     "unit": 10,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 0,
+    "joins": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     11,
+     13
+    ],
+    "chords": [
+     null,
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  },
+  {
+   "key": "Salmo 112|3|2",
+   "text": "por los siglos de los siglos. Amén.",
+   "bar": 1,
+   "units": [
+    "por ",
+    "los ",
+    "si",
+    "glos ",
+    "de ",
+    "los ",
+    "si",
+    "glos. ",
+    "A",
+    "mén."
+   ],
+   "notes": [
+    {
+     "pitch": "G",
+     "len": 4,
+     "unit": 0
+    },
+    {
+     "pitch": "F",
+     "len": 2,
+     "unit": 9
+    }
+   ],
+   "chords": [
+    {
+     "chord": "Em",
+     "unit": 0,
+     "moved": false
+    },
+    {
+     "chord": "D",
+     "unit": 9,
+     "moved": false
+    }
+   ],
+   "state": {
+    "bar": 1,
+    "joins": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "notes": [
+     0,
+     9
+    ],
+    "chords": [
+     null,
+     null
+    ],
+    "comment": ""
+   }
+  }
+ ]
+}

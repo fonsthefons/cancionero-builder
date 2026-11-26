@@ -1,5 +1,18 @@
 # Progress
 
+## 2026-11-26 — Semitono chords by melody and stress (branch feature/semitono-accent-chords)
+- User asked: implement the chord placement from the semitono experiment for all semitonos (de 2,
+  3, 4; chords on passing notes too, via the melody), chord over the syllable's first letter;
+  write the open points in a doc. Rodrigo marks later.
+- web/js/formula.js: `chordSpots` (ABC → per chord: k-th syllable from the start, or k syllables
+  before the line's last stressed one), `lineSyllables` (+ `syllableStarts`, `stressedSyllable`;
+  port of marks.py), `chordLineText(text, bar, spots)` (old placement without spots or on a
+  chord-count mismatch), formulaBars gets `spots`.
+- docs/semitonos.md: rules, evidence table, open points (chords; syllable marking for later).
+- Checks: check_js_chords.py 193/193 lines of the user's marks; check_spots.py 47/47 semitonos
+  use the melody; ui_check new "semitono chords by melody" check; scratch shot of Salmo 41 +
+  Narrativo 21 looks right (short line "del Dios vivo" pushes C right: doc point 7).
+
 ## 2026-11-25 — Experiment: semitono marks (branch experiment/semitono-marks)
 Goal: learn rules from the user's marks for (1) where chords go over a psalm line and (2) which
 syllables start a melody note (to underline/italicize later). Start: Semitono de 2 (11) Alegre 5.
@@ -23,6 +36,17 @@ Loop: user marks → Claude writes rules → page pre-filled with predictions (`
 - Conclusion: rule v2 places chords and note changes for Alegre 5. Next: try it on other 2-chord
   semitonos de 2 (same page, `--pred`), then `/plan-feature` to adopt it in web/js/formula.js
   (replace "chord over the last word" + add the syllable marking).
+- Round 3 (branch experiment/semitono-marks-2), other shapes, pre-filled by the same rule:
+  Narrativo breve (05; 1 and 0 passing notes) on Salmo 130, 125, 112: 50/51 exact, the miss is
+  "Si-ón" sung as a hiatus (like santuario) → 51/51 counting it. René (15) dropped (user finds it
+  hard to sing); replaced by Rodrigo (16; bar 2 has 3 passing notes): rodrigo-round3.html
+  (Salmo 150, 133, 122; 42 lines, pre-filled).
+- PAUSED 2026-11-25. To resume: user marks rodrigo-round3.html → Download JSON → copy it to
+  docs/experiments/semitono-marks/rodrigo-round3-marks.json → `rules.py <that file>` → record
+  score → merge branch experiment/semitono-marks-2 → suggest
+  `/plan-feature adopt semitono accent rule in formula.js`. Open: semitonos whose chords don't
+  fall only on the first/last note (e.g. Narrativo 21, Solemne 26) not studied yet.
+- Known limit: diphthongs sung as hiatus (santuario, Sión) need a hand split; 2 of 199 lines.
 
 ## Tutorial v2 (2026-11-24, branch feature/tutorial-v2)
 User's feedback on the tour, all done:

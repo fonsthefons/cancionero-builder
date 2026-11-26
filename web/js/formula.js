@@ -17,13 +17,98 @@ const formulaHtml = new Map(BOOK.formulas.flatMap(([, items]) => items).map(([id
 const SEMITONO_BARS = { semitonos_2: 2, semitonos_3: 3, semitonos_4: 4 };
 
 // A semitono's bars as built: "Em Bm | A D Em" + "Flexa: Em D" ->
-// { size: 2, bars: [["Em", "Bm"], ["A", "D", "Em"]], flexa: ["Em", "D"] }
+// { size: 2, bars: [["Em", "Bm"], ["A", "D", "Em"]], flexa: ["Em", "D"], spots: chordSpots(its melody) }
 const formulaBars = new Map(BOOK.formulas.flatMap(([, items, tag]) => (SEMITONO_BARS[tag] ? items : []).map(([id]) => {
-    const lyrics = document.getElementById(id).querySelector(".lyrics");
+    const song = document.getElementById(id);
+    const lyrics = song.querySelector(".lyrics");
     const bars = lyrics.querySelector(".chord-line")?.textContent.split("|").map((bar) => bar.trim().split(/\s+/)) ?? [];
     const flexa = lyrics.querySelector(".chord-inline")?.textContent.replace(/^[^:]*:/, "").trim().split(/\s+/);
-    return [id, { size: SEMITONO_BARS[tag], bars, flexa }];
+    const abc = song.querySelector(".melody")?.dataset.abc;
+    return [id, { size: SEMITONO_BARS[tag], bars, flexa, spots: abc ? chordSpots(abc) : null }];
 })).filter(([, f]) => f.bars.length === f.size));
+
+// Where each chord of a semitono's melody falls on a psalm line (rules found with the user,
+// docs/semitonos.md): notes up to the long reciting note (len >= 4) take the line's first
+// syllables, one each; the notes after it end on the line's last stressed syllable, one per
+// syllable before it. A tuplet "(3abc" is one syllable. Per bar: [{from: "start"|"accent", k}].
+// "Am"A4 "Em"E G "Am"A2 -> [{from: "start", k: 0}, {from: "accent", k: 2}, {from: "accent", k: 0}]
+function chordSpots(abc) {
+    const length = (s) => (s.split("/")[0] ? Number(s.split("/")[0]) : 1) / (s.includes("/") ? Number(s.split("/")[1] || 2) : 1);
+    const bar = (text) => {
+        const notes = [];
+        let tuple = 0;
+        for (const [, start, chord, len] of text.matchAll(/(\(\d)?(?:"([^"]+)")?[=^_]?[A-Ga-g][,']*([\d/]*)/g)) {
+            if (tuple > 0) {
+                tuple--;
+                notes.at(-1).chord ||= chord;
+                continue;
+            }
+            if (start) tuple = Number(start[1]) - 1;
+            notes.push({ chord, len: length(len) });
+        }
+        const recto = Math.max(0, notes.findIndex((n) => n.len >= 4));
+        return notes.flatMap((n, j) => (!n.chord ? [] : j <= recto
+            ? [{ from: "start", k: j }] : [{ from: "accent", k: notes.length - 1 - j }]));
+    };
+    const [main, flexa = ""] = abc.replace(/^[A-Za-z]:.*$/gm, "").split("||");
+    return { bars: main.split("|").filter((b) => b.trim()).map(bar), flexa: flexa.trim() ? bar(flexa) : null };
+}
+
+// Spanish sung syllables of a line: [{col, stress}], col = index of the syllable's first
+// letter. Spelling rules (diphthongs, hiatus, consonant clusters), stress from the accent mark
+// or the word's ending, atonic little words, and sinalefa across words unless one of the two
+// vowels is stressed. Port of docs/experiments/semitono-marks/marks.py.
+// shortcut: hiatus that spelling hides (san-tu-a-rio, Si-ón) count as one syllable; an exception list if they matter.
+const VOWELS = "aeiouáéíóúü";
+const STRONG = "aeoáéóíú"; // accented í/ú break a diphthong like a, e, o do
+const ONSETS = new Set("bl br cl cr dr fl fr gl gr kl kr pl pr tr ch ll rr qu gu".split(" "));
+const ATONIC = new Set(("el la los las lo le les de del a al y e o u ni en con por para sin que se me te nos os " +
+    "mi mis tu tus su sus un una unos unas pero si cuando como donde mientras hacia desde entre hasta según tan es").split(" "));
+
+function syllableStarts(word) {
+    const w = word.toLowerCase();
+    const vowel = [...w].map((c, i) => (c === "y" ? !VOWELS.includes(w[i + 1] || "x")
+        : c === "u" && "qg".includes(w[i - 1] || "x") && "eiéí".includes(w[i + 1] || "x") ? false // que, guerra
+            : VOWELS.includes(c)));
+    const nuclei = [];
+    for (let i = 0; i < w.length; i++) {
+        if (!vowel[i]) continue;
+        const start = i;
+        while (vowel[i + 1] && !(STRONG.includes(w[i]) && STRONG.includes(w[i + 1]))) i++;
+        nuclei.push([start, i + 1]);
+    }
+    return [0, ...nuclei.slice(1).map(([next], n) => {
+        const end = nuclei[n][1];
+        const cons = w.slice(end, next);
+        return cons.length <= 1 ? end : ONSETS.has(cons.slice(-2)) ? next - 2 : next - 1;
+    })];
+}
+
+function stressedSyllable(word, starts) {
+    const w = word.toLowerCase();
+    if (ATONIC.has(w)) return -1;
+    const mark = w.search(/[áéíóú]/);
+    if (mark >= 0) return starts.findLastIndex((s) => s <= mark);
+    if (starts.length === 1) return 0;
+    return "aeiouns".includes(w.at(-1)) ? starts.length - 2 : starts.length - 1;
+}
+
+function lineSyllables(text) {
+    const units = [];
+    let prev = null;
+    for (const m of text.matchAll(/\p{L}+/gu)) {
+        const starts = syllableStarts(m[0]);
+        const stress = stressedSyllable(m[0], starts);
+        const sylls = starts.map((s, i) => ({ col: m.index + s, stress: i === stress }));
+        const gap = prev ? text.slice(prev.end, m.index) : "";
+        const next = m[0].toLowerCase().replace(/^h/, "");
+        if (prev && /\s/.test(gap) && !/[.;:?!«»"“”()]/.test(gap) && (VOWELS + "y").includes(prev.last)
+            && !units.at(-1).stress && stress !== 0 && (VOWELS.includes(next[0]) || next === "y")) sylls.shift();
+        units.push(...sylls);
+        prev = { end: m.index + m[0].length, last: m[0].at(-1).toLowerCase() };
+    }
+    return units;
+}
 
 // How strongly a line ends: 2 = . ; : ? ! (also before » or a quote), 1 = comma, 0 = none.
 function linePause(text) {
@@ -64,26 +149,32 @@ function versePlan(texts, f) {
     return texts.length === f.size ? texts.map((_, i) => i) : null;
 }
 
-// First chord over the first letter; the others over the last words, one word
-// each (the last chord on the last word), moved right if they would touch.
+// Each chord over the syllable its melody note falls on (spots, from chordSpots); without
+// spots, or if the melody's chords don't match the bar's: first chord over the first letter,
+// the others over the last words, one word each. Chords move right if they would touch.
 // An optional chord "(B7)" stays right after the one before it.
-function chordLineText(text, bar) {
+function chordLineText(text, bar, spots) {
     const starts = [...text.matchAll(/\S+/g)].map((m) => m.index + Math.max(0, m[0].search(/\p{L}/u)));
     const chords = bar.join(" ").split(/ (?!\()/);
+    const units = lineSyllables(text);
+    const accent = units.findLastIndex((u) => u.stress);
+    const at = (i) => units[Math.min(Math.max(i, 0), units.length - 1)].col;
+    const cols = spots?.length === chords.length && units.length
+        ? spots.map(({ from, k }) => at(from === "start" ? k : (accent < 0 ? units.length - 1 : accent) - k))
+        : chords.map((_, i) => starts[i === 0 ? 0 : starts.length - chords.length + i]);
     let line = "";
     chords.forEach((chord, i) => {
-        const word = i === 0 ? 0 : starts.length - chords.length + i;
-        const col = Math.max(starts[word] ?? 0, line ? line.length + 1 : 0);
+        const col = Math.max(cols[i] ?? 0, line ? line.length + 1 : 0);
         line = line.padEnd(col) + chord;
     });
     return line;
 }
 
-function chordedLine({ text, bold }, chords, flexa) {
+function chordedLine({ text, bold }, chords, flexa, spots) {
     const pair = Object.assign(document.createElement("div"), { className: bold ? "line-pair bold" : "line-pair" });
     const line = Object.assign(document.createElement("div"), { className: flexa ? "chord-line flexa" : "chord-line" });
     // separators in .sep spans, as lyrics.py chord_line_html writes them (transpose.js relies on it)
-    line.innerHTML = chordLineText(text, chords).replace(/[()|]/g, '<span class="sep">$&</span>');
+    line.innerHTML = chordLineText(text, chords, spots).replace(/[()|]/g, '<span class="sep">$&</span>');
     pair.append(line, text);
     return pair;
 }
@@ -111,7 +202,8 @@ function setPsalmChords(psalm, id) {
     if (f.size !== 2 && verses.some(({ plan }) => !plan)) return; // de 3 / de 4: every verse must fit
     verses.forEach(({ verse, lines, plan }) => {
         if (plan) verse.replaceChildren(...lines.map((line, i) => (plan[i] === "flexa"
-            ? chordedLine(line, f.flexa, true) : chordedLine(line, f.bars[plan[i]], false))));
+            ? chordedLine(line, f.flexa, true, f.spots?.flexa)
+            : chordedLine(line, f.bars[plan[i]], false, f.spots?.bars[plan[i]]))));
     });
 }
 

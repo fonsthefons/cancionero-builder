@@ -11,7 +11,8 @@ from show_marks import units
 
 # Round 1 answers: a slip (41|7|3), taste (41|2|1, 41|3|4), short-line rule chosen after
 # marking (41|1|1), santuario sung as a hiatus the page could not split (62|1|0).
-ACCEPTED = {"Salmo 41|7|3", "Salmo 41|2|1", "Salmo 41|3|4", "Salmo 41|1|1", "Salmo 62, 2-9|1|0"}
+ACCEPTED = {"Salmo 41|7|3", "Salmo 41|2|1", "Salmo 41|3|4", "Salmo 41|1|1", "Salmo 62, 2-9|1|0",
+            "Salmo 125|0|0"}  # Si-ón sung as a hiatus (Narrativo breve, round 3)
 
 
 def auto_units(text):
