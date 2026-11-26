@@ -1,5 +1,18 @@
 # Progress
 
+## 2026-11-26 — Semitono chords by melody and stress (branch feature/semitono-accent-chords)
+- User asked: implement the chord placement from the semitono experiment for all semitonos (de 2,
+  3, 4; chords on passing notes too, via the melody), chord over the syllable's first letter;
+  write the open points in a doc. Rodrigo marks later.
+- web/js/formula.js: `chordSpots` (ABC → per chord: k-th syllable from the start, or k syllables
+  before the line's last stressed one), `lineSyllables` (+ `syllableStarts`, `stressedSyllable`;
+  port of marks.py), `chordLineText(text, bar, spots)` (old placement without spots or on a
+  chord-count mismatch), formulaBars gets `spots`.
+- docs/semitonos.md: rules, evidence table, open points (chords; syllable marking for later).
+- Checks: check_js_chords.py 193/193 lines of the user's marks; check_spots.py 47/47 semitonos
+  use the melody; ui_check new "semitono chords by melody" check; scratch shot of Salmo 41 +
+  Narrativo 21 looks right (short line "del Dios vivo" pushes C right: doc point 7).
+
 ## 2026-11-25 — Experiment: semitono marks (branch experiment/semitono-marks)
 Goal: learn rules from the user's marks for (1) where chords go over a psalm line and (2) which
 syllables start a melody note (to underline/italicize later). Start: Semitono de 2 (11) Alegre 5.

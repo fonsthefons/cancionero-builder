@@ -795,6 +795,18 @@ def formula_checks(page, context):
     check(f"semitono rules: {rules}", rules == [
         ["flexa", 0, 1, 0, 1], [0, 1, "flexa", 0, 1], *[[0, 1, "flexa", 0, 1]] * 6, [0, 1, 0, 1], None,
         "A".ljust(19) + "D".ljust(8) + "Em", "Em      Bm (B7)", None])
+    # chords placed by the melody (docs/semitonos.md): last stressed syllable, llana/aguda/esdrújula
+    spots = page.evaluate("""() => { const s = (abc) => chordSpots(abc);
+        const alegre5 = s('"D"F4 G A "G"B2 | "A"E4 A G "D"F2 || "D"F4 "A"E'), narr = s('"F"A4 "C"E2 "Dm"F2 | "Bb"F4 "C"E D "C7"C2');
+        return [narr.bars.map((b) => b.map((x) => x.from[0] + x.k).join(" ")),
+            s('"F#m"A4 (3F/"G"G/F/ "A"E "D"D2').bars[0].map((x) => x.from[0] + x.k).join(" "),
+            chordLineText("Como busca la cierva", ["D", "G"], alegre5.bars[0]),
+            chordLineText("corrientes de agua,", ["A", "D"], alegre5.bars[1]),
+            chordLineText("tiene sed de Dios,", ["D", "G"], alegre5.bars[0]),
+            chordLineText("y alzaré las manos invocándote.", ["F", "C", "Dm"], narr.bars[0])]; }""")
+    check(f"semitono chords by melody: {spots}", spots == [
+        ["s0 a1 a0", "s0 a2 a0"], "s0 a2 a1 a0", "D".ljust(14) + "G", "A".ljust(14) + "D",
+        "D".ljust(13) + "G", "F".ljust(21) + "C Dm"])
     # a hymn's 3-line Gloria ("Gloria al Padre, gloria al Hijo, / …") splits to fit semitono de 4
     hymn = page.locator("#song-himno_completas-tiembla_el_frio_de_los_astros")
     if hymn.count():
