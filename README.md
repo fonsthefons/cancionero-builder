@@ -49,7 +49,7 @@ Run `.venv/bin/python cancionero.py` with no arguments for a menu, or:
 | `help [new\|edit]` | step by step: create a book, or add songs to / change one |
 | `new [name]` | create a book: folder, `book.yaml`, `tags.yaml`, first build, git, GitHub repo + Pages (`--dry-run` only prints the GitHub steps; `--template liturgia` copies `templates/liturgia/`: its `tags.yaml`, `horas.yaml` and songs) |
 | `add <book>` | add songs, asking as it goes: a link, a search, pasted text, a PDF or a list |
-| `edit <book>` | a local page (127.0.0.1) to add or edit one song at a time: chords you click to place and drag, melody staff with draggable notes and Play, guitar tab, tags, the same sources as `add`. Save writes `songs/<name>.md` and rebuilds; Publish commits and pushes. Also option 6 of the `add` menu. Ctrl+C stops it |
+| `edit <book>` | a local page (127.0.0.1) to add or edit one song at a time: chords you click to place and drag, melody staff with draggable notes and Play, guitar tab, tags, a Semitono panel for psalms (per-psalm exceptions saved as `semitono:`: a line's bar, two lines joined on one bar, a line's stressed syllable, a word's syllables; see docs/semitonos.md), the same sources as `add`. Save writes `songs/<name>.md` and rebuilds; Publish commits and pushes. Also option 6 of the `add` menu. Ctrl+C stops it |
 | `add-list <book> <list.txt>` | add a list of songs without questions (`--section Want`, `--report file`) |
 | `add-pdf <book> <songbook.pdf>` | import a PDF songbook (`--all`, `--author A`, `--section-tags`, `--links`) |
 | `links <book>` | find Spotify/YouTube links for songs without one (`--ask`) |

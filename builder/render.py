@@ -271,6 +271,11 @@ def song_html(song, controls, psalm=False, pills=None):
     # A psalm's play button shows only with a fórmula (CSS .song:has(.melody)).
     autor = f' data-autor="{escape(song.autor)}"' if song.autor else ""
     autor += f' data-key="{escape(song.key)}"' if song.key else ""
+    if song.semitono:  # bars 0-based, "f" as "flexa"; verses and syllables stay 1-based
+        bars = {size: {verse: ["flexa" if b == "f" else b - 1 for b in lines] for verse, lines in verses.items()}
+                for size, verses in song.semitono.get("bars", {}).items()}
+        data = {**song.semitono, **({"bars": bars} if bars else {})}
+        autor += f" data-semitono='{escape(json.dumps(data, ensure_ascii=False))}'"
     if song.melody or psalm:
         controls = with_play(controls)
     return (
@@ -351,11 +356,12 @@ def render_book(book, songs, groups, web_dir, horas=None):
 
     # core.js first (it defines helpers the feature scripts use), then the rest.
     # abcjs (480 kB) and melody.js only in books with a song `melody:`.
-    # formula.js only in books with psalm fórmulas (book.yaml psalm_tags / formula_tag).
+    # formula-core.js and formula.js only in books with psalm fórmulas (book.yaml psalm_tags / formula_tag).
     melodies = any(song.melody for song in songs)
     psalms, formulas = formula_choices(book, groups, horas)
     # progress.js only in books with book.yaml progress: true.
-    skip = ({"core.js"} | (set() if melodies else {"melody.js"}) | (set() if formulas else {"formula.js"})
+    skip = ({"core.js"} | (set() if melodies else {"melody.js"})
+            | (set() if formulas else {"formula-core.js", "formula.js"})
             | (set() if book.progress else {"progress.js"}))
     scripts = [web / "js" / "core.js"] + sorted(p for p in (web / "js").glob("*.js") if p.name not in skip)
     if melodies:

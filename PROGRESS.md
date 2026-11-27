@@ -1,5 +1,105 @@
 # Progress
 
+## Plan: semitono exceptions editor (2026-11-27)
+Goal: per-psalm exceptions to the semitono rules (which bar each line sings, lines joined on one
+bar, a line's stressed syllable, a word's syllable split), edited in a "Semitono" panel of the
+local editor (`cancionero.py edit`), saved in the song file and applied by the book page.
+Out of scope: editing in the published book page; exceptions per individual semitono (they are
+per size: de 2 / de 3 / de 4); sinalefa join/break by hand; tonos rectos; melisma marks.
+Branch: feature/semitono-exceptions
+
+User's choices (2026-11-27): local editor; syllables = stress per line (+ word splits), applying to
+every semitono; bars/joins per size; all three in one plan.
+Defaults picked: the song field (1-based in the file, readable by hand):
+```
+semitono:
+  bars:                 # per semitono size
+    "4":
+      2: [1, 1, 2, 3, 4, 4]    # verse 2 (from 1): bar of each line; equal neighbours = joined
+    "2":
+      3: [1, 2, f, 1, 2]       # f = flexa
+    "3":
+      1: [1, 2, 2, 3]          # joining two lines makes a 4-line verse fit de 3
+  stress:               # line text (as in the song, trimmed) -> stressed syllable, from 1
+    "En el lecho me acuerdo de ti": 9
+  split:                # word (lowercase, accents kept) -> its sung syllables
+    "sión": "si-ón"
+```
+A verse override whose length ≠ the verse's line count (after the de 4 Gloria split) is ignored
+(the editor shows it red). Keys by line text so a repeated line gets the same fix.
+
+- [x] S1 Song field `semitono`: parse, validate, render, editor save
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: sonnet    effort: high
+  after: -
+  context: builder/songs.py:12-40,120-176 (OPTIONAL_FIELDS, Song, load_song); builder/render.py:240-280 (song/psalm HTML, `data-abc` at 251); importer/editor.py:130-150 (api_song fields), 199-238 (api_save), and update_song / write_song (grep them); tests/test_builder.py, tests/test_editor.py (pattern only)
+  do: Add optional field `semitono` (format in the plan header) to OPTIONAL_FIELDS and Song (dict, default empty). Validate in load_song with SongError messages: bars keys "2"/"3"/"4", verse keys ints ≥ 1, values lists of ints 1..size (or "f" only for "2"); stress: str -> int ≥ 1; split: str -> str with "-". Normalize (str keys, ints) so YAML `2:` and `"2":` both work. render.py: on the song element of songs that have it, `data-semitono='<json>'` (escaped), converted to 0-based bars, "flexa" for f. Editor: api_song returns it, api_save accepts `semitono` (dict, validated the same way via the songs.py helper) and writes it to the frontmatter only when non-empty (else removes it); keep every other field byte-identical. Tests: parse/validation errors, render attribute, editor save round trip incl. removing it.
+  done: `/Users/fons/Documents/programs/cancionero-builder/.venv/bin/python -m pytest /Users/fons/Documents/programs/cancionero-builder/tests -q` → all pass (75 before + new)
+  return: <= 10 lines: files changed, done result, anything surprising
+
+- [x] S2 formula.js: shared core + apply the exceptions
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: opus    effort: high
+  after: S1
+  context: web/js/formula.js (whole file, 23 KB); builder/render.py:350-365 (script list and skip set); docs/semitonos.md:6-60; tests/browser/ui_check.py ("semitono chords by melody" check only: grep it)
+  do: (a) Move the pure functions (chordSpots, syllable helpers + lineSyllables, linePause, lineEnd, semitono2Plan, semitono4Plan, versePlan, splitBar, chordLineText, syllableMarks and their constants) into new web/js/formula-core.js with no DOM/BOOK use at top level; formula.js keeps the page code. Scripts load sorted, so formula-core.js comes before formula.js; render.py must skip formula-core.js too in books without fórmulas. (b) Exceptions from `psalm.dataset.semitono` (S1's JSON, 0-based): lineSyllables(text, ex) uses ex.split for those words and ex.stress[text.trim()] (1-based syllable) as the line's stress; versePlan uses ex.bars[size][verse] when its length equals the line count; setPsalmChords' "every verse must fit" check and formulaFit (de 3 green / de 4 red) count an overridden verse as fitting. Chords, Sílabas underlines and the red bar-shared bracket follow automatically. (c) Psalms without the attribute must behave exactly as now. (d) Add an override case to ui_check's semitono check (a scratch song with a de 4 join override and a stress override).
+  done: rebuild a scratch copy of cancionero-liturgia, then run docs/experiments/semitono-marks/check_js_chords.py and check_js_syllables.py, docs/experiments/flexa-marks/check_js.py and docs/experiments/de4-marks/check_js.py (usage in each docstring) → unchanged: 193/193, 193/193, 201/201 + 60/60, 247/247 + 54/60; pytest tests -q all pass
+  return: <= 10 lines: files changed, the 4 check results, ui_check result, anything surprising
+
+- [x] S3 Editor "Semitono" panel
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:implementer
+  model: opus    effort: high
+  after: S2
+  context: web/editor/index.html (whole, 4.5 KB); web/editor/editor.js:1-60, 300-400, 440-565 (rows/text, showSong, save); web/editor/editor.css; importer/editor.py:40-60 (SHARED static files), 255-270 (routes); web/js/formula-core.js (from S2); builder/book.py (psalm_tags / formula_tag settings: grep)
+  do: (a) editor.py: serve formula-core.js (add to SHARED); new `/api/formulas` → the book's semitonos [{id, title, size, chords: bar chord lists, flexa, abc}] from songs under formula_tag with subtag semitonos_2/3/4 (same parsing as formulaBars in formula.js: chord line split on "|", "Flexa:" line). (b) index.html/editor.js: a "Semitono" section, shown only for songs with a psalm tag in a book with fórmulas, after the Melody section. A select of semitonos (remember the last pick in localStorage). Preview of the current lyrics (re-rendered on text edits) per verse: each line with its chords as the book would place them (chordLineText/syllableMarks from formula-core.js), a bar button left of it showing 1–size or "f" (click cycles; two neighbours with the same bar = joined, shown with the red bracket class), and the line's syllables as small chips (click a chip = that line's stress; the stressed one highlighted; a "×" clears the line's stress). A "Split word" input pair (word, syllables like si-ón) listing current splits with delete. Per verse a "reset" link clears its bar override; an override with the wrong length is shown red. (c) The edits live in song.semitono, mark the song dirty, and save() sends `semitono` (empty → removed). (d) tests/test_editor.py: /api/formulas on a scratch book.
+  done: pytest tests -q all pass; then a scratch screenshot (playwright, like tests/browser/ui_check.py does) of the editor on a scratch liturgia copy with Salmo 62 and a de 4 semitono picked, saved to scratch/semitono-panel.png, and a save→reload showing the override in the song file
+  return: <= 10 lines: files changed, done results, screenshot path, anything surprising
+
+- [x] S4 Docs
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: inline
+  model: sonnet    effort: low
+  after: S3
+  context: docs/semitonos.md (add a section); README.md (editor part: grep "edit")
+  do: docs/semitonos.md: "Exceptions" section (field format, what each fixes, editor panel, verse-length rule). README: one paragraph on the Semitono panel. PROGRESS.md run log.
+  done: the two files mention `semitono:`; pytest tests -q all pass
+  return: <= 5 lines
+
+- [x] S5 Review
+  repo: /Users/fons/Documents/programs/cancionero-builder
+  run: agent:reviewer
+  model: opus    effort: high
+  after: S4
+  context: `git diff main...feature/semitono-exceptions`
+  do: Look for: song files losing or reordering other frontmatter on save; bad YAML accepted; psalms without the field changing behaviour; 0/1-based mixups between file, data attribute and JS; stress keys not matching after the de 4 Gloria split.
+  done: ranked findings; important ones fixed and the S2 checks re-run unchanged
+  return: <= 10 lines
+
+Escalation: a failed step is retried once one level higher (low → medium → high, then sonnet → opus) with the failure in its brief; failing again, or no longer fitting the code, it goes under "Blocked" with the reason; continue with steps that don't depend on it.
+
+### Run log
+- S1 2026-11-27 pass: pytest 77 passed. data-semitono converts only bars to 0-based; verse keys
+  (JSON strings) and stress/split stay 1-based. A save without a `semitono` key keeps the old value; `{}` removes it.
+- S2 2026-11-27 pass: web/js/formula-core.js (pure, + ownBars); checks 193/193, 193/193, 201/201+60/60,
+  247/247+54/60; pytest 77; ui_check scratch/liturgia-picker 413/0 incl. new exceptions check. Stress
+  override = the only stress, counted after sinalefa; a split is used only if its parts spell the word.
+- S3 2026-11-27 pass (resumed after a network error): pytest 78; scratch/semitono-panel.png; save→reload keeps
+  bars/stress/split. Semitono edits don't set song.dirty; save() always sends song.semitono.
+- S4 2026-11-27: docs/semitonos.md "Exceptions per psalm", README editor row.
+- S5 2026-11-27: review, 6 low/medium findings; fixed 5 (stress key normalization `stressKey`, shared
+  `gloriaSplit` also in formulaFit, new-song validation before tags/aliases, ASCII verse keys, split
+  keys lowercased + must spell the word). Left: overrides keyed by verse number shift if verses are
+  added/removed (shown red only on length mismatch). Final: pytest 79; chords 193/193, syllables
+  193/193, flexa 201/201+60/60, de4 247/247+54/60; ui_check 413/0; panel save→reload OK.
+- S3 2026-11-27 pass: editor Semitono panel (importer/editor.py /api/formulas + psalm_tags in /api/book,
+  web/editor/index.html, editor.js, editor.css; test_formulas). pytest 78 passed. scratch/semitono_panel.py
+  (copy of liturgia-picker in scratch/semitono-panel-book): Salmo 62 + de 4 (1), shot scratch/semitono-panel.png,
+  save → song file has `semitono:` bars/stress/split → reload shows them. Psalms = songs with a psalm tag only
+  (formula_parts hymns not detected); preview follows the chord grid (text-mode typing shows after switching back).
+
 ## 2026-11-27 — "Sílabas" button (branch feature/semitono-syllables)
 - User: optional per-song button to show where the melody changes note; computed in the
   browser; underline only the letters of each note-change syllable after the reciting note;
@@ -1253,6 +1353,24 @@ read as images; the text layer is OCR noise).
 - tags.yaml `pill:` sets the text (`""` hides it); subtags take `{label: ..., pill: ...}`.
   `to_yaml` keeps it. Files: builder/tags.py, builder/render.py, web/styles.css, README, test.
 - cancionero/tags.yaml: ciclos → I/II/III/IV (not committed in the book). All 6 books rebuilt.
+
+## Liturgia: Adviento, Cuaresma and Dies Irae hymns (2026-11-27)
+
+- Source: 3 scanned PDFs (no text layer, so not `add-pdf`); transcribed by hand from page
+  renders. scratch/crop_pdf.py (render a region), scratch/staff_guides.py (pitch guides on a
+  staff), scratch/inline_to_lines.py ("[F]Ven" inline chords -> chord-over-lyric lines).
+- New in cancionero-liturgia/songs: preparemos_los_caminos, cielos_lloved_vuestra_justicia,
+  jesucristo_palabra_del_padre, ven_ven_senor_no_tardes (adviento), llorando_los_pecados,
+  en_tierra_extrana_peregrinos (cuaresma), himno-dies_irae (new subtag tiempo_ordinario).
+  Te damos gracias, Libra mis ojos, Éste es el día already existed: tagged cuaresma.
+- Melodies read from the hand-written incipits (Dies Irae breves written as half-length notes).
+- Sílabas button: CSS "experimental" pill (PR #57).
+
+## 2026-11-27: two songs for cancionero-organo
+
+- New: entrada-bendigamos_a_cristo (misa/entrada; chorus written out twice per
+  repeat: 1st ending Dm F G, 2nd ending Dm G C) and comunion-veni_veni_emmanuel
+  (misa/comunion; all 3 stacked verses + refrain after each). Built; not published.
 
 ## Blocked
 

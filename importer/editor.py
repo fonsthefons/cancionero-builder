@@ -24,7 +24,7 @@ import yaml
 from builder.build import build_book, load_book_songs
 from builder.create import CreateError, publish_book
 from builder.lyrics import LONG_LINE, LABEL_RE, BOLD_MARK, clean_line, is_chord_line, is_tablature
-from builder.songs import SongError, load_song
+from builder.songs import SongError, load_song, parse_semitono
 from builder.tags import Taxonomy
 from builder.text import slug
 
@@ -43,7 +43,9 @@ from .youtube import find_video
 
 WEB = Path(__file__).resolve().parent.parent / "web"
 EDITOR = WEB / "editor"
-SHARED = {"abcjs-basic-min.js": WEB / "vendor", "melody.js": WEB / "js", "transpose.js": WEB / "js"}
+SHARED = {"abcjs-basic-min.js": WEB / "vendor", "melody.js": WEB / "js", "transpose.js": WEB / "js",
+          "formula-core.js": WEB / "js"}
+SEMITONO_SIZES = {"semitonos_2": 2, "semitonos_3": 3, "semitonos_4": 4}  # as formula.js SEMITONO_BARS
 
 
 class ApiError(Exception):
@@ -130,6 +132,7 @@ def api_book(book, _):
     if book.strict_tags:  # as ask_tags: only flat tags and subtags
         choices = [c for c in choices if c[1] is not None or taxonomy.tags[c[0]].is_flat]
     return {"title": book.title, "default_author": book.default_author, "strict_tags": book.strict_tags,
+            "psalm_tags": book.psalm_tags,
             "has_horas": book.horas_file.exists(), "long_line": LONG_LINE,
             "tags": [{"tag": tag, "sub": sub, "label": label} for tag, sub, label in choices],
             "songs": [{"id": path.stem, "title": song.title, "autor": song.autor,
@@ -141,7 +144,27 @@ def api_song(book, query):
     song = load_song(song_path(book, query.get("id", "")))
     return {"id": song.id, "title": song.title, "autor": song.autor, "capo": song.capo, "link": song.link,
             "added": song.added, "tags": song.tags, "horas": song.horas, "melody": song.melody,
-            "tab": song.tab, "ignore": song.ignore, "body": song.body}
+            "tab": song.tab, "ignore": song.ignore, "semitono": song.semitono, "body": song.body}
+
+
+def api_formulas(book, _):
+    """The book's semitonos for the editor's Semitono panel: [{id, title, size, chords, flexa, abc}].
+    As formula.js formulaBars reads them: the first chord line split on "|", the "Flexa:" line;
+    only those with one bar per size. None without psalm_tags and formula_tag."""
+    if not (book.psalm_tags and book.formula_tag):
+        return []
+    found = []
+    for path, song in book_songs(book):
+        size = next((SEMITONO_SIZES[sub] for sub in song.tags.get(book.formula_tag, []) if sub in SEMITONO_SIZES), 0)
+        lines = [clean_line(line) for line in song.body.split("\n")]
+        labels = [m for m in map(LABEL_RE.fullmatch, lines) if m]
+        chords = next((line for line in lines if not LABEL_RE.fullmatch(line) and is_chord_line(line)), "")
+        bars = [bar.split() for bar in chords.split("|")] if chords else []
+        flexa = next((m.group(2).split() for m in labels if m.group(1).strip().lower() == "flexa:"), None)
+        if size and len(bars) == size:
+            found.append({"id": path.stem, "title": song.title, "size": size, "chords": bars, "flexa": flexa,
+                          "abc": song.melody})
+    return found
 
 
 def api_rows(book, data):
@@ -219,12 +242,15 @@ def api_save(book, data):
     if data.get("id"):
         path = song_path(book, str(data["id"]))
         old = load_song(path)
+        # a page that doesn't send semitono (an older one) keeps the song's
+        fields["semitono"] = parse_semitono(data["semitono"]) if "semitono" in data else old.semitono
         update_song(book, path, {**fields, "tags": save_tags(book, taxonomy, picked), "added": old.added,
                                  "key": old.key})
     else:
         found = existing_song(book, title)
         if found and not data.get("force"):
             raise ApiError(409, {"exists": found.name})
+        fields["semitono"] = parse_semitono(data.get("semitono"))  # first: an invalid one changes nothing
         site_artist = text_field(data, "site_artist").strip()
         aliases = load_aliases(book)
         if site_artist and autor and autor != alias_for(site_artist, aliases) and autor != site_artist:
@@ -261,7 +287,7 @@ def list_field(data, name, kind):
     return value
 
 
-GET_API = {"/api/book": api_book, "/api/song": api_song}
+GET_API = {"/api/book": api_book, "/api/song": api_song, "/api/formulas": api_formulas}
 POST_API = {"/api/rows": api_rows, "/api/paste": api_paste, "/api/fetch": api_fetch, "/api/search": api_search,
             "/api/links": api_links, "/api/save": api_save, "/api/publish": api_publish}
 
