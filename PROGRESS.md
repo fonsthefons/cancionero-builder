@@ -1382,7 +1382,9 @@ read as images; the text layer is OCR noise).
   tonos rectos…), with and without Sílabas + hidden chords + 2 columns + 180% text,
   every psalm's search and slides words equal the built ones, and every line typed
   into the search finds its psalm. 64 fórmulas × 2: all pass (the old build fails).
-- cancionero-liturgia rebuilt and published with the fix.
+- cancionero-liturgia: the same fix was hand-patched into its index.html and published
+  (commit 0cec06c). Not rebuilt from the builder: that would also publish PR #60
+  (control panel), merged after the book's last build; its next build carries the fix.
 
 ## Blocked
 
