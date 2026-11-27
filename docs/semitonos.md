@@ -6,8 +6,21 @@ the rules worked out with the user, and what is still open. Add to it as we lear
 ## What it does now (web/js/formula.js)
 
 **Which bar each line sings** (`versePlan`, `semitono2Plan`): de 2 alternates bars 1, 2; an odd
-verse gets one flexa, placed by punctuation. De 3 / de 4: one bar per line, the verse must have
+verse gets one flexa, placed by punctuation; a quote is never split (a line inside an open « or
+“, or a ":" line just before one, doesn't count as a group end). Flexa evidence: round 1
+(`docs/experiments/flexa-marks/round1-marks.json`) 59/60 before the quote rule, 60/60 after; it
+moves 3 of the book's 201 odd verses. Round 2 (60 unseen verses, incl. the 2 moved ones): 60/60.
+81 odd verses never marked. De 3 / de 4: one bar per line, the verse must have
 exactly 3 / 4 lines (de 4 splits the Gloria's first line).
+
+**Planned (user, 2026-11-27):**
+- Flexas only apply to semitonos de 2 (done, see above: 120/120 marked verses).
+- De 3 / de 4 never use flexas. When line count ≠ bar count:
+  - more lines than bars → join lines for chord placement only (the HTML keeps the lines).
+    E.g. de 4, 5-line verse: two lines share one bar.
+  - fewer lines than bars → drop bars. E.g. de 4, 2-line verse: line 1 gets bar 1, line 2 gets
+    the last bar.
+  Which lines to join / bars to drop in other cases: still to work out, after flexas.
 
 **Where each chord goes** (`chordSpots`, `chordLineText`), from the semitono's melody (ABC):
 - The bar's notes up to the long reciting note (length ≥ 4) take the line's first syllables,
@@ -85,6 +98,9 @@ Not in the book yet. Open points:
 - `docs/experiments/semitono-marks/marks.py`: builds the marking page (`--pred` fills it with the
   rule's guess); `--test` self-check.
 - `show_marks.py <marks.json>`: the user's marks against word stress.
+- `docs/experiments/flexa-marks/`: `flexa.py` builds the flexa page (odd verses, rule pre-filled;
+  marks files given are skipped, `--include` forces verses in), `show.py` lists the user's
+  changes, `rules.py` scores variants, `check_js.py` checks formula.js against Python and marks.
 - `rules.py <marks.json>`: scores the rule (Python) on a marks file.
 - `check_js_chords.py`, `check_spots.py` (same folder): formula.js against the marks / every
   semitono in the book (read-only, WebKit).
