@@ -7,10 +7,22 @@ const chordsSetting = songSetting("chords", ["show", "hide"], (value) =>
 const columnsSetting = songSetting("columns", ["1", "2"], (value) =>
     setActionLabel("toggle-all-columns", value === "2" ? "1 column" : "2 columns"));
 
-onAction("toggle-chords", (button, song) => chordsSetting.toggleSong(song));
-onAction("toggle-columns", (button, song) => columnsSetting.toggleSong(song));
-onAction("toggle-all-chords", () => chordsSetting.toggleGlobal());
-onAction("toggle-all-columns", () => columnsSetting.toggleGlobal());
+// Slider of each song's Chords/Columns button: on = chords showing / 2 columns,
+// from the song's own override or else the book-wide value.
+function syncSwitches() {
+    for (const [action, name, on] of [["toggle-chords", "chords", "show"], ["toggle-columns", "columns", "2"]]) {
+        document.querySelectorAll(`[data-action="${action}"]`).forEach((button) => {
+            const value = button.closest(".song")?.dataset[name] || document.body.dataset[name];
+            button.setAttribute("aria-pressed", value === on);
+        });
+    }
+}
+
+onAction("toggle-chords", (button, song) => { chordsSetting.toggleSong(song); syncSwitches(); });
+onAction("toggle-columns", (button, song) => { columnsSetting.toggleSong(song); syncSwitches(); });
+onAction("toggle-all-chords", () => { chordsSetting.toggleGlobal(); syncSwitches(); });
+onAction("toggle-all-columns", () => { columnsSetting.toggleGlobal(); syncSwitches(); });
+syncSwitches();
 
 // Put every song back as written: transpose 0, no per-song chords/columns.
 onAction("reset-songs", () => {
@@ -18,6 +30,7 @@ onAction("reset-songs", () => {
         .forEach((song) => setTranspose(song, 0));
     chordsSetting.clearSongs();
     columnsSetting.clearSongs();
+    syncSwitches();
     document.querySelectorAll(".song[data-song-scale]").forEach((song) => setSongScale(song, 1));
     songState.clearAll();
 });

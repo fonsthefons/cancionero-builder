@@ -104,7 +104,7 @@ function setFormula(psalm, id) {
     // "Sílabas": underline where the melody changes note; only with a semitono that has a melody.
     let toggle = psalm.querySelector(".syllables-toggle");
     if (!toggle) {
-        toggle = Object.assign(document.createElement("button"), { className: "syllables-toggle", textContent: "Sílabas" });
+        toggle = Object.assign(document.createElement("button"), { className: "syllables-toggle switch", textContent: "Sílabas" });
         toggle.dataset.action = "syllables-toggle";
         psalm.querySelector(".formula-pick").after(toggle);
     }
