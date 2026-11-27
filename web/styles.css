@@ -910,6 +910,17 @@ body.drawer-open {
     font-weight: bold;
 }
 
+/* Fits this psalm (green) / not recommended for it (red): formula.js formulaFit */
+.formula-options button.formula-good {
+    outline: 2px solid #2e7d32;
+    outline-offset: -2px;
+}
+
+.formula-options button.formula-bad {
+    outline: 2px solid #c62828;
+    outline-offset: -2px;
+}
+
 .formula-options [hidden] {
     display: none;
 }
