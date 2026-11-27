@@ -1,0 +1,24 @@
+{
+  "title": "Cancionero builder",
+  "programs": {"cancionero": {"cmd": ".venv/bin/python cancionero.py", "parser": "cancionero:build_parser"}},
+  "tasks": [
+    {"id": "publish", "title": "Publish a book", "blurb": "Rebuild, commit and push: the website updates.", "command": "publish",
+     "steps": ["Pick the book.", "Press Run."], "show": ["book", "message"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}, "message": {"label": "Commit message (optional)"}}},
+    {"id": "edit", "title": "Edit a song in the browser", "blurb": "Add or edit one song (chords, melody, tab, tags); saves rebuild.", "command": "edit",
+     "steps": ["Pick the book.", "Press Run and edit in the page that opens.", "Press Stop when done."], "show": ["book"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}}},
+    {"id": "add-pdf", "title": "Import a PDF songbook", "blurb": "Add the songs of a PDF songbook to a book.", "command": "add-pdf",
+     "steps": ["Pick the book and the PDF.", "Tick 'Every song' to skip the questions."], "show": ["book", "pdf", "all"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}, "pdf": {"label": "PDF"}, "all": {"label": "Every song, no questions"}}},
+    {"id": "add-list", "title": "Add a list of songs", "blurb": "Add songs from a list, one per line, without questions.", "command": "add-list",
+     "steps": ["Pick the book and the list file.", "Press Run."], "show": ["book", "list", "limit"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}, "list": {"label": "List file"}, "limit": {"label": "At most this many songs"}}},
+    {"id": "links", "title": "Find missing links", "blurb": "Find Spotify/YouTube links for songs that have none.", "command": "links",
+     "steps": ["Pick the book.", "Press Run."], "show": ["book", "limit"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}, "limit": {"label": "At most this many songs"}}},
+    {"id": "build", "title": "Rebuild a book", "blurb": "Rebuild index.html after editing songs by hand.", "command": "build",
+     "steps": ["Pick the book.", "Press Run."], "show": ["book"],
+     "fields": {"book": {"label": "Book", "kind": "choice", "options": ["cancionero", "cancionero-hakuna", "cancionero-pagano", "cancionero-liturgia", "cancionero-organo"]}}}
+  ]
+}

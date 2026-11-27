@@ -391,7 +391,7 @@ def interactive():
     return 1
 
 
-def parser():
+def build_parser():
     p = argparse.ArgumentParser(description="Create song books and add songs to them.",
                                 formatter_class=argparse.RawDescriptionHelpFormatter, epilog=__doc__)
     sub = p.add_subparsers(dest="command")
@@ -462,7 +462,7 @@ def parser():
 
 
 def main(argv=None):
-    args = parser().parse_args(argv)
+    args = build_parser().parse_args(argv)
     try:
         if not args.command:
             return interactive()

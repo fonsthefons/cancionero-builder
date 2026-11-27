@@ -3,6 +3,9 @@
 cat <<'EOF'
 cancionero-builder: builds song-book websites (one folder + GitHub Pages per book) from songs in markdown.
 
+  ./ui.sh
+      the same commands in a browser page
+
   .venv/bin/python cancionero.py new mybook
       create a book: folder, book.yaml, tags.yaml, first build, git, GitHub repo + Pages
 
