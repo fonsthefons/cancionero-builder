@@ -47,8 +47,10 @@ function chordSpots(abc) {
             notes.push({ chord, len: length(len) });
         }
         const recto = Math.max(0, notes.findIndex((n) => n.len >= 4));
-        return notes.flatMap((n, j) => (!n.chord ? [] : j <= recto
-            ? [{ from: "start", k: j }] : [{ from: "accent", k: notes.length - 1 - j }]));
+        // recto: notes before the reciting note; after: notes after it (for the syllable marks)
+        return Object.assign(notes.flatMap((n, j) => (!n.chord ? [] : j <= recto
+            ? [{ from: "start", k: j }] : [{ from: "accent", k: notes.length - 1 - j }])),
+            { recto, after: notes.length - 1 - recto });
     };
     const [main, flexa = ""] = abc.replace(/^[A-Za-z]:.*$/gm, "").split("||");
     return { bars: main.split("|").filter((b) => b.trim()).map(bar), flexa: flexa.trim() ? bar(flexa) : null };
@@ -58,15 +60,18 @@ function chordSpots(abc) {
 // letter. Spelling rules (diphthongs, hiatus, consonant clusters), stress from the accent mark
 // or the word's ending, atonic little words, and sinalefa across words unless one of the two
 // vowels is stressed. Port of docs/experiments/semitono-marks/marks.py.
-// shortcut: hiatus that spelling hides (san-tu-a-rio, Si-ón) count as one syllable; an exception list if they matter.
+// Hiatus that spelling hides: HIATUS gives those words' syllable starts (add words as found).
 const VOWELS = "aeiouáéíóúü";
 const STRONG = "aeoáéóíú"; // accented í/ú break a diphthong like a, e, o do
 const ONSETS = new Set("bl br cl cr dr fl fr gl gr kl kr pl pr tr ch ll rr qu gu".split(" "));
 const ATONIC = new Set(("el la los las lo le les de del a al y e o u ni en con por para sin que se me te nos os " +
     "mi mis tu tus su sus un una unos unas pero si cuando como donde mientras hacia desde entre hasta según tan es").split(" "));
 
+const HIATUS = { "sión": [0, 2], "santuario": [0, 3, 5, 6], "santuarios": [0, 3, 5, 6] }; // Si-ón, san-tu-a-rio
+
 function syllableStarts(word) {
     const w = word.toLowerCase();
+    if (HIATUS[w]) return HIATUS[w];
     const vowel = [...w].map((c, i) => (c === "y" ? !VOWELS.includes(w[i + 1] || "x")
         : c === "u" && "qg".includes(w[i - 1] || "x") && "eiéí".includes(w[i + 1] || "x") ? false // que, guerra
             : VOWELS.includes(c)));
@@ -217,13 +222,53 @@ function chordLineText(text, bar, spots) {
     return line;
 }
 
-function chordedLine({ text, bold }, chords, flexa, spots) {
-    if (!chords.length) return Object.assign(document.createElement("div"), { className: bold ? "lyric-line bold" : "lyric-line", textContent: text });
+// Where the melody changes note after the reciting note (user, 2026-11-27): the bar's notes
+// after it end on the line's last stressed syllable, one syllable each going back, never
+// before the reciting note's syllable (spots.recto; a note landing there shares it: 2 notes).
+// withRecto: false for the second of two lines on one bar (the reciting note is on the first).
+// -> [[start, end, notes]]: the letters of each marked syllable.
+function syllableMarks(text, spots, withRecto) {
+    const units = lineSyllables(text);
+    if (!spots || !spots.after || !units.length) return [];
+    const accent = units.findLastIndex((u) => u.stress);
+    const last = accent < 0 ? units.length - 1 : accent;
+    const floor = withRecto ? Math.min(spots.recto, units.length - 1) : 0;
+    const count = new Map();
+    for (let k = spots.after - 1; k >= 0; k--) {
+        const u = Math.max(last - k, floor);
+        count.set(u, (count.get(u) ?? (withRecto && u === floor ? 1 : 0)) + 1);
+    }
+    return [...count].map(([u, notes]) => {
+        const start = units[u].col;
+        const wordEnd = start + text.slice(start).match(/^\p{L}*/u)[0].length;
+        return [start, Math.min(wordEnd, units[u + 1]?.col ?? wordEnd), notes];
+    });
+}
+
+// The lyric text with each marked syllable in a span (underlined when "Sílabas" is on).
+function markedText(text, marks) {
+    const out = document.createDocumentFragment();
+    let at = 0;
+    for (const [start, end, notes] of marks.sort((a, b) => a[0] - b[0])) {
+        out.append(text.slice(at, start),
+            Object.assign(document.createElement("span"), { className: notes > 1 ? "syl syl2" : "syl", textContent: text.slice(start, end) }));
+        at = end;
+    }
+    out.append(text.slice(at));
+    return out;
+}
+
+function chordedLine({ text, bold }, chords, flexa, spots, marks = []) {
+    if (!chords.length) {
+        const plain = Object.assign(document.createElement("div"), { className: bold ? "lyric-line bold" : "lyric-line" });
+        plain.append(markedText(text, marks));
+        return plain;
+    }
     const pair = Object.assign(document.createElement("div"), { className: bold ? "line-pair bold" : "line-pair" });
     const line = Object.assign(document.createElement("div"), { className: flexa ? "chord-line flexa" : "chord-line" });
     // separators in .sep spans, as lyrics.py chord_line_html writes them (transpose.js relies on it)
     line.innerHTML = chordLineText(text, chords, spots).replace(/[()|]/g, '<span class="sep">$&</span>');
-    pair.append(line, text);
+    pair.append(line, markedText(text, marks));
     return pair;
 }
 
@@ -250,12 +295,15 @@ function setPsalmChords(psalm, id) {
     if (f.size !== 2 && verses.some(({ plan }) => !plan)) return; // de 3 / de 4: every verse must fit
     verses.forEach(({ verse, lines, plan }) => {
         if (plan) verse.replaceChildren(...lines.map((line, i) => {
-            if (plan[i] === "flexa") return chordedLine(line, f.flexa, true, f.spots?.flexa);
+            if (plan[i] === "flexa") {
+                return chordedLine(line, f.flexa, true, f.spots?.flexa, syllableMarks(line.text, f.spots?.flexa, true));
+            }
             const [bar, spots] = [f.bars[plan[i]], f.spots?.bars[plan[i]]];
             const shared = plan[i + 1] === plan[i] ? 0 : plan[i - 1] === plan[i] ? 1 : -1; // de 4: two lines, one bar
-            if (shared < 0) return chordedLine(line, bar, false, spots);
+            if (shared < 0) return chordedLine(line, bar, false, spots, syllableMarks(line.text, spots, true));
             const [chords, part] = splitBar(bar, spots)[shared];
-            const el = chordedLine(line, chords, false, part);
+            // two lines, one bar: the notes after the reciting one all fall on the second line
+            const el = chordedLine(line, chords, false, part, shared ? syllableMarks(line.text, spots, false) : []);
             el.classList.add("bar-shared"); // red bracket: these two lines are one bar
             return el;
         }));
@@ -271,11 +319,31 @@ function setFormula(psalm, id) {
     if (typeof playing !== "undefined" && playing?.song === psalm) stopMelody(); // melody.js
     box.innerHTML = id ? formulaHtml.get(id) : "";
     setPsalmChords(psalm, id);
+    // "Sílabas": underline where the melody changes note; only with a semitono that has a melody.
+    let toggle = psalm.querySelector(".syllables-toggle");
+    if (!toggle) {
+        toggle = Object.assign(document.createElement("button"), { className: "syllables-toggle", textContent: "Sílabas" });
+        toggle.dataset.action = "syllables-toggle";
+        psalm.querySelector(".formula-pick").after(toggle);
+    }
+    toggle.hidden = !psalm.querySelector(":scope > .lyrics .syl");
+    showSyllables(psalm, songState.get(psalm, "syllables") === true);
     // Not yet defined while the page loads; melody.js and transpose.js then do this themselves.
     if (typeof melodyObserver !== "undefined") melodyObserver.observe(psalm);
     if (typeof renderChords === "function") renderChords(psalm);
     if (typeof renderSession === "function") renderSession();
 }
+
+function showSyllables(psalm, on) {
+    psalm.classList.toggle("show-syllables", on);
+    psalm.querySelector(".syllables-toggle")?.setAttribute("aria-pressed", on);
+}
+
+onAction("syllables-toggle", (button, psalm) => {
+    const on = !psalm.classList.contains("show-syllables");
+    songState.set(psalm, "syllables", on || null); // remembered on this device
+    showSyllables(psalm, on);
+});
 
 songState.each("formula", (psalm, id) => {
     if (psalm.querySelector(".formula-pick")) setFormula(psalm, id);

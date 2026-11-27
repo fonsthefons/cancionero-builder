@@ -1,5 +1,16 @@
 # Progress
 
+## 2026-11-27 — "Sílabas" button (branch feature/semitono-syllables)
+- User: optional per-song button to show where the melody changes note; computed in the
+  browser; underline only the letters of each note-change syllable after the reciting note;
+  double underline for two notes on one syllable; hiatus exception list.
+- formula.js: `chordSpots` bars carry `recto` / `after`; `syllableMarks`, `markedText`;
+  `HIATUS` (Sión, santuario[s]); "Sílabas" toggle (`syllables-toggle`, songState "syllables",
+  `.show-syllables`). styles.css: background-line underlines, hidden button in print.
+- Checks: new check_js_syllables.py 193/193; check_js_chords 193/193; flexa 120/120; de 4
+  247/247 + 105/120; pytest tests/ 75 passed; screenshots scratch/syllables-*.png (Salmo 41,
+  Salmo 19 with Alegre 5).
+
 ## 2026-11-27 — Semitono de 4: red bracket on lines sharing a bar (branch feature/de4-bar-bracket)
 - User: show singers when two lines are sung as one bar; red bracket on the left, only there
   (2-line verses, bars 1 and 4: no mark).

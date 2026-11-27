@@ -873,6 +873,29 @@ body.drawer-open {
     margin-bottom: 12px;
 }
 
+.syllables-toggle {
+    margin: 0 0 12px 6px;
+}
+
+.syllables-toggle[aria-pressed="true"] {
+    font-weight: bold;
+}
+
+/* "Sílabas" on (formula.js): a line under each syllable where the melody changes note, 3px
+   short so syllables in a row stay apart; two lines = two notes on that syllable. Drawn in
+   the span's bottom padding, below the letters, without moving them. */
+.show-syllables .syl {
+    padding-bottom: 3px;
+    background: linear-gradient(currentColor, currentColor) left bottom / calc(100% - 3px) 2px no-repeat;
+}
+
+.show-syllables .syl2 {
+    padding-bottom: 7px;
+    background:
+        linear-gradient(currentColor, currentColor) left bottom / calc(100% - 3px) 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left calc(100% - 4px) / calc(100% - 3px) 2px no-repeat;
+}
+
 .psalm-formula:not(:empty) {
     margin-bottom: 1.2em;
     padding-bottom: 0.6em;
@@ -1180,6 +1203,7 @@ body.tour-on .drawer .nav {
     .drawer,
     .controls,
     .formula-pick,
+    .syllables-toggle,
     .print-dialog {
         display: none !important;
     }
