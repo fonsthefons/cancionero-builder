@@ -4,7 +4,7 @@ const $ = (id) => document.getElementById(id);
 
 let book = null;
 // rows: the chord view; body: the song text (rows are only written back into it once a chord changed: `dirty`)
-let song = { id: null, rows: [], body: "", dirty: false, textMode: false, siteArtist: "", extraTags: [], base: {} };
+let song = { id: null, rows: [], body: "", dirty: false, textMode: false, siteArtist: "", extraTags: [], base: {}, semitono: {} };
 
 async function api(path, data) {
     const response = await fetch(path, data === undefined ? {} : {
@@ -270,6 +270,7 @@ function editable(element, store, index) {
         store(element.textContent.replace(/\n/g, ""));
         song.dirty = true;
         element.closest("[data-block]")?.markLong();
+        renderSemitono();
     });
     element.addEventListener("blur", commit); // one undo step per line edit
     element.addEventListener("beforeinput", (e) => { // the browser's own undo (Edit menu, editing commands)
@@ -351,6 +352,7 @@ function renderGrid() {
         block.markLong();
         (verse ? verse.lastChild : grid).append(block);
     });
+    renderSemitono();
 }
 
 function setText(data) {
@@ -374,6 +376,159 @@ $("text-toggle").addEventListener("click", () => run("Reading the text...", asyn
     $("grid").hidden = song.textMode;
     $("text-toggle").textContent = song.textMode ? "Chords" : "Text";
 }));
+
+// ---------- semitono (song field `semitono`, docs/semitonos.md) ----------
+// A psalm's lyrics with a semitono's chords where the book puts them (formula-core.js), to set
+// the song's exceptions. song.semitono is kept as the song file writes it: bars 1-based, "f" = flexa.
+
+let semitonos = []; // /api/formulas
+const SEMITONO_PICK = "editor-semitono"; // localStorage: the semitono picked last
+
+// song.semitono as formula.js reads data-semitono (builder/render.py song_html): bars 0-based, "flexa".
+function semitonoEx() {
+    const bars = Object.fromEntries(Object.entries(song.semitono.bars || {}).map(([size, verses]) => [size,
+        Object.fromEntries(Object.entries(verses).map(([v, own]) => [v, own.map((b) => (b === "f" ? "flexa" : b - 1))]))]));
+    return { ...song.semitono, bars };
+}
+
+// The lines of each verse as the book shows them (blank lines between verses; chord lines alone aren't lines).
+function psalmVerses() {
+    const verses = [[]];
+    for (const row of song.rows) {
+        const text = "text" in row ? row.text : row.lyric;
+        if (text === null) continue;
+        if (text.trim()) verses.at(-1).push(text.trim());
+        else if (verses.at(-1).length) verses.push([]);
+    }
+    return verses.filter((lines) => lines.length);
+}
+
+// The song's own bars for a verse (from 1), 0-based or null to remove them.
+function setOwnBars(size, verse, bars) {
+    const all = (song.semitono.bars ||= {});
+    const verses = (all[size] ||= {});
+    if (bars) verses[verse] = bars.map((b) => (b === "flexa" ? "f" : b + 1));
+    else delete verses[verse];
+    if (!Object.keys(verses).length) delete all[size];
+    if (!Object.keys(all).length) delete song.semitono.bars;
+    renderSemitono();
+}
+
+function setStress(key, n) {
+    const stress = (song.semitono.stress ||= {});
+    key = stressKey(key);
+    if (n) stress[key] = n; else delete stress[key];
+    if (!Object.keys(stress).length) delete song.semitono.stress;
+    renderSemitono();
+}
+
+const element = (tag, className, text = "") => Object.assign(document.createElement(tag), { className, textContent: text });
+
+// One line: its bar button, its chords over it (the melody's note changes underlined), its syllables.
+function semitonoLine(text, i, plan, f, ex, onBar) {
+    const b = plan?.[i];
+    const line = element("div", "sem-line");
+    const bar = element("button", "sem-bar", b === undefined ? "·" : b === "flexa" ? "f" : String(b + 1));
+    bar.type = "button";
+    bar.title = "Bar of this line: click for the next";
+    bar.addEventListener("click", onBar);
+    let chords = [], spots = null, marks = [];
+    const block = element("div", "sem-text");
+    if (b === "flexa") {
+        [chords, spots] = [f.flexa, f.spots?.flexa];
+        marks = syllableMarks(text, spots, true, ex);
+    } else if (b !== undefined) {
+        [chords, spots] = [f.bars[b], f.spots?.bars[b]];
+        const shared = plan[i + 1] === b ? 0 : plan[i - 1] === b ? 1 : -1; // two lines, one bar
+        if (shared < 0) marks = syllableMarks(text, spots, true, ex);
+        else {
+            marks = shared ? syllableMarks(text, spots, false, ex) : [];
+            [chords, spots] = splitBar(chords, spots)[shared];
+            block.classList.add("bar-shared");
+        }
+    }
+    const lyric = element("div", "sem-lyric");
+    let at = 0;
+    for (const [start, end, notes] of marks.sort((x, y) => x[0] - y[0])) {
+        lyric.append(text.slice(at, start), element("span", notes > 1 ? "syl syl2" : "syl", text.slice(start, end)));
+        at = end;
+    }
+    lyric.append(text.slice(at));
+    const units = lineSyllables(text, ex), accent = units.findLastIndex((u) => u.stress), own = song.semitono.stress?.[stressKey(text)];
+    const chips = element("div", "sem-syllables");
+    units.forEach((u, k) => {
+        const chip = element("button", k === accent ? "stressed" : "",
+            text.slice(u.col, units[k + 1]?.col ?? text.length).replace(/^[^\p{L}]+|[^\p{L}]+$/gu, ""));
+        chip.type = "button";
+        chip.addEventListener("click", () => setStress(text, k + 1));
+        chips.append(chip);
+    });
+    if (own) {
+        const clear = element("button", "clear", "×");
+        Object.assign(clear, { type: "button", title: "Back to the line's own stress" });
+        clear.addEventListener("click", () => setStress(text, null));
+        chips.append(clear);
+    }
+    block.append(element("div", "sem-chords", chords.length ? chordLineText(text, chords, spots, ex) : ""), lyric, chips);
+    line.append(bar, block);
+    return line;
+}
+
+function renderSemitono() {
+    const psalm = pickedTags().some(([tag]) => (book.psalm_tags || []).includes(tag));
+    $("semitono").hidden = !semitonos.length || !psalm;
+    if ($("semitono").hidden) return;
+    const s = semitonos.find((x) => x.id === $("semitono-pick").value) || semitonos[0];
+    const f = { size: s.size, bars: s.chords, flexa: s.flexa, spots: s.abc ? chordSpots(s.abc) : null };
+    const ex = semitonoEx();
+    // next bar: 1 … size, then the flexa (de 2 with one), then 1 again
+    const next = (b) => (b === "flexa" ? 0 : b + 1 < f.size ? b + 1 : f.size === 2 && f.flexa ? "flexa" : 0);
+    $("semitono-verses").replaceChildren(...psalmVerses().map((lines, v) => {
+        const texts = gloriaSplit(lines, f.size), verse = v + 1;
+        const own = song.semitono.bars?.[f.size]?.[verse];
+        const plan = versePlan(texts, f, ex, verse);
+        const box = element("div", own && own.length !== texts.length ? "sem-verse wrong" : "sem-verse");
+        texts.forEach((text, i) => box.append(semitonoLine(text, i, plan, f, ex, () => {
+            const bars = [...(plan ?? texts.map(() => 0))];
+            bars[i] = next(bars[i]);
+            setOwnBars(f.size, verse, bars);
+        })));
+        if (own) {
+            const reset = element("button", "link", own.length !== texts.length
+                ? `reset (its bars are for ${own.length} lines, it has ${texts.length})` : "reset");
+            reset.type = "button";
+            reset.addEventListener("click", () => setOwnBars(f.size, verse, null));
+            box.append(reset);
+        }
+        return box;
+    }));
+    $("splits").replaceChildren(...Object.entries(song.semitono.split || {}).map(([word, parts]) => {
+        const item = element("li", "", `${word}: ${parts} `);
+        const remove = element("button", "link", "×");
+        Object.assign(remove, { type: "button", title: "Remove" });
+        remove.addEventListener("click", () => {
+            delete song.semitono.split[word];
+            if (!Object.keys(song.semitono.split).length) delete song.semitono.split;
+            renderSemitono();
+        });
+        item.append(remove);
+        return item;
+    }));
+}
+
+$("split-add").addEventListener("click", () => {
+    const word = $("split-word").value.trim().toLowerCase(), parts = $("split-syllables").value.trim().toLowerCase();
+    if (!word || !parts.includes("-") || parts.replace(/-/g, "") !== word)
+        return say(`Syllables must be the word with - between them, like si-ón`, true);
+    (song.semitono.split ||= {})[word] = parts;
+    $("split-word").value = $("split-syllables").value = "";
+    renderSemitono();
+});
+$("semitono-pick").addEventListener("change", () => {
+    localStorage.setItem(SEMITONO_PICK, $("semitono-pick").value);
+    renderSemitono();
+});
+$("tag-boxes").addEventListener("change", renderSemitono);
 
 // ---------- sources ----------
 
@@ -467,6 +622,7 @@ function showSong(data) { // data: /api/song, or {} for a new song
     $("report").textContent = "";
     $("link-choices").replaceChildren();
     $("results").replaceChildren();
+    song.semitono = structuredClone(data.semitono || {});
     setText({ body: data.body || "", rows: data.rows || [] });
 }
 
@@ -548,6 +704,7 @@ async function save(force = false) {
         horas: book.has_horas ? lines($("horas").value) : song.base.horas || [],
         ignore: lines($("ignore").value),
         melody: extra.melody ?? song.base.melody ?? "", tab: extra.tab ?? song.base.tab ?? "",
+        semitono: song.semitono, // {} removes it
     };
     let result;
     try {
@@ -573,6 +730,10 @@ $("publish").addEventListener("click", () => run("Publishing...", async () => {
         book = await api("/api/book");
         $("horas-label").hidden = !book.has_horas;
         $("new-tags-label").hidden = book.strict_tags;
+        semitonos = await api("/api/formulas");
+        $("semitono-pick").replaceChildren(...semitonos.map((s) => new Option(s.title, s.id)));
+        $("semitono-pick").value = localStorage.getItem(SEMITONO_PICK) || "";
+        if ($("semitono-pick").selectedIndex < 0) $("semitono-pick").selectedIndex = 0;
         fillPicker("");
         showSong({});
     } catch (e) { say(e.message, true); }

@@ -807,6 +807,26 @@ def formula_checks(page, context):
     check(f"semitono chords by melody: {spots}", spots == [
         ["s0 a1 a0", "s0 a2 a0"], "s0 a2 a1 a0", "D".ljust(14) + "G", "A".ljust(14) + "D",
         "D".ljust(13) + "G", "F".ljust(21) + "C Dm"])
+    # the psalm's own exceptions (song field `semitono`, data-semitono): a scratch 6-line psalm with
+    # a de 4 join override (rule 1 1 2 2 3 4 -> 1 2 3 3 4 4) and a stress override on its last line
+    exceptions = page.evaluate("""() => {
+        const psalm = document.createElement("div");
+        psalm.innerHTML = '<div class="lyrics"><div class="verse">' + ["Uno dos tres.", "cuatro cinco.", "seis siete,",
+            "ocho nueve.", "diez once.", "doce trece y catorce."].map((l) => `<div class="lyric-line">${l}</div>`).join("") + "</div></div>";
+        const id = [...formulaBars].find(([, f]) => f.size === 4)[0];
+        const render = (ex) => { if (ex) psalm.dataset.semitono = JSON.stringify(ex); setPsalmChords(psalm, id);
+            const rows = [...psalm.querySelectorAll(".verse > *")];
+            return [rows.flatMap((e, i) => e.classList.contains("bar-shared") ? [i] : []).join(""),
+                rows.map((e) => e.querySelector(".chord-line")?.textContent ?? "").join("/")]; };
+        const rule = render(null), joins = render({bars: {"4": {"1": [0, 1, 2, 2, 3, 3]}}});
+        const stress = render({bars: {"4": {"1": [0, 1, 2, 2, 3, 3]}}, stress: {"doce trece y catorce.": 1}});
+        const alegre5 = chordSpots('"D"F4 G A "G"B2 | "A"E4 A G "D"F2');
+        return [rule[0], joins[0], stress[1] !== joins[1],
+            chordLineText("Como busca la cierva", ["D", "G"], alegre5.bars[0], {stress: {"Como busca la cierva": 3}}),
+            lineSyllables("ruido", {split: {ruido: "ru-i-do"}}).map((u) => u.col).join(""),
+            versePlan(["a", "b", "c"], {size: 4}, {bars: {"4": {"1": [0, 1, 1, 2]}}}, 1)]; }""")
+    check(f"semitono exceptions (joins, stress, split): {exceptions}", exceptions == [
+        "0123", "2345", True, "D    G", "023", None])
     # a hymn's 3-line Gloria ("Gloria al Padre, gloria al Hijo, / …") splits to fit semitono de 4
     hymn = page.locator("#song-himno_completas-tiembla_el_frio_de_los_astros")
     if hymn.count():

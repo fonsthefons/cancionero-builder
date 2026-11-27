@@ -79,6 +79,19 @@
     </div>
   </section>
 
+  <section id="semitono" hidden>
+    <h2>Semitono</h2>
+    <label>Semitono <select id="semitono-pick"></select></label>
+    <p class="hint">The lyrics as the book sets them. Click a line's bar number to change it (same bar twice = two lines on one bar), a syllable to make it the line's stress.</p>
+    <div id="semitono-verses"></div>
+    <div class="row">
+      <input id="split-word" placeholder="Word (sión)" aria-label="Word to split">
+      <input id="split-syllables" placeholder="Syllables (si-ón)" aria-label="Its syllables">
+      <button type="button" id="split-add">Split word</button>
+    </div>
+    <ul id="splits"></ul>
+  </section>
+
   <section id="form">
     <h2>Song</h2>
     <label>Title <input id="title"></label>
@@ -104,6 +117,7 @@
 <script src="/static/abcjs-basic-min.js"></script>
 <script src="/static/melody.js"></script>
 <script src="/static/melody-editor.js"></script>
+<script src="/static/formula-core.js"></script>
 <script src="/static/editor.js"></script>
 </body>
 </html>

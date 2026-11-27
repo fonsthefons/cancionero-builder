@@ -87,4 +87,22 @@ h3 { font-size: 0.9rem; margin: 0.8rem 0 0.3rem; color: var(--muted); }
 .melody-tab .melody-tab-label { font-size: 9px; }
 .melody .melody-playing { fill: var(--chord); }
 
+/* Semitono preview (editor.js renderSemitono): monospace, so chords sit on their letters as in the book. */
+#semitono-verses { font-family: var(--mono); font-size: 15px; overflow-x: auto; }
+.sem-verse { margin-bottom: 1rem; }
+.sem-verse.wrong { outline: 2px solid #c62828; outline-offset: 2px; }
+.sem-verse.wrong > .link { color: #c62828; }
+.sem-line { display: flex; align-items: flex-start; gap: 0.5rem; margin: 0.15rem 0; }
+.sem-bar { font: bold 0.75rem var(--sans); width: 1.8rem; padding: 0.1rem 0; flex: none; }
+.sem-chords, .sem-lyric { white-space: pre; min-height: 1.2em; }
+.sem-chords { color: var(--chord); font-weight: bold; }
+.sem-lyric .syl { text-decoration: underline; }
+.sem-lyric .syl2 { text-decoration: underline double; }
+.bar-shared { border-left: 2px solid #c62828; padding-left: 6px; } /* as web/styles.css: two lines, one bar */
+.sem-syllables { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 2px; }
+.sem-syllables button { font: 0.7rem var(--sans); padding: 0 0.3rem; }
+.sem-syllables .stressed { background: var(--accent); color: var(--page); }
+button.link { border: 0; background: none; padding: 0; font-size: 0.8rem; text-decoration: underline; }
+#splits { font-size: 0.85rem; }
+
 #grid input { position: absolute; top: 0; width: 8ch; font-family: var(--mono); font-size: inherit; padding: 0 2px; z-index: 1; }

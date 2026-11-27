@@ -16,7 +16,7 @@ from builder.book import BookError, load_book, settings_yaml  # noqa: E402
 from builder.build import build_book, fix_far_chords  # noqa: E402
 from builder.keys import detect_key, respell_chords, respell_line, transpose_key  # noqa: E402
 from builder.lyrics import chord_line_html, is_chord_line, pack_far_chords, verse_html  # noqa: E402
-from builder.songs import SongError  # noqa: E402
+from builder.songs import SongError, load_song, parse_semitono  # noqa: E402
 from builder.tags import Taxonomy, add_to_tags_file  # noqa: E402
 from builder.text import slug, spanish_sort_key  # noqa: E402
 
@@ -203,6 +203,31 @@ def test_song_keys(tmp_path):
     assert "key:" not in (tmp_path / "off" / "songs" / "a.md").read_text(encoding="utf-8")
 
 
+def test_semitono(tmp_path):
+    ok = ('semitono:\n  bars:\n    4:\n      2: [1, 1, 2, 3, 4, 4]\n    "2":\n      "3": [1, 2, f, 1, 2]\n'
+          '  stress:\n    "En el lecho": 9\n  split:\n    "sión": "si-ón"\n')
+    book = write_book(tmp_path / "ok", songs={"a": SONG.format(title="Uno", extra=ok)})
+    build_book(book)
+    song = load_song(tmp_path / "ok" / "songs" / "a.md")
+    assert song.semitono["bars"] == {"4": {2: [1, 1, 2, 3, 4, 4]}, "2": {3: [1, 2, "f", 1, 2]}}
+    html = (tmp_path / "ok" / "index.html").read_text(encoding="utf-8")
+    assert ("data-semitono='{&quot;bars&quot;: {&quot;4&quot;: {&quot;2&quot;: [0, 0, 1, 2, 3, 3]}, "
+            "&quot;2&quot;: {&quot;3&quot;: [0, 1, &quot;flexa&quot;, 0, 1]}}") in html
+    assert "&quot;stress&quot;: {&quot;En el lecho&quot;: 9}" in html and html.count("data-semitono") == 1
+    assert parse_semitono({"split": {"SIÓN": "Si-Ón"}}) == {"split": {"sión": "si-ón"}}
+    for n, (extra, error) in enumerate([("bars: {5: {1: [1]}}", "must be 2, 3 or 4"), ("bars: {4: {0: [1]}}", "verse"),
+                                        ("bars: {4: {1: [1, 5]}}", "bar from 1 to 4"),
+                                        ("bars: {3: {1: [f]}}", "bar from 1 to 3"),
+                                        ("stress: {la: 0}", "syllable number"),
+                                        ("split: {sion: sion}", "syllables like"),
+                                        ('bars: {4: {"²": [1]}}', "verse"),
+                                        ("split: {sion: si-ón}", "must spell"),
+                                        ("typo: {}", "bars, stress and split")]):
+        book = write_book(tmp_path / f"bad{n}", songs={"a": SONG.format(title="Uno", extra=f"semitono: {{{extra}}}\n")})
+        with pytest.raises(SongError, match=error):
+            load_song(book.songs_dir / "a.md")
+
+
 MELODY = 'melody: |\n  K:D\n  "D"F8 "A"G A | "Em"F2 z E D\ntab: {tab}\n'
 
 
@@ -248,12 +273,14 @@ def test_psalm_formulas(tmp_path):
     build_book(on)
     html = (tmp_path / "on" / "index.html").read_text(encoding="utf-8")
     assert html.count('data-action="formula-pick"') == 1 and "function setFormula" in html
+    assert html.index("function chordSpots") < html.index("function setFormula")  # formula-core.js first
     assert '"formulas": [["Semitonos 2", [["song-f1", "Glorioso"]], "semitonos_2"]]' in html
     assert html.count('class="melody-play"') == 2  # the fórmula, and the psalm (for its fórmula)
     off = write_book(tmp_path / "off", "title: T\n", songs)
     build_book(off)
     html = (tmp_path / "off" / "index.html").read_text(encoding="utf-8")
     assert 'data-action="formula-pick"' not in html and "function setFormula" not in html
+    assert "function chordSpots" not in html
     # formula_parts: a hymn without chords gets the picker, one with chords doesn't
     hymns = {**songs,
              "h1": "---\ntitle: Sin acordes\nhoras: [lunes/laudes/himno]\n---\n\nla la la\n",

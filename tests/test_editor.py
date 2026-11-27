@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 
 from builder.book import load_book  # noqa: E402
 from builder.songs import load_song  # noqa: E402
-from importer.editor import make_server, rows  # noqa: E402
+from importer.editor import api_formulas, make_server, rows  # noqa: E402
 
 SHEET = "G       D\nHello my friend\n\nEm\n**\nC\nonly words\n"
 
@@ -99,6 +99,49 @@ def test_edit_keeps_no_date(editor):
     (root / "songs" / "old.md").write_text("---\ntitle: Old\n---\n\nla\n", encoding="utf-8")
     assert save(call, id="old", title="Old")[0] == 200
     assert load_song(root / "songs" / "old.md").added is None
+
+
+def test_save_semitono(editor):
+    call, root = editor
+    path = root / "songs" / "hola_ana.md"
+    semitono = {"bars": {"4": {"2": [1, 1, 2, 3, 4, 4]}, "2": {"3": [1, 2, "f"]}}, "stress": {"Hola": 2},
+                "split": {"sión": "si-ón"}}
+    assert save(call, semitono=semitono)[0] == 200
+    expected = {"bars": {"4": {2: [1, 1, 2, 3, 4, 4]}, "2": {3: [1, 2, "f"]}}, "stress": {"Hola": 2},
+                "split": {"sión": "si-ón"}}
+    assert load_song(path).semitono == expected
+    assert call("/api/song?id=hola_ana")[1]["semitono"]["stress"] == {"Hola": 2}
+    assert save(call, id="hola_ana")[0] == 200 and load_song(path).semitono == expected  # not sent: kept
+    before = path.read_text(encoding="utf-8")
+    status, result = save(call, id="hola_ana", semitono={"bars": {"4": {"1": [5]}}})
+    assert status == 400 and "semitono" in result["error"] and path.read_text(encoding="utf-8") == before
+    assert save(call, id="hola_ana", semitono={})[0] == 200
+    assert load_song(path).semitono == {} and "semitono" not in path.read_text(encoding="utf-8")
+
+
+def test_new_song_bad_semitono_changes_nothing(editor):
+    call, root = editor
+    status, result = save(call, title="Otra", site_artist="Ana B.", semitono={"bars": {"4": {"1": [5]}}})
+    assert status == 400 and "semitono" in result["error"]
+    assert not list((root / "songs").iterdir()) and not (root / "author_aliases.yaml").exists()
+
+
+def test_formulas(editor):
+    call, root = editor
+    assert call("/api/formulas") == (200, [])  # no psalm_tags / formula_tag
+    (root / "book.yaml").write_text("title: T\npsalm_tags: [salmos]\nformula_tag: formulas\n", encoding="utf-8")
+    (root / "tags.yaml").write_text("salmos:\n  label: Salmos\nformulas:\n  label: F\n  subtags:\n"
+                                    "    semitonos_2: S2\n    semitonos_4: S4\n", encoding="utf-8")
+    song = "---\ntitle: {}\nsong_tags:\n  formulas: [{}]\n{}---\n\n{}\n"
+    songs = {"a": ("De 2", "semitonos_2", 'melody: |\n  "Em"E4 "Bm"B2 | "A"A4 "D"D2 "Em"E2\n',
+                   "Em Bm | A D Em\nFlexa: Em D"),
+             "b": ("De 4 short", "semitonos_4", "", "G | Em"),  # 2 bars, not 4: left out
+             "c": ("Salmo", "semitonos_2", "", "la la")}  # no chord line
+    for name, fields in songs.items():
+        (root / "songs" / f"{name}.md").write_text(song.format(*fields), encoding="utf-8")
+    # the running server keeps the Book it started with: the new settings, called directly
+    assert api_formulas(load_book(root), {}) == [{"id": "a", "title": "De 2", "size": 2, "chords": [["Em", "Bm"], ["A", "D", "Em"]],
+                      "flexa": ["Em", "D"], "abc": '"Em"E4 "Bm"B2 | "A"A4 "D"D2 "Em"E2'}]
 
 
 def test_token_and_ids(editor):

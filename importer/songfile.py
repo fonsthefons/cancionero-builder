@@ -40,9 +40,10 @@ def free_path(songs_dir, name):
 # ---------- the song file ----------
 
 def song_file(book, title, autor, capo, link, tags, body, added=None, horas=(), melody=None, tab=None, ignore=(),
-              key=None):
+              key=None, semitono=None):
     """Text of a song file. The book's own artist isn't written (it's the default).
-    key: kept as it was (the build adds one to songs without it)."""
+    key: kept as it was (the build adds one to songs without it).
+    semitono: parse_semitono's dict, written only when not empty."""
     lines = ["---", f"title: {yaml_value(title)}"]
     if key:
         lines.append(f"key: {key}")
@@ -77,6 +78,9 @@ def song_file(book, title, autor, capo, link, tags, body, added=None, horas=(), 
     if ignore:
         lines.append("ignore:")
         lines.extend(f"  - {yaml_value(check)}" for check in ignore)
+    if semitono:
+        lines.extend(yaml.safe_dump({"semitono": semitono}, allow_unicode=True, sort_keys=False,
+                                    default_flow_style=None, width=10**6).splitlines())
     return "\n".join(lines + ["---", "", body.strip("\n"), ""])
 
 

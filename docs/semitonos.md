@@ -116,6 +116,28 @@ Still open:
    alabanza" (three vowels: only the last two joined). The user: either is fine.
 3. **Melismas** in general (tuplets count as one note): not marked by the user yet.
 
+## Exceptions per psalm (song field `semitono:`, 2026-11-27)
+
+For the cases the rules get wrong. Edited in the local editor's Semitono panel (pick a
+semitono to preview; click a line's bar number to cycle it, a syllable to make it the line's
+stress; "Split word" for words the syllable rules split wrong). Saved in the song file, 1-based:
+```
+semitono:
+  bars:                 # per size: applies to every semitono de 2 / de 3 / de 4
+    "4": {2: [1, 1, 2, 3, 4, 4]}   # verse 2: bar of each line; equal neighbours = one bar
+    "2": {3: [1, 2, f, 1, 2]}      # f = flexa (ignored if the semitono has none)
+  stress: {"En el lecho me acuerdo de ti": 9}   # line text -> stressed syllable, counted after sinalefa
+  split: {"sión": "si-ón"}                      # word -> syllables (used only if they spell the word)
+```
+- A verse override whose length ≠ the verse's lines (after the de 4 Gloria split) is ignored; the
+  panel shows it red. An overridden verse counts as fitting (de 3 / de 4 picker hints too), so
+  joining two lines of a 4-line verse lets de 3 fit.
+- Stress and split apply to every semitono; chords, Sílabas underlines and the red bracket follow.
+- Code: `web/js/formula-core.js` (pure rules, `ownBars`, shared with the editor), `formula.js`
+  (book page, reads `data-semitono`), `builder/songs.py` `parse_semitono`, `/api/formulas`.
+- Not yet: the panel only shows for songs with a psalm tag (not hymns sung with fórmulas via
+  `formula_parts`); sinalefa join/break by hand.
+
 ## Tools
 
 - `docs/experiments/semitono-marks/marks.py`: builds the marking page (`--pred` fills it with the

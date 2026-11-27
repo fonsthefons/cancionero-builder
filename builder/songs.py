@@ -1,6 +1,7 @@
 """Loading and validating song files (YAML frontmatter + lyrics)."""
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -12,7 +13,7 @@ from .text import spanish_sort_key
 # Frontmatter fields a song may use. Anything else is reported as an error,
 # which catches typos and mis-indented YAML.
 REQUIRED_FIELDS = {"title"}
-OPTIONAL_FIELDS = {"key", "autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore"}
+OPTIONAL_FIELDS = {"key", "autor", "capo", "link", "added", "song_tags", "horas", "melody", "tab", "ignore", "semitono"}
 # tab-melody-check: the tab covers only the first notes of the melody; long-lines-check and
 # far-chords-check: build warnings (builder/build.py) the song is fine without
 IGNORABLE_CHECKS = ("tab-melody-check", "long-lines-check", "far-chords-check")
@@ -37,6 +38,7 @@ class Song:
     melody: str | None = None  # ABC notation body ("K:D\n...") shown as a staff
     tab: str | None = None  # guitar tab, one "fret/string" per melody note
     ignore: list = field(default_factory=list)  # IGNORABLE_CHECKS skipped
+    semitono: dict = field(default_factory=dict)  # parse_semitono's result, 1-based as written
     number: int = 0  # assigned after sorting
 
     @property
@@ -106,6 +108,54 @@ def parse_ignore(raw):
     return checks
 
 
+def is_int(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def parse_semitono(raw):
+    """semitono as written (see README): {"bars": {"2": {verse: [bar | "f"]}}, "stress": {line: n},
+    "split": {word: "si-ón"}}, normalized (str sizes, int verses); empty sections are dropped."""
+    if raw is None:
+        return {}
+    if not isinstance(raw, dict) or raw.keys() - {"bars", "stress", "split"}:
+        raise SongError("semitono must be a mapping with bars, stress and split")
+    out = {}
+    bars = raw.get("bars") or {}
+    if not isinstance(bars, dict):
+        raise SongError("semitono bars must be a mapping like `\"4\": {2: [1, 1, 2]}`")
+    for size, verses in bars.items():
+        if str(size) not in ("2", "3", "4") or not isinstance(verses, dict):
+            raise SongError(f'semitono bars: "{size}" must be 2, 3 or 4 with verses under it')
+        for verse, lines in verses.items():
+            if isinstance(verse, str) and re.fullmatch(r"[0-9]+", verse):
+                verse = int(verse)
+            if not is_int(verse) or verse < 1:
+                raise SongError(f'semitono bars {size}: verse "{verse}" must be a number from 1')
+            for bar in lines if isinstance(lines, list) else [None]:
+                if not (is_int(bar) and 1 <= bar <= int(size) or bar == "f" and str(size) == "2"):
+                    raise SongError(f'semitono bars {size}, verse {verse}: each line needs a bar from 1 to {size}'
+                                    + (' or "f"' if str(size) == "2" else ""))
+            out.setdefault("bars", {}).setdefault(str(size), {})[verse] = lines
+    for name, kind in (("stress", int), ("split", str)):
+        entries = raw.get(name) or {}
+        if not isinstance(entries, dict):
+            raise SongError(f"semitono {name} must be a mapping")
+        for text, value in entries.items():
+            if not isinstance(text, str) or not (is_int(value) and value >= 1 if kind is int
+                                                 else isinstance(value, str) and "-" in value):
+                raise SongError(f'semitono {name}: "{text}" needs ' +
+                                ("a syllable number from 1" if kind is int else 'syllables like "si-ón"'))
+        if name == "split":  # the book looks words up lowercased
+            entries = {unicodedata.normalize("NFC", text).lower(): unicodedata.normalize("NFC", value).lower()
+                       for text, value in entries.items()}
+            for text, value in entries.items():
+                if value.replace("-", "") != text:
+                    raise SongError(f'semitono split: "{value}" must spell "{text}" with dashes between syllables')
+        if entries:
+            out[name] = dict(entries)
+    return out
+
+
 def check_tab(melody, tab, count_notes=True):
     """Each note of the melody needs one "fret/string" tab token (bars are ignored).
     count_notes=False keeps the token check but allows any number of them."""
@@ -172,6 +222,7 @@ def load_song(path):
         melody=melody,
         tab=tab,
         ignore=ignore,
+        semitono=parse_semitono(meta.get("semitono")),
     )
 
 
