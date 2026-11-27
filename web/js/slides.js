@@ -12,9 +12,7 @@ function slideVerses(id) {
     return [...document.getElementById(id).querySelectorAll(".lyrics > .verse")].map((verse) =>
         [...verse.children].flatMap((el) => {
             if (el.classList.contains("chord-inline") || el.querySelector(".chord-inline")) return [];
-            const text = el.classList.contains("line-pair")
-                ? [...el.childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).map((n) => n.textContent).join("")
-                : el.classList.contains("lyric-line") ? el.textContent : "";
+            const text = el.matches(".line-pair, .lyric-line") ? lyricText(el) : "";
             return text.trim() ? [{ text: text.trim(), bold: el.classList.contains("bold") }] : [];
         })
     ).filter((lines) => lines.length);

@@ -1372,6 +1372,18 @@ read as images; the text layer is OCR noise).
   repeat: 1st ending Dm F G, 2nd ending Dm G C) and comunion-veni_veni_emmanuel
   (misa/comunion; all 3 stacked verses + refrain after each). Built; not published.
 
+## 2026-11-27: search broken by the Sílabas marks
+
+- search.js read a .line-pair's lyric from its text nodes only, so the "Sílabas"
+  spans (formula.js) were dropped: "corrientes de agua" was indexed as "corrien gua"
+  in every psalm with a saved semitono. slides.js had the same bug.
+- New `lyricText()` in core.js (everything in a pair but its .chord-line), used by both.
+- tests/browser/search_check.py: for every fórmula (none, de 2/3/4 incl. joined lines,
+  tonos rectos…), with and without Sílabas + hidden chords + 2 columns + 180% text,
+  every psalm's search and slides words equal the built ones, and every line typed
+  into the search finds its psalm. 64 fórmulas × 2: all pass (the old build fails).
+- cancionero-liturgia rebuilt and published with the fix.
+
 ## Blocked
 
 - The Read tool is refused in the 3 source repos (some setting outside this project);

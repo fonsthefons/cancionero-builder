@@ -152,6 +152,18 @@ function songSetting(name, values, onGlobalChange) {
     };
 }
 
+// The words of a .lyric-line or .line-pair, as read: a pair's own lyric is
+// everything in it but its .chord-line (and a nested .lyric-line, which is a
+// line of its own). Not only its text nodes: the "Sílabas" spans (formula.js)
+// sit inside words ("corrien<span>tes</span>").
+function lyricText(line) {
+    if (!line.matches(".line-pair")) return line.textContent;
+    return [...line.childNodes]
+        .filter((node) => node.nodeType === Node.TEXT_NODE || !node.matches(".chord-line, .lyric-line"))
+        .map((node) => node.textContent)
+        .join("");
+}
+
 // Lowercase and strip accents so "Señor" matches "senor".
 function normalizeText(text) {
     return text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
