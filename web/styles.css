@@ -881,6 +881,19 @@ body.drawer-open {
     font-weight: bold;
 }
 
+/* Still being tuned: a small tag on the button says so. */
+.syllables-toggle::after {
+    content: "experimental";
+    margin-left: 6px;
+    padding: 0 5px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font-size: 0.7em;
+    font-weight: normal;
+    opacity: 0.7;
+    vertical-align: middle;
+}
+
 /* "Sílabas" on (formula.js): a line under each syllable where the melody changes note, 3px
    short so syllables in a row stay apart; two lines = two notes on that syllable. Drawn in
    the span's bottom padding, below the letters, without moving them. */
