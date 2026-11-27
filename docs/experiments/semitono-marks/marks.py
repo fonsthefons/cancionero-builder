@@ -163,12 +163,19 @@ def plan2(texts, has_flexa):
         return alt(len(texts))
     if len(texts) < 3 or not has_flexa:
         return None
+
+    def no_split(i):  # inside an open quote, or ":" right before one (flexa marks round 1)
+        up_to = "".join(texts[: i + 1])
+        nxt = texts[i + 1].lstrip()[:1] if i + 1 < len(texts) else ""
+        return (up_to.count("«") > up_to.count("»") or up_to.count("“") > up_to.count("”")
+                or (line_end(texts[i]) == ":" and nxt in ("«", "“")))
+    pauses = [0 if no_split(i) else pause(t) for i, t in enumerate(texts)]
     best = best_score = None
     for k in range(0, len(texts) - 2, 2):
         plan = [*alt(k), "flexa", *alt(len(texts) - k - 1)]
         ends = [t for t, p in zip(texts, plan) if p == 1]
         count = lambda marks: sum((line_end(t) or "-") in marks for t in ends)
-        score = (sum(pause(t) for t in ends), count(".!?"), count(":"))
+        score = (sum(p for p, b in zip(pauses, plan) if b == 1), count(".!?"), count(":"))
         if best_score is None or score > best_score:
             best, best_score = plan, score
     return best
@@ -223,6 +230,9 @@ def test():
     assert predict([True, False], 2) == [0, 0]  # flexa on a short line
     assert plan2(["a,", "b.", "c,", "d."], True) == [0, 1, 0, 1]
     assert plan2(["a", "b,", "c."], True) == ["flexa", 0, 1]
+    # flexa marks round 1: a quote isn't split (Is 12, Salmo 117)
+    assert plan2(["a;", "b;", "c:", "«d", "e!»."], True).index("flexa") == 2
+    assert plan2(["a:", "b:", "«c,", "d,", "e.»"], True).index("flexa") == 2
     assert parse_bar('"D"F4 G A "G"B2') == [
         {"chord": "D", "pitch": "F", "len": 4}, {"chord": None, "pitch": "G", "len": 1},
         {"chord": None, "pitch": "A", "len": 1}, {"chord": "G", "pitch": "B", "len": 2}]

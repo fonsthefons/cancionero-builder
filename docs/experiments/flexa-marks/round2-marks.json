@@ -1,0 +1,781 @@
+{
+ "id": "flexa|seed2|n60",
+ "marks": {
+  "Cántico 1Cro 29, 10-13|0": {
+   "psalm": "Cántico 1Cro 29, 10-13",
+   "verse": 0,
+   "lines": [
+    "Bendito eres, Señor,",
+    "Dios de nuestro padre Israel,",
+    "por los siglos de los siglos."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico 1Cro 29, 10-13|3": {
+   "psalm": "Cántico 1Cro 29, 10-13",
+   "verse": 3,
+   "lines": [
+    "Por eso, Dios nuestro,",
+    "nosotros te damos gracias,",
+    "alabando tu nombre glorioso."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico 1S 2, 1-10|5": {
+   "psalm": "Cántico 1S 2, 1-10",
+   "verse": 5,
+   "lines": [
+    "Él guarda los pasos de sus amigos,",
+    "mientras los malvados perecen en las tinieblas,",
+    "porque el hombre no triunfa por su fuerza."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ap 19, 1-2, 5-7|0": {
+   "psalm": "Cántico Ap 19, 1-2, 5-7",
+   "verse": 0,
+   "lines": [
+    "Aleluya.",
+    "La salvación y la gloria y el poder son de nuestro Dios",
+    "(R. Aleluya)",
+    "porque sus juicios son verdaderos y justos.",
+    "R. Aleluya, (aleluya)."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ap 19, 1-2, 5-7|1": {
+   "psalm": "Cántico Ap 19, 1-2, 5-7",
+   "verse": 1,
+   "lines": [
+    "Aleluya.",
+    "Alabad al Señor sus siervos todos.",
+    "(R. Aleluya)",
+    "Los que le teméis, pequeños y grandes.",
+    "R. Aleluya, (aleluya)."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Cántico Ap 19, 1-2, 5-7|2": {
+   "psalm": "Cántico Ap 19, 1-2, 5-7",
+   "verse": 2,
+   "lines": [
+    "Aleluya.",
+    "Porque reina el Señor, nuestro Dios, dueño de todo.",
+    "(R. Aleluya)",
+    "Alegrémonos y gocemos y démosle gracias.",
+    "R. Aleluya, (aleluya)."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Cántico Dn 3, 26-27. 29. 34-41|3": {
+   "psalm": "Cántico Dn 3, 26-27. 29. 34-41",
+   "verse": 3,
+   "lines": [
+    "Por Abraham, tu amigo,",
+    "por Isaac, tu siervo,",
+    "por Israel, tu consagrado,",
+    "a quienes prometiste",
+    "multiplicar su descendencia",
+    "como las estrellas del cielo,",
+    "como la arena de las playas marinas."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ez 36, 24-28|0": {
+   "psalm": "Cántico Ez 36, 24-28",
+   "verse": 0,
+   "lines": [
+    "Os recogeré de entre las naciones,",
+    "os reuniré de todos los países,",
+    "y os llevaré a vuestra tierra."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ez 36, 24-28|2": {
+   "psalm": "Cántico Ez 36, 24-28",
+   "verse": 2,
+   "lines": [
+    "Os infundiré mi espíritu,",
+    "y haré que caminéis según mis preceptos,",
+    "y que guardéis y cumpláis mis mandatos."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ez 36, 24-28|3": {
+   "psalm": "Cántico Ez 36, 24-28",
+   "verse": 3,
+   "lines": [
+    "Y habitaréis en la tierra que di a vuestros padres.",
+    "Vosotros seréis mi pueblo",
+    "y yo seré vuestro Dios."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Flp 2, 6-11|1": {
+   "psalm": "Cántico Flp 2, 6-11",
+   "verse": 1,
+   "lines": [
+    "Y así, actuando como un hombre cualquiera,",
+    "se rebajó hasta someterse incluso a la muerte",
+    "y una muerte de cruz."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Ha 3, 2-4. 13a. 15-19|5": {
+   "psalm": "Cántico Ha 3, 2-4. 13a. 15-19",
+   "verse": 5,
+   "lines": [
+    "El Señor soberano es mi fuerza,",
+    "él me da piernas de gacela",
+    "y me hace caminar por las alturas."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Is 26, 1-4. 7-9. 12|5": {
+   "psalm": "Cántico Is 26, 1-4. 7-9. 12",
+   "verse": 5,
+   "lines": [
+    "Señor, tú nos darás la paz,",
+    "porque todas nuestras empresas",
+    "nos las realizas tú."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Is 40, 10-17|6": {
+   "psalm": "Cántico Is 40, 10-17",
+   "verse": 6,
+   "lines": [
+    "En su presencia, las naciones todas,",
+    "como si no existieran,",
+    "son ante él como nada y vacío."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Is 45, 15-25|7": {
+   "psalm": "Cántico Is 45, 15-25",
+   "verse": 7,
+   "lines": [
+    "Yo juro por mi nombre,",
+    "de mi boca sale una sentencia,",
+    "una palabra irrevocable:",
+    "«Ante mí se doblará toda rodilla,",
+    "por mí jurará toda lengua»,",
+    "dirán: «Sólo el Señor",
+    "tiene la justicia y el poder.»"
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Cántico Sb 9, 1-6. 9-11|1": {
+   "psalm": "Cántico Sb 9, 1-6. 9-11",
+   "verse": 1,
+   "lines": [
+    "Dame la sabiduría asistente de tu trono",
+    "y no me excluyas del número de tus siervos,",
+    "porque siervo tuyo soy, hijo de tu sierva,",
+    "hombre débil y de pocos años,",
+    "demasiado pequeño para conocer el juicio y las leyes."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Sb 9, 1-6. 9-11|5": {
+   "psalm": "Cántico Sb 9, 1-6. 9-11",
+   "verse": 5,
+   "lines": [
+    "Porque ella conoce y entiende todas las cosas,",
+    "y me guiará prudentemente en mis obras,",
+    "y me guardará en su esplendor."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Tb 13, 1-10|0": {
+   "psalm": "Cántico Tb 13, 1-10",
+   "verse": 0,
+   "lines": [
+    "Bendito sea Dios, que vive eternamente,",
+    "y cuyo reino dura por los siglos:",
+    "él azota y se compadece,",
+    "hunde hasta el abismo y saca de él,",
+    "y no hay quien escape de su mano."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Cántico Tb 13, 1-10|3": {
+   "psalm": "Cántico Tb 13, 1-10",
+   "verse": 3,
+   "lines": [
+    "Si volvéis a él de todo corazón",
+    "y con toda el alma,",
+    "siendo sinceros con él,",
+    "él volverá a vosotros",
+    "y no os ocultará su rostro."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Cántico Tb 13, 10-15. 17-19|6": {
+   "psalm": "Cántico Tb 13, 10-15. 17-19",
+   "verse": 6,
+   "lines": [
+    "Bendice, alma mía, a Dios, rey grande,",
+    "porque Jerusalén con zafiros y esmeraldas",
+    "será reedificada,",
+    "con piedras preciosas sus muros",
+    "y con oro puro sus torres y sus almenas."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 10|0": {
+   "psalm": "Salmo 10",
+   "verse": 0,
+   "lines": [
+    "Al Señor me acojo, ¿por qué me decís:",
+    "«escapa como un pájaro al monte,",
+    "porque los malvados tensan el arco,",
+    "ajustan las saetas a la cuerda,",
+    "para disparar en la sombra contra los buenos?",
+    "Cuando fallan los cimientos,",
+    "¿qué podrá hacer el justo?»"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 113 B|3": {
+   "psalm": "Salmo 113 B",
+   "verse": 3,
+   "lines": [
+    "tienen manos, y no tocan;",
+    "tienen pies, y no andan;",
+    "no tiene voz su garganta:",
+    "que sean igual los que los hacen,",
+    "cuantos confían en ellos."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 113 B|5": {
+   "psalm": "Salmo 113 B",
+   "verse": 5,
+   "lines": [
+    "Que el Señor se acuerde de nosotros y nos bendiga,",
+    "bendiga a la casa de Israel,",
+    "bendiga a la casa de Aarón;",
+    "bendiga a los fieles del Señor,",
+    "pequeños y grandes."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 124|1": {
+   "psalm": "Salmo 124",
+   "verse": 1,
+   "lines": [
+    "Jerusalén está rodeada de montañas,",
+    "y el Señor rodea a su pueblo",
+    "ahora y por siempre."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 124|3": {
+   "psalm": "Salmo 124",
+   "verse": 3,
+   "lines": [
+    "Señor, concede bienes a los buenos,",
+    "a los sinceros de corazón;",
+    "y a los que se desvían por sendas tortuosas,",
+    "que los rechace el Señor con los malhechores.",
+    "¡Paz a Israel!"
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 134 I|5": {
+   "psalm": "Salmo 134 I",
+   "verse": 5,
+   "lines": [
+    "Hirió de muerte a pueblos numerosos,",
+    "mató a reyes poderosos:",
+    "a Sijón, rey de los amorreos;",
+    "a Hog, rey de Basán,",
+    "y a todos los reyes de Canaán.",
+    "Y dio su tierra en heredad,",
+    "en heredad a Israel, su pueblo."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 141|3": {
+   "psalm": "Salmo 141",
+   "verse": 3,
+   "lines": [
+    "A ti grito, Señor;",
+    "te digo: «Tú eres mi refugio",
+    "y mi heredad en el país de la vida.»"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 143 I|0": {
+   "psalm": "Salmo 143 I",
+   "verse": 0,
+   "lines": [
+    "Bendito el Señor, mi Roca,",
+    "que adiestra mis manos para el combate,",
+    "mis dedos para la pelea;"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 143 I|4": {
+   "psalm": "Salmo 143 I",
+   "verse": 4,
+   "lines": [
+    "Extiende la mano desde arriba:",
+    "defiéndeme, líbrame de las aguas caudalosas,",
+    "de la mano de los extranjeros,",
+    "cuya boca dice falsedades,",
+    "cuya diestra jura en falso."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 145|5": {
+   "psalm": "Salmo 145",
+   "verse": 5,
+   "lines": [
+    "El Señor guarda a los peregrinos;",
+    "sustenta al huérfano y a la viuda",
+    "y trastorna el camino de los malvados."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 15|4": {
+   "psalm": "Salmo 15",
+   "verse": 4,
+   "lines": [
+    "Por eso se me alegra el corazón,",
+    "se gozan mis entrañas,",
+    "y mi carne descansa serena.",
+    "Porque no me entregarás a la muerte,",
+    "ni dejarás a tu fiel conocer la corrupción."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 23|4": {
+   "psalm": "Salmo 23",
+   "verse": 4,
+   "lines": [
+    "¡Portones!, alzad los dinteles,",
+    "levantaos, puertas antiguas:",
+    "va a entrar el Rey de la gloria."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 26 II|4": {
+   "psalm": "Salmo 26 II",
+   "verse": 4,
+   "lines": [
+    "Señor, enséñame tu camino,",
+    "guíame por la senda llana,",
+    "porque tengo enemigos."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 28|1": {
+   "psalm": "Salmo 28",
+   "verse": 1,
+   "lines": [
+    "La voz del Señor sobre las aguas,",
+    "el Dios de la gloria hace oír su trueno,",
+    "el Señor sobre las aguas torrenciales."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 28|4": {
+   "psalm": "Salmo 28",
+   "verse": 4,
+   "lines": [
+    "La voz del Señor lanza llamas de fuego,",
+    "la voz del Señor sacude el desierto,",
+    "el Señor sacude el desierto de Cadés."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 31|6": {
+   "psalm": "Salmo 31",
+   "verse": 6,
+   "lines": [
+    "No seáis irracionales como caballos y mulos,",
+    "cuyo brío hay que domar con freno y brida;",
+    "si no, no puedes acercarte."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 4|0": {
+   "psalm": "Salmo 4",
+   "verse": 0,
+   "lines": [
+    "Escúchame cuando te invoco, Dios, defensor mío;",
+    "tú que en el aprieto me diste anchura,",
+    "ten piedad de mí y escucha mi oración."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 40|7": {
+   "psalm": "Salmo 40",
+   "verse": 7,
+   "lines": [
+    "Incluso mi amigo, de quien yo me fiaba,",
+    "que compartía mi pan,",
+    "es el primero en traicionarme."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 40|8": {
+   "psalm": "Salmo 40",
+   "verse": 8,
+   "lines": [
+    "Pero tú, Señor, apiádate de mí,",
+    "haz que pueda levantarme,",
+    "para que yo les dé su merecido."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 44 I|4": {
+   "psalm": "Salmo 44 I",
+   "verse": 4,
+   "lines": [
+    "A mirra, áloe y acacia huelen tus vestidos,",
+    "desde los palacios de marfiles te deleitan las arpas.",
+    "Hijas de reyes salen a tu encuentro,",
+    "de pie a tu derecha está la reina",
+    "enjoyada con oro de Ofir."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 50|7": {
+   "psalm": "Salmo 50",
+   "verse": 7,
+   "lines": [
+    "Líbrame de la sangre, ¡oh Dios,",
+    "Dios, Salvador mío!,",
+    "y cantará mi lengua tu justicia.",
+    "Señor, me abrirás los labios,",
+    "y mi boca proclamará tu alabanza."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 50|9": {
+   "psalm": "Salmo 50",
+   "verse": 9,
+   "lines": [
+    "Señor, por tu bondad, favorece a Sión,",
+    "reconstruye las murallas de Jerusalén:",
+    "entonces aceptarás los sacrificios rituales,",
+    "ofrendas y holocaustos,",
+    "sobre tu altar se inmolarán novillos."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 56|1": {
+   "psalm": "Salmo 56",
+   "verse": 1,
+   "lines": [
+    "Invoco al Dios Altísimo,",
+    "al Dios que hace tanto por mí:",
+    "desde el cielo me enviará la salvación,",
+    "confundirá a los que ansían matarme,",
+    "enviará su gracia y su lealtad."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 61|4": {
+   "psalm": "Salmo 61",
+   "verse": 4,
+   "lines": [
+    "De Dios viene mi salvación y mi gloria,",
+    "él es mi roca firme,",
+    "Dios es mi refugio."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 64|0": {
+   "psalm": "Salmo 64",
+   "verse": 0,
+   "lines": [
+    "¡Oh Dios!, tú mereces un himno en Sión,",
+    "y a ti se te cumplen los votos,",
+    "porque tú escuchas las súplicas."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 64|7": {
+   "psalm": "Salmo 64",
+   "verse": 7,
+   "lines": [
+    "riegas los surcos, igualas los terrones,",
+    "tu llovizna los deja mullidos,",
+    "bendices sus brotes;",
+    "coronas el año con tus bienes,",
+    "las rodadas de tu carro rezuman abundancia;"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 71 II|5": {
+   "psalm": "Salmo 71 II",
+   "verse": 5,
+   "lines": [
+    "Bendito sea el Señor, Dios de Israel,",
+    "el único que hace maravillas;",
+    "bendito por siempre su nombre glorioso,",
+    "que su gloria llene la tierra.",
+    "¡Amén, amén!"
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 76|9": {
+   "psalm": "Salmo 76",
+   "verse": 9,
+   "lines": [
+    "Rodaba el fragor de tu trueno,",
+    "los relámpagos deslumbraban el orbe,",
+    "la tierra retembló estremecida."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 79|0": {
+   "psalm": "Salmo 79",
+   "verse": 0,
+   "lines": [
+    "Pastor de Israel, escucha,",
+    "tú que guías a José como a un rebaño;",
+    "tú que te sientas sobre querubines, resplandece",
+    "ante Efraím, Benjamín y Manasés;",
+    "despierta tu poder y ven a salvarnos."
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 79|2": {
+   "psalm": "Salmo 79",
+   "verse": 2,
+   "lines": [
+    "Señor Dios de los ejércitos,",
+    "¿hasta cuándo estarás airado",
+    "mientras tu pueblo te suplica?"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 8|5": {
+   "psalm": "Salmo 8",
+   "verse": 5,
+   "lines": [
+    "Señor, dueño nuestro,",
+    "¡que admirable es tu nombre",
+    "en toda la tierra!"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 85|4": {
+   "psalm": "Salmo 85",
+   "verse": 4,
+   "lines": [
+    "Todos los pueblos vendrán",
+    "a postrarse en tu presencia, Señor;",
+    "bendecirán tu nombre:",
+    "«Grande eres tú, y haces maravillas;",
+    "tú eres el único Dios.»"
+   ],
+   "pred": 2,
+   "flexa": 2,
+   "comment": ""
+  },
+  "Salmo 85|7": {
+   "psalm": "Salmo 85",
+   "verse": 7,
+   "lines": [
+    "Dios mío, unos soberbios se levantan contra mí,",
+    "una banda de insolentes atenta contra mi vida,",
+    "sin tenerte en cuenta a ti."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 89|1": {
+   "psalm": "Salmo 89",
+   "verse": 1,
+   "lines": [
+    "Antes que naciesen los montes",
+    "o fuera engendrado el orbe de la tierra,",
+    "desde siempre y por siempre tú eres Dios."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 92|0": {
+   "psalm": "Salmo 92",
+   "verse": 0,
+   "lines": [
+    "El Señor reina vestido de majestad,",
+    "el Señor, vestido y ceñido de poder:",
+    "así está firme el orbe y no vacila."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 96|5": {
+   "psalm": "Salmo 96",
+   "verse": 5,
+   "lines": [
+    "porque tú eres, Señor,",
+    "altísimo sobre toda la tierra,",
+    "encumbrado sobre todos los dioses."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 96|6": {
+   "psalm": "Salmo 96",
+   "verse": 6,
+   "lines": [
+    "El Señor ama al que aborrece el mal,",
+    "protege la vida de sus fieles",
+    "y los libra de los malvados."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 99|0": {
+   "psalm": "Salmo 99",
+   "verse": 0,
+   "lines": [
+    "Aclama al Señor, tierra entera,",
+    "servid al Señor con alegría,",
+    "entrad en su presencia con aclamaciones."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 99|1": {
+   "psalm": "Salmo 99",
+   "verse": 1,
+   "lines": [
+    "Sabed que el Señor es Dios:",
+    "que él nos hizo y somos suyos,",
+    "su pueblo y ovejas de su rebaño."
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  },
+  "Salmo 99|2": {
+   "psalm": "Salmo 99",
+   "verse": 2,
+   "lines": [
+    "Entrad por sus puertas con acción de gracias,",
+    "por sus atrios con himnos,",
+    "dándole gracias y bendiciendo su nombre:"
+   ],
+   "pred": 0,
+   "flexa": 0,
+   "comment": ""
+  }
+ }
+}

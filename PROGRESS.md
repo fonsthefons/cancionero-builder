@@ -1,5 +1,24 @@
 # Progress
 
+## 2026-11-27 — Flexa marks for semitonos de 2 (branch feature/semitono-flexas)
+- User asked: redo flexa rules (de 2 only) with the mark-and-review page process; only
+  odd-length verses. De 3 / de 4 line joining / bar dropping noted in docs/semitonos.md, later.
+- docs/experiments/flexa-marks/flexa.py (+ page.html): picks odd verses (≥ 3 lines, Gloria left
+  out) from salmo/cántico files of cancionero-liturgia, pre-fills the current rule's flexa
+  (marks.py `plan2`); `--skip <marks.json>` leaves out verses already marked; `--test`.
+- Round 1: `flexa.py <liturgia songs> -o round1.html --n 60 --seed 1` → 60 of 201 odd verses.
+- Round 1 marks (round1-marks.json): rule 59/60. Miss: Is 12|3, ":" line before a 2-line quote
+  belongs with the quote. Salmo 117|9 (3-line quote, kept as its own flexa group) showed the
+  rule is "don't split a quote". rules.py scores variants: quote2 = 60/60, moves 3 of 201.
+- web/js/formula.js `semitono2Plan` + marks.py `plan2`: lines inside an open «/“, or ":" before
+  one, count as no pause. Tests in marks.py --test.
+- Checks: check_js.py (JS = Python 201/201, JS = user 60/60); check_js_chords.py 193/193 (chord
+  placement unchanged); pytest tests/ 75 passed.
+- Round 2: `--seed 2 --include "Cántico Is 45, 15-25|7" --include "Salmo 85|4"` + round 1 marks
+  skipped → round2.html, 60 new verses (the two the quote rule moves, unseen, are in).
+- Round 2 marks (round2-marks.json): 60/60, no notes. check_js.py: JS = user 120/120. Done.
+  Next: de 3 / de 4 line joining / bar dropping (docs/semitonos.md "Planned").
+
 ## 2026-11-26 — Semitono chords by melody and stress (branch feature/semitono-accent-chords)
 - User asked: implement the chord placement from the semitono experiment for all semitonos (de 2,
   3, 4; chords on passing notes too, via the melody), chord over the syllable's first letter;

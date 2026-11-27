@@ -125,17 +125,26 @@ function lineEnd(text) {
 // (flexa, 1, 2) on line 1, 3, 5…, never in the last two lines: placed where the
 // lines ending each group (every bar-2 line) end most strongly. Ties -> more group
 // ends on . ! ? (the sentence ends), then more on :, then the earliest.
+// A quote isn't split: a line inside an open « or “, or a ":" line just before one,
+// counts as no pause (user's flexa marks, round 1).
 function semitono2Plan(texts, hasFlexa) {
     const alternate = (count) => Array.from({ length: count }, (_, i) => i % 2);
     if (texts.length % 2 === 0) return alternate(texts.length);
     if (texts.length < 3 || !hasFlexa) return null;
+    const tally = (s, ch) => s.split(ch).length - 1;
+    const pauses = texts.map((t, i) => {
+        const upTo = texts.slice(0, i + 1).join("");
+        const inQuote = tally(upTo, "«") > tally(upTo, "»") || tally(upTo, "“") > tally(upTo, "”");
+        const opensQuote = lineEnd(t) === ":" && /^\s*[«“]/u.test(texts[i + 1] ?? "");
+        return inQuote || opensQuote ? 0 : linePause(t);
+    });
     let best = null;
     let bestScore = null;
     for (let k = 0; k <= texts.length - 3; k += 2) {
         const plan = [...alternate(k), "flexa", ...alternate(texts.length - k - 1)];
         const ends = texts.filter((_, i) => plan[i] === 1);
         const count = (marks) => ends.filter((t) => marks.includes(lineEnd(t) || "-")).length;
-        const score = [ends.reduce((sum, t) => sum + linePause(t), 0), count(".!?"), count(":")];
+        const score = [pauses.reduce((sum, p, i) => sum + (plan[i] === 1 ? p : 0), 0), count(".!?"), count(":")];
         const i = bestScore && score.findIndex((v, j) => v !== bestScore[j]);
         if (!bestScore || (i >= 0 && score[i] > bestScore[i])) [best, bestScore] = [plan, score];
     }
