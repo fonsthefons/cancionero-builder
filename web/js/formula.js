@@ -242,8 +242,9 @@ formulaDialog.innerHTML = `<input type="search" placeholder="Search fórmulas" a
 <div class="dialog-buttons"><button data-formula="">No fórmula</button><button>Cancel</button></div>`;
 const formulaSearch = formulaDialog.querySelector("input");
 const formulaOptions = formulaDialog.querySelector(".formula-options");
-BOOK.formulas.forEach(([label, items]) => {
+BOOK.formulas.forEach(([label, items, tag]) => {
     const group = document.createElement("section");
+    group.dataset.tag = tag;
     group.append(Object.assign(document.createElement("h4"), { textContent: label }));
     items.forEach(([id, title]) => {
         // "Semitonos de 2: (1) Suplicante 1" shows as "(1) Suplicante 1" under its group heading
@@ -254,6 +255,26 @@ BOOK.formulas.forEach(([label, items]) => {
     formulaOptions.append(group);
 });
 document.body.append(formulaDialog);
+const formulaGroups = [...formulaOptions.children];
+
+// The standard closing Gloria, as letters only: the one verse that doesn't make de 4 red.
+const STANDARD_GLORIA = "gloria al padre y al hijo y al espiritu santo como era en el principio " +
+    "ahora y siempre por los siglos de los siglos amen";
+const letters = (text) => normalizeText(text).replace(/[^a-zñ]+/g, " ").trim();
+
+// Which fórmula groups suit a psalm (user, 2026-11-27): good = shown first, green; bad = red.
+// Cánticos: tonos rectos good. De 3: good if every verse has 3 lines, else bad.
+// De 4: bad if a verse other than the standard Gloria has 3 lines. Nothing is hidden.
+function formulaFit(psalm) {
+    const box = document.createElement("div");
+    box.innerHTML = psalmLyrics.get(psalm) ?? psalm.querySelector(":scope > .lyrics").innerHTML;
+    const verses = [...box.querySelectorAll(".verse")].map((verse) => [...verse.children].map((line) => line.textContent));
+    const good = new Set(), bad = new Set();
+    if (normalizeText(psalm.dataset.title).startsWith("cantico")) good.add("tonos_rectos");
+    (verses.length && verses.every((lines) => lines.length === 3) ? good : bad).add("semitonos_3");
+    if (verses.some((lines) => lines.length === 3 && letters(lines.join(" ")) !== STANDARD_GLORIA)) bad.add("semitonos_4");
+    return { good, bad };
+}
 
 let formulaPsalm = null;
 
@@ -284,6 +305,13 @@ onAction("formula-pick", (button, psalm) => {
     formulaSearch.value = "";
     formulaSearch.dispatchEvent(new Event("input"));
     const current = songState.get(psalm, "formula");
+    const { good, bad } = formulaFit(psalm);
+    formulaOptions.append(...formulaGroups.filter((g) => good.has(g.dataset.tag)),
+        ...formulaGroups.filter((g) => !good.has(g.dataset.tag)));
+    formulaGroups.forEach((group) => group.querySelectorAll("button").forEach((option) => {
+        option.classList.toggle("formula-good", good.has(group.dataset.tag));
+        option.classList.toggle("formula-bad", bad.has(group.dataset.tag));
+    }));
     formulaOptions.querySelectorAll("button").forEach((option) => {
         option.setAttribute("aria-pressed", option.dataset.formula === current);
     });

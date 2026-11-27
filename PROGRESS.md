@@ -1,5 +1,16 @@
 # Progress
 
+## 2026-11-27 — Fórmula picker hints (branch feature/semitono-de4-fit)
+- User asked: in the picker, green + first for the fitting fórmula (de 3 where every verse has 3
+  lines; tonos rectos for cánticos), red for de 3 elsewhere and for de 4 when a verse (not the
+  standard Gloria) has 3 lines. Nothing hidden; picking a red one behaves as before.
+- web/js/formula.js `formulaFit` + picker reorders groups and toggles `formula-good` / `formula-bad`
+  (styles.css, outline). Section gets `data-tag`.
+- Checks: scratch/liturgia-picker (copy of the book, built) + scratch/check_picker.py (WebKit, no
+  page errors, 170 pickers; Chromium not installed, skipped); screenshots scratch/picker-*.png;
+  pytest tests/ 75 passed; check_js_chords.py 193/193.
+- Verse-size table for salmos / hymns: scratch/verse_sizes.py.
+
 ## 2026-11-27 — Flexa marks for semitonos de 2 (branch feature/semitono-flexas)
 - User asked: redo flexa rules (de 2 only) with the mark-and-review page process; only
   odd-length verses. De 3 / de 4 line joining / bar dropping noted in docs/semitonos.md, later.

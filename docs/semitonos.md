@@ -15,7 +15,19 @@ exactly 3 / 4 lines (de 4 splits the Gloria's first line).
 
 **Planned (user, 2026-11-27):**
 - Flexas only apply to semitonos de 2 (done, see above: 120/120 marked verses).
-- De 3 / de 4 never use flexas. When line count ≠ bar count:
+- De 3 (user, 2026-11-27): only for psalms whose every verse has 3 lines, the Gloria included
+  (one bar per line). That is already what the code does. Salmos: only Salmo 99 fits; Ez 36,
+  24-28 and Salmo 92 are one verse off. Hymns: "Bello es el rostro de la luz, abierto" and
+  "Padre: has de oír" fit too.
+- **Picker hints** (`formulaFit`, done): nothing hidden; green = suggested, shown first; red = not
+  recommended (picking it works as before: no chords over the lines when the verses don't fit).
+  - de 3: green if every verse has 3 lines, else red.
+  - de 4: red if any verse has 3 lines, except the exact standard Gloria ("Gloria al Padre, y al
+    Hijo… por los siglos de los siglos. Amén."). Other doxologies count like any verse.
+  - Cánticos: tonos rectos green and first.
+  - Scratch build check (WebKit, 170 picker songs): de 4 red in 48/102 salmos, 14/35 hymns,
+    17/33 cánticos.
+- De 4 never uses flexas. When line count ≠ bar count:
   - more lines than bars → join lines for chord placement only (the HTML keeps the lines).
     E.g. de 4, 5-line verse: two lines share one bar.
   - fewer lines than bars → drop bars. E.g. de 4, 2-line verse: line 1 gets bar 1, line 2 gets
