@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Semitono de 4 marks</title>
+<style>
+  body { font: 16px/1.4 system-ui, sans-serif; margin: 0 auto; max-width: 900px; padding: 1rem 1rem 6rem; color: #222; }
+  header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #ddd; padding: .5rem 0; z-index: 2; }
+  .help { font-size: 14px; color: #555; margin: .3rem 0; }
+  h2 { font-size: 15px; margin: 1.6rem 0 .3rem; color: #555; }
+  .verse { border-left: 3px solid #eee; padding: .2rem .6rem; margin: .4rem 0 1rem; }
+  .verse.changed { border-left-color: #e55; }
+  .line { display: flex; gap: .5rem; align-items: center; padding: .15rem .3rem; border-radius: 6px; }
+  .bars { display: flex; gap: 2px; flex: none; }
+  .bars button { width: 1.8rem; }
+  .b0 { background: #e3f2fd; } .b1 { background: #e8f5e9; } .b2 { background: #fff3e0; } .b3 { background: #f3e5f5; }
+  button.on.b0 { background: #1565c0; } button.on.b1 { background: #2e7d32; }
+  button.on.b2 { background: #e65100; } button.on.b3 { background: #6a1b9a; }
+  button.on { color: #fff; font-weight: bold; }
+  .tools { display: flex; gap: .5rem; align-items: center; font-size: 13px; margin-top: .3rem; }
+  .tools input.comment { flex: 1; border: 1px solid #ddd; border-radius: 4px; padding: 1px 4px; font-size: 13px; }
+  button { font: inherit; font-size: 13px; border: 1px solid #bbb; background: #fff; border-radius: 4px; padding: 1px 7px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Semitono de 4 marks</strong> · <span id="progress"></span>
+  <button id="copy">Copy JSON</button> <button id="download">Download JSON</button>
+  <div class="help">
+    Verses that aren't 4 lines long, from songs where semitono de 4 is suggested. Each line starts with the
+    guessed bar (1–4, coloured). <b>Click a number</b> to sing that line to that bar; two lines on the same
+    bar share it. Fix only what is wrong; a red left border = you changed it. Saved in this browser as you go.
+  </div>
+</header>
+<main id="main"></main>
+<script>
+const DATA = /*DATA*/null;
+const STORE = "de4marks:" + DATA.id;
+const state = JSON.parse(localStorage.getItem(STORE) || "{}");
+for (const v of DATA.verses) state[v.key] ??= { bars: [...v.pred], comment: "" };
+const save = () => localStorage.setItem(STORE, JSON.stringify(state));
+const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
+
+function render() {
+  const main = document.getElementById("main");
+  main.replaceChildren();
+  let psalm = null, changed = 0;
+  for (const v of DATA.verses) {
+    if (v.psalm !== psalm) main.append(Object.assign(document.createElement("h2"), { textContent: psalm = v.psalm }));
+    const s = state[v.key];
+    const diff = !same(s.bars, v.pred);
+    changed += diff;
+    const box = document.createElement("div");
+    box.className = "verse" + (diff ? " changed" : "");
+    v.lines.forEach((text, i) => {
+      const line = document.createElement("div");
+      line.className = "line b" + s.bars[i];
+      const bars = document.createElement("span");
+      bars.className = "bars";
+      for (let b = 0; b < 4; b++) {
+        const btn = Object.assign(document.createElement("button"), { textContent: b + 1, className: `b${b}` + (s.bars[i] === b ? " on" : "") });
+        btn.onclick = () => { s.bars[i] = b; save(); render(); };
+        bars.append(btn);
+      }
+      line.append(bars, Object.assign(document.createElement("span"), { textContent: text }));
+      box.append(line);
+    });
+    const tools = document.createElement("div");
+    tools.className = "tools";
+    const reset = Object.assign(document.createElement("button"), { textContent: "Reset" });
+    reset.onclick = () => { s.bars = [...v.pred]; save(); render(); };
+    const note = Object.assign(document.createElement("input"), { className: "comment", placeholder: "note", value: s.comment });
+    note.oninput = () => { s.comment = note.value; save(); };
+    tools.append(reset, note);
+    box.append(tools);
+    main.append(box);
+  }
+  document.getElementById("progress").textContent = `${DATA.verses.length} verses, ${changed} changed`;
+}
+
+const exportJson = () => JSON.stringify({ id: DATA.id, marks: Object.fromEntries(DATA.verses.map((v) =>
+  [v.key, { psalm: v.psalm, verse: v.verse, lines: v.lines, pred: v.pred, ...state[v.key] }])) }, null, 1);
+document.getElementById("copy").onclick = async () => { await navigator.clipboard.writeText(exportJson()); alert("Copied"); };
+document.getElementById("download").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([exportJson()], { type: "application/json" }));
+  a.download = "de4-marks.json";
+  a.click();
+};
+render();
+</script>
+</body>
+</html>
