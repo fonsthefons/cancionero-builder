@@ -38,7 +38,9 @@ exactly 3 / 4 lines (de 4 splits the Gloria's first line).
     syllable. The HTML keeps both lines.
   - The 6 misses are 5/6-line verses where commas tie and the user split by meaning (Salmo 62|3 and
     112|2 have the same punctuation, different splits). Round 2 (60 unseen verses, ≥ 5 lines):
-    `de4-marks/round2.html`, waiting for marks.
+    51/60 (6 lines 30/31, 7–9 lines 10/10, 5 lines 10/15, 10 lines 1/4). Together 105/120.
+    `rules2.py` grid-searched line length, short lines ("Aleluya.") and joins in the second pass:
+    none beats the rule. The user: some joins are arbitrary, most right is the goal. Kept as is.
   - Songs with their own chords (Bendito eres…, Hora de la tarde…) never get a semitono; the
     marking pages skip them.
 

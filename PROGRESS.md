@@ -1,5 +1,10 @@
 # Progress
 
+## 2026-11-27 — Semitono de 4 round 2 (branch feature/de4-round2)
+- Round 2 marks (de4-marks/round2-marks.json): 51/60 held out; 105/120 both rounds.
+- de4-marks/rules2.py: weighted cost (pause, line length, edge distance, short line, joins in the
+  first pass of 8+ lines) grid-searched: best = current rule (105/120). Rule unchanged.
+
 ## 2026-11-27 — Semitono de 4 marks (branch feature/semitono-de4-marks)
 - User: verses ≠ 4 lines, only from songs where de 4 isn't red. Long verses: a bar spans two
   lines (their example: 6 lines → bars 1 1 2 3 4 4), not a 4+2 split.
