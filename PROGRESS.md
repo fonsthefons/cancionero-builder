@@ -1,5 +1,14 @@
 # Progress
 
+## 2026-11-27 — Semitono de 4: red bracket on lines sharing a bar (branch feature/de4-bar-bracket)
+- User: show singers when two lines are sung as one bar; red bracket on the left, only there
+  (2-line verses, bars 1 and 4: no mark).
+- formula.js adds `bar-shared` to both lines of a shared bar; styles.css: 2px red left border +
+  6px padding (a negative margin got clipped, so the pair sits 8px right).
+- Checks: scratch build + scratch/de4_render.py screenshot (scratch/de4-bracket.png); picker check
+  unchanged; check_js_chords 193/193; pytest tests/ 75 passed.
+- Then rebuilt cancionero-liturgia (user asked).
+
 ## 2026-11-27 — Semitono de 4 round 2 (branch feature/de4-round2)
 - Round 2 marks (de4-marks/round2-marks.json): 51/60 held out; 105/120 both rounds.
 - de4-marks/rules2.py: weighted cost (pause, line length, edge distance, short line, joins in the

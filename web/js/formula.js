@@ -255,7 +255,9 @@ function setPsalmChords(psalm, id) {
             const shared = plan[i + 1] === plan[i] ? 0 : plan[i - 1] === plan[i] ? 1 : -1; // de 4: two lines, one bar
             if (shared < 0) return chordedLine(line, bar, false, spots);
             const [chords, part] = splitBar(bar, spots)[shared];
-            return chordedLine(line, chords, false, part);
+            const el = chordedLine(line, chords, false, part);
+            el.classList.add("bar-shared"); // red bracket: these two lines are one bar
+            return el;
         }));
     });
 }
