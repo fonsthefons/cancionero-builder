@@ -20,6 +20,9 @@ for book in cancionero cancionero-hakuna cancionero-pagano cancionero-liturgia c
   [ -d "$BOOKS/$book" ] || try "clone $book" git clone -q "git@github.com:fonsthefons/$book.git" "$BOOKS/$book"
 done
 
+# The control panel behind ./ui.sh, next to this repo (no pip)
+[ -d ../control-panel ] || try "clone control-panel" git clone -q git@github.com:fonsthefons/control-panel.git ../control-panel
+
 # 4. Tests
 try "tests" .venv/bin/python -m pytest tests -q -p no:cacheprovider
 

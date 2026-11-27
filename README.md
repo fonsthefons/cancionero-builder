@@ -40,6 +40,11 @@ on a TV. Books need a rebuild to get the button.
 Some song sites need a browser to read; the builder offers to install one the first time.
 `gh` (GitHub CLI, logged in) is needed to create and publish books on GitHub.
 
+## Browser page
+
+`./ui.sh` opens the main commands as task cards in a browser page (the control-panel repo, cloned
+by `./install.sh` into `../control-panel`). Tasks are in `ui.json`; `./ui.sh --check` validates them.
+
 ## Commands
 
 Run `.venv/bin/python cancionero.py` with no arguments for a menu, or:
