@@ -877,8 +877,20 @@ body.drawer-open {
     margin: 0 0 12px 6px;
 }
 
-.syllables-toggle[aria-pressed="true"] {
-    font-weight: bold;
+/* On/off buttons (Chords, Columns, Sílabas): a slider before the label, from aria-pressed. */
+.switch::before {
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+    margin-right: 6px;
+    border-radius: 9px;
+    vertical-align: middle;
+    background: radial-gradient(circle at 9px 50%, #fff 6px, transparent 7px), var(--border);
+}
+
+.switch[aria-pressed="true"]::before {
+    background: radial-gradient(circle at 21px 50%, #fff 6px, transparent 7px), var(--chord);
 }
 
 /* Still being tuned: a small tag on the button says so. */
