@@ -1,5 +1,24 @@
 # Progress
 
+## 2026-11-27 — Semitono de 4 marks (branch feature/semitono-de4-marks)
+- User: verses ≠ 4 lines, only from songs where de 4 isn't red. Long verses: a bar spans two
+  lines (their example: 6 lines → bars 1 1 2 3 4 4), not a 4+2 split.
+- docs/experiments/de4-marks/de4.py (+ page.html, `--test`): guess = 2 lines → 1, 4; > 4 lines →
+  4 groups of consecutive lines joined at the weakest line ends, ties → later.
+- User: songs with their own chords (e.g. Bendito eres…, Hora de la tarde…) get no semitono.
+  de4.py and flexa.py now skip any song with a chord line (builder.lyrics.is_chord_line) and don't
+  count `**` lines. 2 cánticos + 30 hymns have chords; none was in the flexa marks.
+- Round 1 rebuilt: `de4.py <liturgia songs> -o round1.html --n 60 --seed 1` → 60 of 247 verses.
+- Round 1 marks (round1-marks.json): first guess 49/60. rules.py variants: "edge" 54/60 (passes =
+  n // 4, ≤ 2 lines per bar, weakest joins, ties → near the ends). User chose: implement, test on
+  round 2.
+- web/js/formula.js: `semitono4Plan`, `splitBar` (two lines on one bar split its chords),
+  `chordedLine` renders a chordless line as `.lyric-line`. de4.py `guess` = Python port.
+- Checks: de4-marks/check_js.py JS = Python 247/247, JS = user 54/60; scratch/de4_render.py
+  (Salmo 62 with Alegre clásico: chords split right, no page errors); check_js_chords 193/193;
+  flexa check_js 120/120; pytest tests/ 75 passed.
+- Round 2: `--seed 2 --min-lines 5` + round 1 skipped → round2.html (60 verses ≥ 5 lines).
+
 ## 2026-11-27 — Fórmula picker hints (branch feature/semitono-de4-fit)
 - User asked: in the picker, green + first for the fitting fórmula (de 3 where every verse has 3
   lines; tonos rectos for cánticos), red for de 3 elsewhere and for de 4 when a verse (not the

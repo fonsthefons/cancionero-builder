@@ -151,11 +151,49 @@ function semitono2Plan(texts, hasFlexa) {
     return best;
 }
 
+// Semitono de 4 (user's de 4 marks, round 1): 2 lines -> bars 1, 4. Otherwise n // 4 passes of
+// bars 1-4; the lines left over join a neighbour (two lines share a bar, never more), where the
+// first line ends most weakly (linePause); ties -> joins nearest the verse's start or end, then
+// the earliest. 3-line verses (and 1-line rubrics) don't fit: null.
+function semitono4Plan(texts) {
+    const n = texts.length;
+    if (n === 2) return [0, 3];
+    if (n < 4) return null;
+    const groups = 4 * Math.floor(n / 4);
+    let best = null;
+    let bestKey = null;
+    const pick = (joins, from) => { // joins: gaps (after line i) where two lines share a bar
+        if (joins.length === n - groups) {
+            const key = [joins.reduce((s, i) => s + linePause(texts[i]), 0),
+                joins.reduce((s, i) => s + Math.min(i, n - 2 - i), 0), ...joins];
+            const d = bestKey && key.findIndex((v, j) => v !== bestKey[j]);
+            if (!bestKey || (d >= 0 && key[d] < bestKey[d])) [best, bestKey] = [joins, key];
+            return;
+        }
+        for (let i = from; i < n - 1; i++) pick([...joins, i], i + 2);
+    };
+    pick([], 0);
+    let bar = 0;
+    return texts.map((_, i) => { const b = bar % 4; if (!best.includes(i)) bar++; return b; });
+}
+
 // The bar of each line ("flexa" or an index into bars), or null if the verse doesn't fit.
-// De 3 / de 4: one bar per line, so exactly 3 / 4 lines.
+// De 3: one bar per line, so exactly 3 lines.
 function versePlan(texts, f) {
     if (f.size === 2) return semitono2Plan(texts, Boolean(f.flexa));
+    if (f.size === 4) return semitono4Plan(texts);
     return texts.length === f.size ? texts.map((_, i) => i) : null;
+}
+
+// Two lines sung to one bar: the first takes the chords counted from the start of the bar
+// (spots "start"), the second those counted back from its stressed syllable ("accent").
+// Without matching spots: the first chord on the first line, the rest on the second.
+function splitBar(bar, spots) {
+    const chords = bar.join(" ").split(/ (?!\()/);
+    if (spots?.length !== chords.length) return [[chords.slice(0, 1), null], [chords.slice(1), null]];
+    const part = (start) => [chords.filter((_, i) => (spots[i].from === "start") === start),
+        spots.filter((s) => (s.from === "start") === start)];
+    return [part(true), part(false)];
 }
 
 // Each chord over the syllable its melody note falls on (spots, from chordSpots); without
@@ -180,6 +218,7 @@ function chordLineText(text, bar, spots) {
 }
 
 function chordedLine({ text, bold }, chords, flexa, spots) {
+    if (!chords.length) return Object.assign(document.createElement("div"), { className: bold ? "lyric-line bold" : "lyric-line", textContent: text });
     const pair = Object.assign(document.createElement("div"), { className: bold ? "line-pair bold" : "line-pair" });
     const line = Object.assign(document.createElement("div"), { className: flexa ? "chord-line flexa" : "chord-line" });
     // separators in .sep spans, as lyrics.py chord_line_html writes them (transpose.js relies on it)
@@ -210,9 +249,14 @@ function setPsalmChords(psalm, id) {
     });
     if (f.size !== 2 && verses.some(({ plan }) => !plan)) return; // de 3 / de 4: every verse must fit
     verses.forEach(({ verse, lines, plan }) => {
-        if (plan) verse.replaceChildren(...lines.map((line, i) => (plan[i] === "flexa"
-            ? chordedLine(line, f.flexa, true, f.spots?.flexa)
-            : chordedLine(line, f.bars[plan[i]], false, f.spots?.bars[plan[i]]))));
+        if (plan) verse.replaceChildren(...lines.map((line, i) => {
+            if (plan[i] === "flexa") return chordedLine(line, f.flexa, true, f.spots?.flexa);
+            const [bar, spots] = [f.bars[plan[i]], f.spots?.bars[plan[i]]];
+            const shared = plan[i + 1] === plan[i] ? 0 : plan[i - 1] === plan[i] ? 1 : -1; // de 4: two lines, one bar
+            if (shared < 0) return chordedLine(line, bar, false, spots);
+            const [chords, part] = splitBar(bar, spots)[shared];
+            return chordedLine(line, chords, false, part);
+        }));
     });
 }
 

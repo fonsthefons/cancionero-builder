@@ -27,12 +27,20 @@ exactly 3 / 4 lines (de 4 splits the Gloria's first line).
   - Cánticos: tonos rectos green and first.
   - Scratch build check (WebKit, 170 picker songs): de 4 red in 48/102 salmos, 14/35 hymns,
     17/33 cánticos.
-- De 4 never uses flexas. When line count ≠ bar count:
-  - more lines than bars → join lines for chord placement only (the HTML keeps the lines).
-    E.g. de 4, 5-line verse: two lines share one bar.
-  - fewer lines than bars → drop bars. E.g. de 4, 2-line verse: line 1 gets bar 1, line 2 gets
-    the last bar.
-  Which lines to join / bars to drop in other cases: still to work out, after flexas.
+- De 4 never uses flexas. Done (`semitono4Plan`, user's de 4 marks round 1: 54/60):
+  - 2 lines → bars 1, 4. 3 lines (and 1-line rubrics) don't fit: the song gets no chords.
+  - n ≥ 4 lines: n // 4 passes of bars 1–4 (8 lines = two passes). The lines left over share a
+    bar with a neighbour (never more than 2 lines on a bar), joined where the first line ends most
+    weakly; ties → joins nearest the verse's start or end, then the earliest. E.g. 6 lines
+    "En el lecho me acuerdo de ti…" → 1 1 2 3 4 4.
+  - Two lines on one bar (`splitBar`): the first line gets the bar's chords counted from its start
+    (melody notes up to the reciting note), the second those counted back from its stressed
+    syllable. The HTML keeps both lines.
+  - The 6 misses are 5/6-line verses where commas tie and the user split by meaning (Salmo 62|3 and
+    112|2 have the same punctuation, different splits). Round 2 (60 unseen verses, ≥ 5 lines):
+    `de4-marks/round2.html`, waiting for marks.
+  - Songs with their own chords (Bendito eres…, Hora de la tarde…) never get a semitono; the
+    marking pages skip them.
 
 **Where each chord goes** (`chordSpots`, `chordLineText`), from the semitono's melody (ABC):
 - The bar's notes up to the long reciting note (length ≥ 4) take the line's first syllables,

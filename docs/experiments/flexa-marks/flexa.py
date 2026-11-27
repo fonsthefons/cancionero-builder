@@ -12,6 +12,8 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent / "semitono-marks"))
+sys.path.insert(0, str(HERE.parents[2]))
+from builder.lyrics import is_chord_line  # noqa: E402
 from marks import plan2, read_md  # noqa: E402
 
 
@@ -22,6 +24,8 @@ def odd_verses(songs):
         if not path.name.startswith(("salmo", "cantico")):
             continue
         meta, body = read_md(path)
+        if any(is_chord_line(l) for l in body.splitlines()):
+            continue  # its own chords: no semitono is picked for it
         for vi, v in enumerate(body.strip().split("\n\n")):
             lines = [l.strip() for l in v.splitlines() if l.strip()]
             if len(lines) % 2 and len(lines) >= 3 and not lines[0].startswith("Gloria al Padre"):
