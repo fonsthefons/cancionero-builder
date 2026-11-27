@@ -791,6 +791,13 @@ body.drawer-open {
     color: #c62828;
 }
 
+/* Two psalm lines sung to one bar of a semitono de 4 (formula.js): a red bracket on the
+   left (the pair moves right with its chords, which also sets it apart). */
+.bar-shared {
+    border-left: 2px solid #c62828;
+    padding-left: 6px;
+}
+
 /* Choruses (lines between `**` lines in the song file). Bold monospace keeps
    the same character width, so chords stay on their letters. */
 .lyric-line.bold,
