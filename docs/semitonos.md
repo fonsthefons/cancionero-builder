@@ -90,9 +90,8 @@ Everything else follows the same mapping but nobody has checked it by singing:
 4. **A second long note after the reciting one**: Nistalmata bars 3–4 (`"F"G4 A4 F "Dm"D2`,
    `D4 "G"G4 F "C"E2`). Treated as one syllable; it may be a second reciting tone covering
    several syllables. Then the G chord would be wrong.
-5. **Hiatus hidden by spelling**: santuario (san-tu-a-rio), Sión (Si-ón). The chord goes one
-   syllable off when the stressed syllable is one of these. 2 of 199 marked lines. A small list of
-   exception words would fix it if it matters.
+5. **Hiatus hidden by spelling**: fixed in formula.js with `HIATUS` (Sión, santuario, santuarios;
+   add words as found). The Python port (marks.py) doesn't have the list.
 6. **Unstressed little words** (`ATONIC`) are a hand-made list. A line ending in one, or with no
    stressed word, uses its last syllable. "es" is unstressed (user's marks: "misericordia‿es").
 7. **Short lines** (fewer syllables than notes): positions are clamped to the first syllable and
@@ -100,20 +99,22 @@ Everything else follows the same mapping but nobody has checked it by singing:
 8. **Rodrigo (16)** (3 passing notes in bar 2): page `rodrigo-round3.html` pre-filled, not marked yet.
    René (15) dropped: hard to sing.
 
-## Open: marking the syllables where the melody changes (later feature)
+## Syllables where the melody changes ("Sílabas" button, done 2026-11-27)
 
-The same rules give the syllable each note starts on (`marks.py predict`; the page shows them).
-Not in the book yet. Open points:
+A "Sílabas" button beside the fórmula button (only when the psalm has a semitono with a melody;
+remembered per psalm on this device) underlines, in the browser (`syllableMarks`, `markedText`):
+- each syllable where a note **after the reciting note** starts (same rule as the chords: the
+  last on the line's last stressed syllable, one syllable each going back);
+- only the syllable's letters, each line 3px short so syllables in a row stay apart;
+- a double line when two notes start on one syllable (short lines: "te recuerdo");
+- two lines on one de 4 bar: all those notes on the second line.
+Check: `check_js_syllables.py`: 193/193 lines where the user put the notes. Hidden in print.
 
-1. **How to show it**: underline, italic, bold or colour on the syllables where a new note starts
-   (all of them, or only the stressed one). Not designed.
+Still open:
+1. **Sinalefa units**: a merged unit ("se‿acongoja") underlines only the first word's letters.
 2. **Sinalefa by taste**: "noche | y día" (the user split it, no stressed vowel) and "júbilo | y‿a
    alabanza" (three vowels: only the last two joined). The user: either is fine.
-3. **Short lines**: when there are fewer syllables than notes, the reciting note and the first
-   passing note share the first syllable ("t[E]e-[A]e [G]re[F]cuerdo", "d[E]e-[A]el [G]Dios
-   [F]vivo"). How to show two notes on one syllable is open.
-4. **Melismas** in general (tuplets, two notes on one syllable): not marked by the user yet.
-5. **Hiatus** (point 5 above) matters more here: the marked syllable would be wrong.
+3. **Melismas** in general (tuplets count as one note): not marked by the user yet.
 
 ## Tools
 
